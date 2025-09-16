@@ -1,0 +1,12 @@
+node_modules
+.cursor
+.serena
+.next
+.vscode
+.git
+.gitignore
+.env.local
+.env.*.local
+.DS_Store
+npm-debug.log
+pnpm-lock.yaml.tmp

@@ -1,0 +1,228 @@
+{
+  "Locale": {
+    "key": "zh",
+    "name": "中文",
+    "siteLanguage": "网站语言"
+  },
+  "Error": {
+    "description": "<p>很抱歉，我们遇到了一些问题。</p><p>您可以尝试 <retry>重新加载页面</retry>。</p>",
+    "title": "出了点问题！"
+  },
+  "NotFoundPage": {
+    "description": "请仔细检查浏览器地址栏或使用导航前往已知页面。",
+    "title": "页面未找到"
+  },
+  "Navigation": {
+    "review": "复习",
+    "learn": "学习",
+    "conversation": "会话",
+    "write": "写作",
+    "event": "活动"
+  },
+  "PublicLayout": {
+    "title": "Puchi - 掌握越南语。随时随地学习。",
+    "description": "Puchi 是一个互动平台，旨在使学习越南语变得有趣且引人入胜。加入我们，享受全面且愉快的语言学习体验。"
+  },
+  "Hero": {
+    "continueLearning": "继续学习"
+  },
+  "Languages": {
+    "multiLanguage": "多语言",
+    "supportWebsite": "支持网站"
+  },
+  "Metrics": {
+    "byThe": "由",
+    "numbers": "数字",
+    "hoursOfFunContent": "小时的有趣内容",
+    "languageCourses": "语言课程",
+    "usersGlobally": "全球用户",
+    "fluencyInTwoMonths": "两个月内流利"
+  },
+  "Reasons": {
+    "the": "未来",
+    "future": "的",
+    "of": "学习",
+    "learning": "",
+    "items": [
+      "学习速度快5倍，乐趣增加5倍",
+      "基于科学的自定义课程",
+      "有趣的挑战保持动力",
+      "无论你走到哪里都能使用Puchi"
+    ]
+  },
+  "Footer": {
+    "startYourLanguageJourneyHere": "从这里开始你的语言之旅。",
+    "learnAnytimeLearnAnywhere": "随时随地学习。",
+    "start": "开始"
+  },
+  "HelpPage": {
+    "breadcrumbs": {
+      "helpCenter": "帮助中心",
+      "home": "主页"
+    },
+    "faqTitle": "常见问题",
+    "sections": {
+      "usingPuchi": "使用 Puchi",
+      "accountManagement": "账户管理"
+    },
+    "questions": {
+      "whatIsStreak": "什么是连续记录？",
+      "whatAreLeaderboards": "什么是排行榜和联赛？",
+      "openSourceLibraries": "Puchi 是否使用开源库？",
+      "changeUsernameOrEmail": "如何更改用户名或电子邮箱地址？",
+      "findFollowBlockUsers": "如何在 Puchi 中查找、关注或屏蔽用户？"
+    },
+    "answers": {
+      "whatIsStreak": {
+        "part1": "您的连续记录（火焰图标）表示您在 Puchi 上连续完成课程的天数。",
+        "part2": "学习语言是一个需要长期建立目标的过程，而连续记录是一种经过验证的方式，可以激励您每天继续学习和练习。",
+        "part3": "提示：练习提醒可以帮助您记得完成课程。在通知设置中，您可以打开练习提醒并设置最适合您的时间。"
+      },
+      "whatAreLeaderboards": {
+        "part1": "排行榜是一个有趣的方式，可以与其他 Puchi 学习者在每周比赛中竞争。随着每次课程获得的 XP（经验值）增加，您的排名会提升。每周，您都会面对一组新的竞争者。请查看应用程序中的排行榜标签，开始比赛吧！"
+      },
+      "openSourceLibraries": {
+        "part1": "是的。您可以在此",
+        "linkText": "页面"
+      },
+      "changeUsernameOrEmail": {
+        "part1": "如果您想更改 Puchi 的用户名或电子邮箱地址，请转到设置",
+        "linkText": "转到设置",
+        "part2": "并修改用户名或电子邮箱地址。您的用户名会显示在每周的排行榜中。记得点击\"保存更改\"。",
+        "part3": ""
+      },
+      "findFollowBlockUsers": {
+        "part1": "您可以在 Puchi 上与其他学习者建立联系！",
+        "part2": "当您关注某人时，他们会显示在您的好友列表中，您可以互相鼓励，保持您的语言学习目标！"
+      }
+    },
+    "feedbackPrompt": "还有其他疑问吗？",
+    "sendFeedback": "发送反馈"
+  },
+  "PrivacyPage": {
+    "title": "隐私政策",
+    "lastRevised": "请注意，隐私政策最后修订日期为2024年11月10日",
+    "footer": "最后修订日期：2024年11月10日",
+    "sections": {
+      "general": {
+        "title": "总则",
+        "part1": "在Puchi，我们关心您的个人信息，因此我们制定了此隐私政策，解释我们如何收集、使用和共享这些信息。",
+        "part2": "本隐私政策适用于Puchi的网站、移动应用和相关服务（以下简称\"服务\"）。通过使用服务，您同意Puchi根据本隐私政策的条款收集、使用和共享您的个人信息。",
+        "part3": "本隐私政策适用于Puchi的网站、移动应用和相关服务（以下简称\"服务\"）。通过使用服务，您同意Puchi根据本隐私政策的条款收集、使用和共享您的个人信息。"
+      },
+      "updates": {
+        "title": "隐私政策更新",
+        "part1": "我们可能会更新隐私政策，以反映我们信息处理方式的变化。",
+        "part2": "如果我们这样做，并且这些更改是重要的，我们将在网站上发布通知，说明我们已在更改生效前至少七（7）天对隐私政策进行了修改。"
+      },
+      "retention": {
+        "title": "数据保留",
+        "part1": "Puchi通常会保留您的个人信息，直到您的帐户被删除。但是，Puchi在某些情况下可能会保留某些信息更长时间，如果这样做是为了提供我们的服务、保护我们或第三方的合法利益、遵守法律要求、解决或防御争议、调查滥用或干扰服务，或者执行协议。"
+      },
+      "doNotTrack": {
+        "title": "禁止跟踪",
+        "part1": "该服务未设计为响应某些浏览器发送的\"禁止跟踪\"信号。",
+        "part2": ""
+      },
+      "contactUs": {
+        "title": "联系我们",
+        "part1": "Puchi, Inc.是您数据的控制者，符合《通用数据保护条例》（GDPR）以及任何相关的当地法律。",
+        "part2": "Puchi的总部位于越南，地址如下：",
+        "part3": "河内，越南",
+        "email": "有关数据隐私的所有查询，以及您对本隐私政策的任何问题或关注，请通过以下电子邮件与我们的数据保护官联系：lehoan.dev@gmail.com"
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "关于 Puchi",
+    "intro": "Puchi 是一个创新平台，旨在帮助用户掌握越南语。通过多语言支持，Puchi 确保全球学习者都能获得访问权限。",
+    "technologies": "使用 Next.js 15、Shadcn UI 和 Clerk 身份验证等现代技术构建，Puchi 提供快速、安全和无缝的学习体验。国际化 (i18n) 是一项核心功能，允许用户以其首选语言探索内容。",
+    "creator": "由致力于利用技术进行教育的热情开发者 Lê Công Hoan 创建。",
+    "joinCommunity": "加入我们在 <facebookLink>Facebook</facebookLink> 上的社区以与其他学习者联系，或在 <githubLink>GitHub</githubLink> 上探索项目源代码。"
+  },
+  "ProfileActions": {
+    "actions": {
+      "title": "操作",
+      "accountSettings": {
+        "title": "账户设置",
+        "description": "管理个人信息和安全"
+      },
+      "security": {
+        "title": "安全",
+        "description": "更改密码和双因素身份验证"
+      },
+      "signOut": {
+        "title": "退出登录",
+        "description": "退出当前账户"
+      }
+    },
+    "dangerZone": {
+      "title": "危险区域",
+      "deleteAccount": {
+        "title": "删除账户",
+        "description": "此操作无法撤销。所有数据将被永久删除。"
+      }
+    },
+    "deleteAccount": {
+      "success": "账户已成功删除",
+      "error": {
+        "confirmationRequired": "请输入 'DELETE' 进行确认",
+        "general": "删除账户时发生错误"
+      },
+      "dialog": {
+        "title": "确认删除账户",
+        "description": "此操作无法撤销。您的所有数据将被永久删除。",
+        "confirmation": "要确认，请在下面的字段中输入 <strong>DELETE</strong>。",
+        "confirmationLabel": "确认",
+        "confirmationPlaceholder": "输入 DELETE 进行确认",
+        "cancel": "取消",
+        "confirm": "删除账户",
+        "deleting": "删除中..."
+      }
+    }
+  },
+  "ProfileHeader": {
+    "title": "个人信息",
+    "email": "邮箱",
+    "username": "用户名",
+    "joinDate": "注册日期",
+    "member": "会员"
+  },
+  "ProfileForm": {
+    "title": "编辑信息",
+    "edit": "编辑",
+    "save": "保存",
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "username": "用户名",
+    "email": "邮箱",
+    "emailNote": "邮箱无法更改。如需更改，请联系客服。",
+    "success": "信息更新成功！",
+    "error": "更新信息时发生错误"
+  },
+  "ProfileStats": {
+    "learningStats": {
+      "title": "学习统计"
+    },
+    "progress": {
+      "title": "学习进度",
+      "completedLessons": "已完成课程",
+      "completed": "已完成 {count} 节课",
+      "remaining": "剩余 {count} 节课"
+    },
+    "performance": {
+      "title": "学习表现",
+      "averageAccuracy": "平均准确率",
+      "excellent": "优秀",
+      "needsImprovement": "需要改进"
+    },
+    "stats": {
+      "completedLessons": "已完成课程",
+      "currentStreak": "当前连续",
+      "streakDays": "{days} 天",
+      "totalXP": "总经验值",
+      "currentLevel": "当前等级",
+      "level": "等级 {level}"
+    }
+  }
+}

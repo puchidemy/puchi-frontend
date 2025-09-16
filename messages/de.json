@@ -1,0 +1,225 @@
+{
+  "Locale": {
+    "key": "de",
+    "name": "Deutsch",
+    "siteLanguage": "Sprache der Website"
+  },
+  "Error": {
+    "description": "<p>Leider ist ein Fehler aufgetreten.</p><p>Sie können versuchen, die <retry>Seite neu zu laden</retry>.</p>",
+    "title": "Etwas ist schief gelaufen!"
+  },
+  "NotFoundPage": {
+    "description": "Bitte überprüfen Sie die Adressleiste des Browsers oder verwenden Sie die Navigation, um zu einer bekannten Seite zu gelangen.",
+    "title": "Seite nicht gefunden"
+  },
+  "Navigation": {
+    "review": "Überprüfung",
+    "learn": "Lernen",
+    "conversation": "Gespräch",
+    "write": "Schreiben",
+    "event": "Veranstaltung"
+  },
+  "PublicLayout": {
+    "title": "Puchi - Beherrsche Vietnamesisch. Lerne unterwegs.",
+    "description": "Puchi ist eine interaktive Plattform zum unterhaltsamen Vietnamesischlernen. Mach mit für ein angenehmes Sprachlernerlebnis."
+  },
+  "Hero": {
+    "continueLearning": "Weiter lernen"
+  },
+  "Languages": {
+    "multiLanguage": "Mehrsprachigkeit",
+    "supportWebsite": "Support-Website"
+  },
+  "Metrics": {
+    "byThe": "durch die",
+    "numbers": "Zahlen",
+    "hoursOfFunContent": "Stunden unterhaltsamen Inhalts",
+    "languageCourses": "Sprachkurse",
+    "usersGlobally": "Nutzer weltweit",
+    "fluencyInTwoMonths": "Flüssigkeit in zwei Monaten"
+  },
+  "Reasons": {
+    "the": "Die",
+    "future": "Zukunft",
+    "of": "des",
+    "learning": "Lernens",
+    "items": [
+      "5-mal schneller lernen, 5-mal mehr Spaß",
+      "Individuelle Lektionen basieren auf Wissenschaft",
+      "Spaßige Herausforderungen zur Motivation",
+      "Verwenden Sie Puchi überall, wohin Sie gehen"
+    ]
+  },
+  "Footer": {
+    "startYourLanguageJourneyHere": "Beginnen Sie hier Ihre Sprachreise.",
+    "learnAnytimeLearnAnywhere": "Lernen Sie jederzeit, lernen Sie überall.",
+    "start": "Start"
+  },
+  "HelpPage": {
+    "breadcrumbs": {
+      "helpCenter": "HILFEZENTRUM",
+      "home": "STARTSEITE"
+    },
+    "faqTitle": "Häufig gestellte Fragen",
+    "sections": {
+      "usingPuchi": "Puchi verwenden",
+      "accountManagement": "Kontoverwaltung"
+    },
+    "questions": {
+      "whatIsStreak": "Was ist eine Serie?",
+      "whatAreLeaderboards": "Was sind Bestenlisten und Ligen?",
+      "openSourceLibraries": "Verwendet Puchi Open-Source-Bibliotheken?",
+      "changeUsernameOrEmail": "Wie ändere ich meinen Benutzernamen oder meine E-Mail-Adresse?",
+      "findFollowBlockUsers": "Wie finde, folge und blockiere ich Benutzer auf Puchi?"
+    },
+    "answers": {
+      "whatIsStreak": {
+        "part1": "Ihre Serie (Flammen-Symbol) zeigt an, wie viele Tage in Folge Sie eine Lektion auf Puchi abgeschlossen haben.",
+        "part2": "Sprachenlernen bedeutet, über Zeit hinweg Ziele aufzubauen, und Serien sind eine bewährte Methode, um Sie zu motivieren, jeden Tag zu lernen und zu üben.",
+        "part3": "Tipp: Erinnerungen an Übungen können Ihnen helfen, Ihre Lektionen nicht zu vergessen. In Ihren Benachrichtigungseinstellungen können Sie Erinnerungen aktivieren und die für Sie passende Zeit festlegen."
+      },
+      "whatAreLeaderboards": {
+        "part1": "Bestenlisten sind eine unterhaltsame Möglichkeit, in einem wöchentlichen Wettbewerb mit anderen Puchi-Lernenden zu konkurrieren. Je mehr XP (Erfahrungspunkte) Sie mit jeder Lektion verdienen, desto höher steigen Sie in der Rangliste auf. Jede Woche treten Sie gegen eine neue Gruppe an. Sehen Sie sich die Bestenlisten-Registerkarte in der App an, um den Wettbewerb zu starten!"
+      },
+      "openSourceLibraries": {
+        "part1": "Ja. Sie können unsere Open-Source-Attributionen auf dieser",
+        "linkText": "Seite"
+      },
+      "changeUsernameOrEmail": {
+        "part1": "Wenn Sie Ihren Puchi-Benutzernamen oder Ihre E-Mail-Adresse bearbeiten möchten, gehen Sie zu Ihren Einstellungen",
+        "linkText": "gehen Sie zu Ihren Einstellungen",
+        "part2": "und bearbeiten Sie den Benutzernamen oder die E-Mail-Adresse. Ihr Benutzername erscheint in Ihrer wöchentlichen Bestenliste. Vergessen Sie nicht, auf 'Änderungen speichern' zu klicken."
+      },
+      "findFollowBlockUsers": {
+        "part1": "Sie können mit anderen Lernenden auf Puchi in Kontakt treten!",
+        "part2": "Wenn Sie jemandem folgen, erscheint dieser auf Ihrer Freundesliste, und Sie können sich gegenseitig ermutigen, Ihre Sprachziele zu erreichen!"
+      }
+    },
+    "feedbackPrompt": "Noch unsicher bei etwas?",
+    "sendFeedback": "FEEDBACK SENDEN"
+  },
+  "PrivacyPage": {
+    "title": "Datenschutzrichtlinie",
+    "lastRevised": "Bitte beachten Sie, dass die Datenschutzrichtlinie zuletzt am 10. November 2024 überarbeitet wurde",
+    "footer": "Zuletzt überarbeitet am 10. November 2024",
+    "sections": {
+      "general": {
+        "title": "Allgemeines",
+        "part1": "Bei Puchi kümmern wir uns um Ihre persönlichen Informationen, weshalb wir diese Datenschutzrichtlinie erstellt haben, um zu erklären, wie wir diese sammeln, verwenden und weitergeben.",
+        "part2": "Diese Datenschutzrichtlinie gilt für die Websites, mobilen Apps und damit verbundenen Dienste von Puchi („Dienst“). Durch die Nutzung des Dienstes stimmen Sie der Sammlung, Verwendung und Weitergabe Ihrer persönlichen Informationen durch Puchi gemäß den Bestimmungen dieser Datenschutzrichtlinie zu."
+      },
+      "updates": {
+        "title": "Aktualisierungen der Datenschutzrichtlinie",
+        "part1": "Wir können unsere Datenschutzrichtlinie aktualisieren, um Änderungen in unseren Informationspraktiken widerzuspiegeln.",
+        "part2": "Wenn wir dies tun und die Änderungen wesentlich sind, werden wir eine Mitteilung veröffentlichen, dass wir diese Datenschutzrichtlinie auf der Website mindestens sieben (7) Tage vor Inkrafttreten der Änderungen geändert haben."
+      },
+      "retention": {
+        "title": "Datenaufbewahrung",
+        "part1": "Puchi wird Ihre persönlichen Informationen in der Regel bis zur Löschung Ihres Kontos aufbewahren. Puchi kann jedoch bestimmte Informationen länger aufbewahren, wenn dies erforderlich ist, um unseren Dienst bereitzustellen, unsere berechtigten Interessen oder die Interessen Dritter zu verteidigen, rechtlichen Anforderungen zu entsprechen, uns in Streitfällen zu verteidigen, Missbrauch oder Störungen des Dienstes zu untersuchen oder Vereinbarungen zu erfüllen."
+      },
+      "doNotTrack": {
+        "title": "Nicht verfolgen",
+        "part1": "Der Dienst ist nicht darauf ausgelegt, auf „Nicht verfolgen“-Signale zu reagieren, die von einigen Browsern gesendet werden."
+      },
+      "contactUs": {
+        "title": "Kontaktieren Sie uns",
+        "part1": "Puchi, Inc. ist der für Ihre Daten verantwortlich, gemäß der Allgemeinen Datenschutzverordnung (GDPR) und anderer relevanter lokaler Gesetze.",
+        "part2": "Der Sitz von Puchi befindet sich in Vietnam in:",
+        "part3": "Hanoi, Vietnam",
+        "email": "Für alle Anfragen zum Datenschutz und Fragen zu dieser Datenschutzrichtlinie wenden Sie sich bitte an unseren Datenschutzbeauftragten unter: lehoan.dev@gmail.com"
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "Über Puchi",
+    "intro": "Puchi ist eine innovative Plattform, die Benutzern hilft, Vietnamesisch zu beherrschen. Mit Unterstützung für mehrere Sprachen stellt Puchi sicher, dass Lernende weltweit Zugang haben.",
+    "technologies": "Mit modernen Technologien wie Next.js 15, Shadcn UI und Clerk-Authentifizierung bietet Puchi ein schnelles, sicheres und nahtloses Lernerlebnis. Internationalisierung (i18n) ist eine Kernfunktion, die es Benutzern ermöglicht, Inhalte in ihrer bevorzugten Sprache zu erkunden.",
+    "creator": "Erstellt von Lê Công Hoan, einem leidenschaftlichen Entwickler, der sich der Nutzung von Technologie für Bildung widmet.",
+    "joinCommunity": "Treten Sie unserer Community auf <facebookLink>Facebook</facebookLink> bei, um sich mit anderen Lernenden zu verbinden, oder erkunden Sie den Quellcode des Projekts auf <githubLink>GitHub</githubLink>."
+  },
+  "ProfileActions": {
+    "actions": {
+      "title": "Aktionen",
+      "accountSettings": {
+        "title": "Kontoeinstellungen",
+        "description": "Persönliche Informationen und Sicherheit verwalten"
+      },
+      "security": {
+        "title": "Sicherheit",
+        "description": "Passwort und Zwei-Faktor-Authentifizierung ändern"
+      },
+      "signOut": {
+        "title": "Abmelden",
+        "description": "Vom aktuellen Konto abmelden"
+      }
+    },
+    "dangerZone": {
+      "title": "Gefahrenbereich",
+      "deleteAccount": {
+        "title": "Konto löschen",
+        "description": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Daten werden dauerhaft gelöscht."
+      }
+    },
+    "deleteAccount": {
+      "success": "Konto erfolgreich gelöscht",
+      "error": {
+        "confirmationRequired": "Bitte geben Sie 'DELETE' zur Bestätigung ein",
+        "general": "Beim Löschen des Kontos ist ein Fehler aufgetreten"
+      },
+      "dialog": {
+        "title": "Kontolöschung bestätigen",
+        "description": "Diese Aktion kann nicht rückgängig gemacht werden. Alle Ihre Daten werden dauerhaft gelöscht.",
+        "confirmation": "Zur Bestätigung geben Sie bitte <strong>DELETE</strong> in das Feld unten ein.",
+        "confirmationLabel": "Bestätigung",
+        "confirmationPlaceholder": "DELETE eingeben zur Bestätigung",
+        "cancel": "Abbrechen",
+        "confirm": "Konto löschen",
+        "deleting": "Wird gelöscht..."
+      }
+    }
+  },
+  "ProfileHeader": {
+    "title": "Persönliche Informationen",
+    "email": "E-Mail",
+    "username": "Benutzername",
+    "joinDate": "Beitrittsdatum",
+    "member": "Mitglied"
+  },
+  "ProfileForm": {
+    "title": "Informationen bearbeiten",
+    "edit": "Bearbeiten",
+    "save": "Speichern",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "username": "Benutzername",
+    "email": "E-Mail",
+    "emailNote": "E-Mail kann nicht geändert werden. Bitte kontaktieren Sie den Support, wenn Sie sie ändern müssen.",
+    "success": "Informationen erfolgreich aktualisiert!",
+    "error": "Beim Aktualisieren der Informationen ist ein Fehler aufgetreten"
+  },
+  "ProfileStats": {
+    "learningStats": {
+      "title": "Lernstatistiken"
+    },
+    "progress": {
+      "title": "Lernfortschritt",
+      "completedLessons": "Abgeschlossene Lektionen",
+      "completed": "{count} Lektionen abgeschlossen",
+      "remaining": "{count} Lektionen verbleibend"
+    },
+    "performance": {
+      "title": "Lernleistung",
+      "averageAccuracy": "Durchschnittliche Genauigkeit",
+      "excellent": "Ausgezeichnet",
+      "needsImprovement": "Verbesserung erforderlich"
+    },
+    "stats": {
+      "completedLessons": "Abgeschlossene Lektionen",
+      "currentStreak": "Aktuelle Serie",
+      "streakDays": "{days} Tage",
+      "totalXP": "Gesamt-XP",
+      "currentLevel": "Aktuelles Level",
+      "level": "Level {level}"
+    }
+  }
+}

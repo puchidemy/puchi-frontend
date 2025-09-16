@@ -1,0 +1,225 @@
+{
+  "Locale": {
+    "key": "ja",
+    "name": "日本語",
+    "siteLanguage": "サイトの言語"
+  },
+  "Error": {
+    "description": "<p>申し訳ありませんが、エラーが発生しました。</p><p>訪問していたページを <retry>再読み込み</retry> してみてください。</p>",
+    "title": "何かがうまくいきませんでした！"
+  },
+  "NotFoundPage": {
+    "description": "ブラウザのアドレスバーを再確認するか、ナビゲーションを使用して既知のページに移動してください。",
+    "title": "ページが見つかりません"
+  },
+  "Navigation": {
+    "review": "レビュー",
+    "learn": "学ぶ",
+    "conversation": "会話",
+    "write": "書く",
+    "event": "イベント"
+  },
+  "PublicLayout": {
+    "title": "Puchi - ベトナム語をマスターしよう。外出先で学ぶ。",
+    "description": "Puchiはベトナム語を楽しく学べるインタラクティブなプラットフォームです。楽しい学習体験にご参加ください。"
+  },
+  "Hero": {
+    "continueLearning": "学び続ける"
+  },
+  "Languages": {
+    "multiLanguage": "多言語",
+    "supportWebsite": "サポートウェブサイト"
+  },
+  "Metrics": {
+    "byThe": "によって",
+    "numbers": "数値",
+    "hoursOfFunContent": "楽しいコンテンツの時間",
+    "languageCourses": "言語コース",
+    "usersGlobally": "世界中のユーザー",
+    "fluencyInTwoMonths": "二か月で流暢"
+  },
+  "Reasons": {
+    "the": "学習",
+    "future": "の",
+    "of": "未来",
+    "learning": "",
+    "items": [
+      "5倍速く学び、5倍楽しい",
+      "科学に裏打ちされたカスタムレッスン",
+      "モチベーションを維持するための楽しいチャレンジ",
+      "どこでもPuchiを使用する"
+    ]
+  },
+  "Footer": {
+    "startYourLanguageJourneyHere": "ここから言語の旅を始めましょう。",
+    "learnAnytimeLearnAnywhere": "いつでも、どこでも学ぶ。",
+    "start": "開始"
+  },
+  "HelpPage": {
+    "breadcrumbs": {
+      "helpCenter": "ヘルプセンター",
+      "home": "ホーム"
+    },
+    "faqTitle": "よくある質問",
+    "sections": {
+      "usingPuchi": "Puchiの使い方",
+      "accountManagement": "アカウント管理"
+    },
+    "questions": {
+      "whatIsStreak": "ストリークとは何ですか？",
+      "whatAreLeaderboards": "リーダーボードとリーグとは何ですか？",
+      "openSourceLibraries": "Puchiはオープンソースライブラリを使用していますか？",
+      "changeUsernameOrEmail": "ユーザー名やメールアドレスを変更するには？",
+      "findFollowBlockUsers": "Puchiでユーザーを見つけ、フォローし、ブロックするには？"
+    },
+    "answers": {
+      "whatIsStreak": {
+        "part1": "ストリーク（炎のアイコン）は、Puchiで連続してレッスンを完了した日数を表します。",
+        "part2": "語学学習は目標を時間をかけて積み上げていくものです。ストリークは、毎日学び、練習を続けるためのモチベーションを高める効果的な方法です。",
+        "part3": "ヒント: 練習リマインダーを設定すると、レッスンを忘れずに続けることができます。通知設定でリマインダーをオンにして、自分に合った時間を設定してください。"
+      },
+      "whatAreLeaderboards": {
+        "part1": "リーダーボードは、Puchiの他の学習者と週ごとのコンテストで競い合う楽しい方法です。レッスンごとにXP（経験値）を獲得することで、ランキングが上がります。毎週、新しいグループと対戦します。アプリのリーダーボードタブをチェックして、競争を始めましょう！"
+      },
+      "openSourceLibraries": {
+        "part1": "はい。オープンソースの帰属情報は、この",
+        "linkText": "ページ"
+      },
+      "changeUsernameOrEmail": {
+        "part1": "Puchiのユーザー名やメールアドレスを変更する場合は、設定にアクセスしてください",
+        "linkText": "設定にアクセスしてください",
+        "part2": "そこでユーザー名またはメールアドレスを編集できます。ユーザー名は毎週のリーダーボードに表示されます。変更した場合は必ず「変更を保存」をクリックしてください。"
+      },
+      "findFollowBlockUsers": {
+        "part1": "Puchiで他の学習者とつながることができます！",
+        "part2": "誰かをフォローすると、その人が友達リストに表示され、語学目標を達成するためにお互いを励まし合うことができます！"
+      }
+    },
+    "feedbackPrompt": "まだ不明な点がありますか？",
+    "sendFeedback": "フィードバックを送信"
+  },
+  "PrivacyPage": {
+    "title": "プライバシーポリシー",
+    "lastRevised": "プライバシーポリシーは2024年11月10日に最終更新されました",
+    "footer": "最終更新日：2024年11月10日",
+    "sections": {
+      "general": {
+        "title": "一般",
+        "part1": "Puchiでは、お客様の個人情報を大切にしており、このプライバシーポリシーでは、私たちがどのようにお客様の情報を収集、使用、共有するかについて説明しています。",
+        "part2": "このプライバシーポリシーは、Puchiのウェブサイト、モバイルアプリ、および関連するサービス（「サービス」）に適用されます。サービスを利用することにより、Puchiがこのプライバシーポリシーの条件に従って、お客様の個人情報を収集、使用、共有することに同意するものとします。"
+      },
+      "updates": {
+        "title": "プライバシーポリシーの更新",
+        "part1": "私たちは、情報の取り扱いに変更があった場合、プライバシーポリシーを更新することがあります。",
+        "part2": "変更が重要である場合、その変更が有効になる前に7日間、ウェブサイトにて更新されたことを通知します。"
+      },
+      "retention": {
+        "title": "データ保持",
+        "part1": "Puchiは通常、アカウントが削除されるまでお客様の個人情報を保持します。ただし、サービスを提供するために必要な場合や、法的要件を遵守するため、または他の契約を履行するために、Puchiは情報を長期間保持することがあります。"
+      },
+      "doNotTrack": {
+        "title": "追跡しない",
+        "part1": "サービスは、一部のブラウザから送信された「追跡しない」信号に反応するようには設計されていません。"
+      },
+      "contactUs": {
+        "title": "お問い合わせ",
+        "part1": "Puchi, Inc.は、お客様のデータに関するGDPRおよび関連する現地法に基づくデータ管理者です。",
+        "part2": "Puchiの本社はベトナムの以下の場所にあります：",
+        "part3": "ハノイ、ベトナム",
+        "email": "データプライバシーに関する問い合わせやプライバシーポリシーに関するご質問がある場合は、当社のデータ保護責任者までお問い合わせください。メールアドレス: lehoan.dev@gmail.com"
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "Puchiについて",
+    "intro": "Puchiは、ユーザーがベトナム語を習得するのを支援する革新的なプラットフォームです。多言語サポートにより、世界中の学習者がアクセスできるようになっています。",
+    "technologies": "Next.js 15、Shadcn UI、Clerk認証などの最新技術で構築されたPuchiは、高速で安全、シームレスな学習体験を提供します。国際化（i18n）は、ユーザーが好みの言語でコンテンツを探索できるようにする主要機能です。",
+    "creator": "教育における技術活用に情熱を注ぐ開発者、Lê Công Hoanによって作成されました。",
+    "joinCommunity": "<facebookLink>Facebook</facebookLink>でコミュニティに参加して他の学習者とつながるか、<githubLink>GitHub</githubLink>でプロジェクトのソースコードを探索してください。"
+  },
+  "ProfileActions": {
+    "actions": {
+      "title": "アクション",
+      "accountSettings": {
+        "title": "アカウント設定",
+        "description": "個人情報とセキュリティを管理"
+      },
+      "security": {
+        "title": "セキュリティ",
+        "description": "パスワードと二要素認証を変更"
+      },
+      "signOut": {
+        "title": "サインアウト",
+        "description": "現在のアカウントからサインアウト"
+      }
+    },
+    "dangerZone": {
+      "title": "危険区域",
+      "deleteAccount": {
+        "title": "アカウント削除",
+        "description": "この操作は取り消せません。すべてのデータが永続的に削除されます。"
+      }
+    },
+    "deleteAccount": {
+      "success": "アカウントが正常に削除されました",
+      "error": {
+        "confirmationRequired": "確認のため「DELETE」と入力してください",
+        "general": "アカウント削除中にエラーが発生しました"
+      },
+      "dialog": {
+        "title": "アカウント削除の確認",
+        "description": "この操作は取り消せません。すべてのデータが永続的に削除されます。",
+        "confirmation": "確認するには、下のフィールドに<strong>DELETE</strong>と入力してください。",
+        "confirmationLabel": "確認",
+        "confirmationPlaceholder": "確認のためDELETEと入力",
+        "cancel": "キャンセル",
+        "confirm": "アカウント削除",
+        "deleting": "削除中..."
+      }
+    }
+  },
+  "ProfileHeader": {
+    "title": "個人情報",
+    "email": "メールアドレス",
+    "username": "ユーザー名",
+    "joinDate": "登録日",
+    "member": "メンバー"
+  },
+  "ProfileForm": {
+    "title": "情報編集",
+    "edit": "編集",
+    "save": "保存",
+    "firstName": "名",
+    "lastName": "姓",
+    "username": "ユーザー名",
+    "email": "メールアドレス",
+    "emailNote": "メールアドレスは変更できません。変更が必要な場合はサポートにお問い合わせください。",
+    "success": "情報が正常に更新されました！",
+    "error": "情報更新中にエラーが発生しました"
+  },
+  "ProfileStats": {
+    "learningStats": {
+      "title": "学習統計"
+    },
+    "progress": {
+      "title": "学習進捗",
+      "completedLessons": "完了レッスン",
+      "completed": "{count}レッスン完了",
+      "remaining": "{count}レッスン残り"
+    },
+    "performance": {
+      "title": "学習パフォーマンス",
+      "averageAccuracy": "平均精度",
+      "excellent": "優秀",
+      "needsImprovement": "改善が必要"
+    },
+    "stats": {
+      "completedLessons": "完了レッスン",
+      "currentStreak": "現在の連続",
+      "streakDays": "{days}日",
+      "totalXP": "総XP",
+      "currentLevel": "現在のレベル",
+      "level": "レベル{level}"
+    }
+  }
+}

@@ -1,0 +1,225 @@
+{
+  "Locale": {
+    "key": "en",
+    "name": "English",
+    "siteLanguage": "Site language"
+  },
+  "Error": {
+    "description": "<p>We've unfortunately encountered an error.</p><p>You can try to <retry>reload the page</retry> you were visiting.</p>",
+    "title": "Something went wrong!"
+  },
+  "NotFoundPage": {
+    "description": "Please double-check the browser address bar or use the navigation to go to a known page.",
+    "title": "Page not found"
+  },
+  "Navigation": {
+    "review": "Review",
+    "learn": "Learn",
+    "conversation": "Conversation",
+    "write": "Write",
+    "event": "Event"
+  },
+  "PublicLayout": {
+    "title": "Puchi - Master Vietnamese. Learn on the go.",
+    "description": "Puchi is an interactive platform that makes learning Vietnamese fun and engaging. Join us for an enjoyable language learning experience."
+  },
+  "Hero": {
+    "continueLearning": "Continue Learning"
+  },
+  "Languages": {
+    "multiLanguage": "Multi-language",
+    "supportWebsite": "support website"
+  },
+  "Metrics": {
+    "byThe": "by the",
+    "numbers": "numbers",
+    "hoursOfFunContent": "hours of fun content",
+    "languageCourses": "language courses",
+    "usersGlobally": "users globally",
+    "fluencyInTwoMonths": "fluency in two months"
+  },
+  "Reasons": {
+    "the": "The",
+    "future": "future",
+    "of": "of",
+    "learning": "learning",
+    "items": [
+      "Learn 5x faster, 5x more fun",
+      "Custom lessons backed by science",
+      "Fun challenges to stay motivated",
+      "Use Puchi wherever you go"
+    ]
+  },
+  "Footer": {
+    "startYourLanguageJourneyHere": "start your language journey here.",
+    "learnAnytimeLearnAnywhere": "learn anytime, learn anywhere.",
+    "start": "start"
+  },
+  "HelpPage": {
+    "breadcrumbs": {
+      "helpCenter": "HELP CENTER",
+      "home": "HOME"
+    },
+    "faqTitle": "Frequently Asked Questions",
+    "sections": {
+      "usingPuchi": "Using Puchi",
+      "accountManagement": "Account Management"
+    },
+    "questions": {
+      "whatIsStreak": "What is a streak?",
+      "whatAreLeaderboards": "What are leaderboards and leagues?",
+      "openSourceLibraries": "Does Puchi use any open source libraries?",
+      "changeUsernameOrEmail": "How do I change my username or email address?",
+      "findFollowBlockUsers": "How do I find, follow, and block users on Puchi?"
+    },
+    "answers": {
+      "whatIsStreak": {
+        "part1": "Your streak (flame icon) represents the number of days in a row you've completed a lesson on Puchi.",
+        "part2": "Language learning is about building goals over time, and the streak is a proven way to motivate you to keep learning and practicing every day.",
+        "part3": "Tip: Practice reminders can be a great help for remembering to do your lessons. In your notification settings you can turn on practice reminders and set the time that will work best for you."
+      },
+      "whatAreLeaderboards": {
+        "part1": "Leaderboards are a fun way to compete with other Puchi learners in a weekly contest. As you earn more XP (experience points) with each lesson, you'll rise in the ranks of your leaderboard. You'll face a new group of competitors each week. Check out the Leaderboards tab in the app to get the competition started!"
+      },
+      "openSourceLibraries": {
+        "part1": "Yes. You can view our open source attributions and learn more from this",
+        "linkText": "page"
+      },
+      "changeUsernameOrEmail": {
+        "part1": "If you want to edit your Puchi username or email address, go to your settings",
+        "linkText": "go to your settings",
+        "part2": "and edit the username or email address. Your username appears on your weekly leaderboard. Remember to tap “Save changes” when you make any changes."
+      },
+      "findFollowBlockUsers": {
+        "part1": "You can connect with other learners on Puchi!",
+        "part2": "When you follow someone, they'll show up on your friends list and you can encourage each other to stick with your language goals!!"
+      }
+    },
+    "feedbackPrompt": "Still unsure about something?",
+    "sendFeedback": "SEND FEEDBACK"
+  },
+  "PrivacyPage": {
+    "title": "Privacy Policy",
+    "lastRevised": "Please note that Privacy Policy was last revised on November 10th, 2024",
+    "footer": "Last revised on November 10th, 2024",
+    "sections": {
+      "general": {
+        "title": "General",
+        "part1": "At Puchi, we care about your personal information, so we have prepared this Privacy Policy to explain how we collect, use, and share it.",
+        "part2": "This Privacy Policy applies to Puchi websites, mobile apps, and related services (“Service”). By using the Service, you agree with Puchi’s collection, use, and sharing of your personal information in accordance with the terms of this Privacy Policy."
+      },
+      "updates": {
+        "title": "Privacy Policy Updates",
+        "part1": "We may update our Privacy Policy to reflect changes to our information practices.",
+        "part2": "If we do this and the changes are material, we will post a notice that we have made changes to this Privacy Policy on the Website for at least seven (7) days before the changes are made."
+      },
+      "retention": {
+        "title": "Data Retention",
+        "part1": "Puchi will generally retain your personal information until your account is deleted. However, Puchi may retain certain information longer if necessary to provide our Service, defend our legitimate interests or those of third parties, comply with legal requirements, resolve or defend ourselves in disputes, investigate misuse or disruption of the Service, or perform agreements."
+      },
+      "doNotTrack": {
+        "title": "Do Not Track",
+        "part1": "The Service is not designed to respond to “do not track” signals sent by some browsers."
+      },
+      "contactUs": {
+        "title": "Contact Us",
+        "part1": "Puchi, Inc. is the data controller of your data for the purposes of the General Data Protection Regulation (“GDPR”) and any relevant local legislation.",
+        "part2": "Puchi’s headquarters are located within the Viet Nam at:",
+        "part3": "Ha Noi, Viet Nam",
+        "email": "For all data privacy inquiries and any questions or concerns you have about this Privacy Policy, please contact our Data Protection Officer at: lehoan.dev@gmail.com"
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "About Puchi",
+    "intro": "Puchi is an innovative platform designed to help users master Vietnamese. With support for multiple languages, Puchi ensures accessibility for learners worldwide.",
+    "technologies": "Built with modern technologies such as Next.js 15, Shadcn UI, and Clerk authentication, Puchi offers a fast, secure, and seamless learning experience. Internationalization (i18n) is a core feature, allowing users to explore content in their preferred language.",
+    "creator": "Created by Lê Công Hoan, a passionate developer dedicated to leveraging technology for education.",
+    "joinCommunity": "Join our community on <facebookLink>Facebook</facebookLink> to connect with other learners, or explore the project source code on <githubLink>GitHub</githubLink>."
+  },
+  "ProfileActions": {
+    "actions": {
+      "title": "Actions",
+      "accountSettings": {
+        "title": "Account Settings",
+        "description": "Manage personal information and security"
+      },
+      "security": {
+        "title": "Security",
+        "description": "Change password and two-factor authentication"
+      },
+      "signOut": {
+        "title": "Sign Out",
+        "description": "Sign out of current account"
+      }
+    },
+    "dangerZone": {
+      "title": "Danger Zone",
+      "deleteAccount": {
+        "title": "Delete Account",
+        "description": "This action cannot be undone. All data will be permanently deleted."
+      }
+    },
+    "deleteAccount": {
+      "success": "Account deleted successfully",
+      "error": {
+        "confirmationRequired": "Please enter 'DELETE' to confirm",
+        "general": "An error occurred while deleting the account"
+      },
+      "dialog": {
+        "title": "Confirm Account Deletion",
+        "description": "This action cannot be undone. All your data will be permanently deleted.",
+        "confirmation": "To confirm, please enter <strong>DELETE</strong> in the field below.",
+        "confirmationLabel": "Confirmation",
+        "confirmationPlaceholder": "Enter DELETE to confirm",
+        "cancel": "Cancel",
+        "confirm": "Delete Account",
+        "deleting": "Deleting..."
+      }
+    }
+  },
+  "ProfileHeader": {
+    "title": "Personal Information",
+    "email": "Email",
+    "username": "Username",
+    "joinDate": "Join Date",
+    "member": "Member"
+  },
+  "ProfileForm": {
+    "title": "Edit Information",
+    "edit": "Edit",
+    "save": "Save",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "email": "Email",
+    "emailNote": "Email cannot be changed. Please contact support if you need to change it.",
+    "success": "Information updated successfully!",
+    "error": "An error occurred while updating information"
+  },
+  "ProfileStats": {
+    "learningStats": {
+      "title": "Learning Statistics"
+    },
+    "progress": {
+      "title": "Learning Progress",
+      "completedLessons": "Completed Lessons",
+      "completed": "{count} lessons completed",
+      "remaining": "{count} lessons remaining"
+    },
+    "performance": {
+      "title": "Learning Performance",
+      "averageAccuracy": "Average Accuracy",
+      "excellent": "Excellent",
+      "needsImprovement": "Needs Improvement"
+    },
+    "stats": {
+      "completedLessons": "Completed",
+      "currentStreak": "Current Streak",
+      "streakDays": "{days} days",
+      "totalXP": "Total XP",
+      "currentLevel": "Current Level",
+      "level": "Level {level}"
+    }
+  }
+}

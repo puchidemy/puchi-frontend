@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: puchi-fe
+  namespace: puchi-dev
+  annotations:
+    kubernetes.io/ingress.class: apisix
+spec:
+  rules:
+    - host: dev.puchi.io.vn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: puchi-fe
+                port:
+                  number: 80

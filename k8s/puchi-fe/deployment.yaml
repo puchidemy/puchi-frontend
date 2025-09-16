@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: puchi-fe
+  labels:
+    app: puchi-fe
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: puchi-fe
+  template:
+    metadata:
+      labels:
+        app: puchi-fe
+    spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+      containers:
+        - name: puchi-fe
+          image: ghcr.io/puchidemy/puchi-frontend:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: HOST
+              value: "0.0.0.0"
+            - name: PORT
+              value: "3000"
+          envFrom:
+            - configMapRef:
+                name: puchi-fe-config
+            - secretRef:
+                name: puchi-fe-secrets
+      restartPolicy: Always

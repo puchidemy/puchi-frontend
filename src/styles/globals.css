@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 120 3% 20%;
+    --card: 0 0% 98%;
+    --card-foreground: 120 3% 20%;
+    --popover: 0 0% 98%;
+    --popover-foreground: 120 3% 20%;
+    --primary: 142 71% 45%;
+    --primary-foreground: 210 40% 98%;
+    --primary-depth: 142 76% 36%;
+    --primary-light: 142 71% 60%;
+    --primary-dark: 144 61% 18%;
+    --secondary: 198 93% 60%;
+    --secondary-foreground: 210 40% 98%;
+    --secondary-depth: 199 89% 48%;
+    --muted: 150 7% 94%;
+    --muted-foreground: 141 6% 45%;
+    --accent: 150 7% 94%;
+    --accent-foreground: 120 3% 20%;
+    --highlight: 327 87% 82%;
+    --highlight-foreground: 210 40% 98%;
+    --highlight-depth: 329 86% 70%;
+    --super: 271 91% 65%;
+    --super-foreground: 0 0% 98%;
+    --super-depth: 271 81% 56%;
+    --destructive: 0 100% 65%;
+    --destructive-foreground: 0 0% 98%;
+    --destructive-depth: 0 82% 54%;
+    --disabled: 160 6% 90%;
+    --disabled-foreground: 120 3% 50%;
+    --loading: 160 6% 90%;
+    --border: 160 6% 90%;
+    --input: 144 6% 83%;
+    --ring: 142 71% 45%;
+    --radius: 0.5rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+    --unit-1: #58cc02;
+    --unit-2: #ce82ff;
+    --unit-3: #ff9600;
+    --unit-4: #ff4b4b;
+    --unit-5: #1cb0f6;
+    --unit-6: #00cd9c;
+    --unit-7: #ff86d0;
+    --unit-8: #dc8f47;
+    --unit-9: #cc348d;
+    --unit-0: #0047AB;
+  }
+
+  .dark {
+    --background: 198 28% 8%;
+    --foreground: 198 28% 82%;
+    --card: 198 24% 10%;
+    --card-foreground: 198 24% 80%;
+    --popover: 198 24% 10%;
+    --popover-foreground: 198 24% 80%;
+    --primary: 142 71% 45%;
+    --primary-foreground: 120 9% 2%;
+    --secondary: 198 93% 60%;
+    --secondary-foreground: 240 9% 2%;
+    --muted: 142 7% 29%;
+    --muted-foreground: 141 5% 48%;
+    --accent: 142 71% 19%;
+    --accent-foreground: 198 7% 82%;
+    --super: 271 91% 65%;
+    --super-foreground: 0 0% 98%;
+    --super-depth: 271 81% 56%;
+    --destructive: 0 100% 65%;
+    --destructive-foreground: 0 0% 98%;
+    --disabled: 203 8% 22%;
+    --disabled-foreground: 120 3% 30%;
+    --loading: 203 8% 22%;
+    --border: 203 8% 22%;
+    --input: 203 9% 18%;
+    --ring: 142 71% 40%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  html,
+  body,
+  :root {
+    @apply h-full;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .heading-section {
+    @apply px-8 py-6 text-center font-display text-3xl font-bold leading-normal tracking-tighter sm:text-4xl sm:leading-snug md:text-5xl;
+  }
+  .focus-visible {
+    @apply ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+}
+
+@layer utilities {
+  .paused {
+    animation-play-state: paused;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;    /* Firefox */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;           /* Chrome/Safari */
+  }
+}

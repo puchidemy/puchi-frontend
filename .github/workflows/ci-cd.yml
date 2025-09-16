@@ -1,0 +1,104 @@
+name: CI/CD Build & Deploy with Rollback
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  # ---------------------------
+  # Job 1: Build & Push Docker Image
+  # ---------------------------
+  build-push:
+    runs-on: ubuntu-latest
+    outputs:
+      IMAGE_TAG: ${{ steps.set-tag.outputs.IMAGE_TAG }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Docker image tag
+        id: set-tag
+        run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Docker login GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg NEXT_PUBLIC_APP_URL=https://dev.puchi.io.vn/ \
+            --build-arg NEXT_PUBLIC_API_URL=https://api.puchi.io.vn/ \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_FORCE_REDIRECT_URL=/learn \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_FORCE_REDIRECT_URL=/learn \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_FALLBACK_REDIRECT_URL=/ \
+            --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL=/ \
+            --build-arg NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_Y2xlcmsucHVjaGkuaW8udm4k \
+            --build-arg NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=cloudinaryhoan \
+            --build-arg CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} \
+            --build-arg CLERK_WEBHOOK_SECRET=${{ secrets.CLERK_WEBHOOK_SECRET }} \
+            -t ghcr.io/${{ github.repository_owner }}/puchi-frontend:${{ steps.set-tag.outputs.IMAGE_TAG }} .
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository_owner }}/puchi-frontend:${{ steps.set-tag.outputs.IMAGE_TAG }}
+
+  # ---------------------------
+  # Job 2: Deploy to k0s with Rollback
+  # ---------------------------
+  deploy:
+    needs: build-push
+    runs-on: self-hosted
+    env:
+      IMAGE_TAG: ${{ needs.build-push.outputs.IMAGE_TAG }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Verify cluster connection
+        run: kubectl cluster-info
+
+      - name: Apply private secrets (dev)
+        run: |
+          kubectl create ns puchi-dev --dry-run=client -o yaml | kubectl apply -f -
+          kubectl -n puchi-dev create secret generic puchi-fe-secrets \
+            --from-literal=CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} \
+            --from-literal=CLERK_WEBHOOK_SECRET=${{ secrets.CLERK_WEBHOOK_SECRET }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Backup current image (if exists)
+        run: |
+          OLD_IMAGE=$(kubectl get deployment puchi-fe -n puchi-dev -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null || echo "")
+          echo "OLD_IMAGE=$OLD_IMAGE" >> $GITHUB_ENV
+
+      - name: Deploy via Kustomize overlay (dev)
+        run: |
+          kubectl kustomize k8s/overlays/dev | kubectl apply -f -
+
+      - name: Update Deployment image
+        run: |
+          kubectl set image deployment/puchi-fe \
+            puchi-fe=ghcr.io/${{ github.repository_owner }}/puchi-frontend:$IMAGE_TAG -n puchi-dev
+
+      - name: Wait for rollout
+        run: |
+          kubectl rollout status deployment/puchi-fe -n puchi-dev --timeout=180s || exit 1
+
+      - name: Rollback if failed
+        if: failure()
+        run: |
+          if [ -n "$OLD_IMAGE" ]; then
+            echo "Rollout failed, rolling back to previous image $OLD_IMAGE"
+            kubectl set image deployment/puchi-fe \
+              puchi-fe=$OLD_IMAGE -n puchi-dev
+            kubectl rollout status deployment/puchi-fe -n puchi-dev
+          else
+            echo "No previous image found → skipping rollback"
+          fi

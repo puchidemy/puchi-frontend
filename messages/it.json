@@ -1,0 +1,225 @@
+{
+  "Locale": {
+    "key": "it",
+    "name": "Italiano",
+    "siteLanguage": "Lingua del sito"
+  },
+  "Error": {
+    "description": "<p>Purtroppo abbiamo riscontrato un errore.</p><p>Puoi provare a <retry>ricaricare la pagina</retry> che stavi visitando.</p>",
+    "title": "Qualcosa è andato storto!"
+  },
+  "NotFoundPage": {
+    "description": "Per favore, ricontrolla la barra degli indirizzi del browser o usa la navigazione per andare a una pagina conosciuta.",
+    "title": "Pagina non trovata"
+  },
+  "Navigation": {
+    "review": "Revisione",
+    "learn": "Imparare",
+    "conversation": "Conversazione",
+    "write": "Scrivere",
+    "event": "Evento"
+  },
+  "PublicLayout": {
+    "title": "Puchi - Impara il vietnamita. Impara in movimento.",
+    "description": "Puchi è una piattaforma interattiva per imparare il vietnamita divertendosi. Unisciti a noi per un'esperienza piacevole."
+  },
+  "Hero": {
+    "continueLearning": "Continua a imparare"
+  },
+  "Languages": {
+    "multiLanguage": "Multilingue",
+    "supportWebsite": "sito di supporto"
+  },
+  "Metrics": {
+    "byThe": "dai",
+    "numbers": "numeri",
+    "hoursOfFunContent": "ore di contenuti divertenti",
+    "languageCourses": "corsi di lingua",
+    "usersGlobally": "utenti a livello globale",
+    "fluencyInTwoMonths": "fluenza in due mesi"
+  },
+  "Reasons": {
+    "the": "Il",
+    "future": "futuro",
+    "of": "dell'",
+    "learning": "apprendimento",
+    "items": [
+      "Impara 5 volte più velocemente, 5 volte più divertente",
+      "Lezioni personalizzate supportate dalla scienza",
+      "Sfide divertenti per rimanere motivato",
+      "Usa Puchi ovunque tu vada"
+    ]
+  },
+  "Footer": {
+    "startYourLanguageJourneyHere": "inizia qui il tuo viaggio linguistico.",
+    "learnAnytimeLearnAnywhere": "impara in qualsiasi momento, impara ovunque.",
+    "start": "inizia"
+  },
+  "HelpPage": {
+    "breadcrumbs": {
+      "helpCenter": "CENTRO ASSISTENZA",
+      "home": "HOME"
+    },
+    "faqTitle": "Domande Frequenti",
+    "sections": {
+      "usingPuchi": "Utilizzo di Puchi",
+      "accountManagement": "Gestione Account"
+    },
+    "questions": {
+      "whatIsStreak": "Cos'è una serie?",
+      "whatAreLeaderboards": "Cosa sono le classifiche e le leghe?",
+      "openSourceLibraries": "Puchi utilizza librerie open source?",
+      "changeUsernameOrEmail": "Come cambio il mio nome utente o indirizzo e-mail?",
+      "findFollowBlockUsers": "Come trovo, seguo e blocco utenti su Puchi?"
+    },
+    "answers": {
+      "whatIsStreak": {
+        "part1": "La tua serie (icona a fiamma) rappresenta il numero di giorni consecutivi in cui hai completato una lezione su Puchi.",
+        "part2": "Imparare una lingua significa costruire obiettivi nel tempo, e la serie è un modo comprovato per motivarti a continuare a imparare e praticare ogni giorno.",
+        "part3": "Suggerimento: i promemoria di pratica possono aiutarti a ricordare di fare le tue lezioni. Nelle impostazioni di notifica puoi attivare i promemoria di pratica e impostare l'orario che funziona meglio per te."
+      },
+      "whatAreLeaderboards": {
+        "part1": "Le classifiche sono un modo divertente per competere con altri studenti di Puchi in una competizione settimanale. Man mano che guadagni più XP (punti esperienza) con ogni lezione, sali nella classifica. Ogni settimana affronti un nuovo gruppo di concorrenti. Dai un'occhiata alla scheda Classifiche nell'app per iniziare la competizione!"
+      },
+      "openSourceLibraries": {
+        "part1": "Sì. Puoi visualizzare i nostri riconoscimenti open source e saperne di più in questa",
+        "linkText": "pagina"
+      },
+      "changeUsernameOrEmail": {
+        "part1": "Se desideri modificare il tuo nome utente o indirizzo e-mail di Puchi, vai alle impostazioni",
+        "linkText": "vai alle impostazioni",
+        "part2": "e modifica il nome utente o l'indirizzo e-mail. Il tuo nome utente appare nella tua classifica settimanale. Ricorda di fare clic su 'Salva modifiche'."
+      },
+      "findFollowBlockUsers": {
+        "part1": "Puoi connetterti con altri studenti su Puchi!",
+        "part2": "Quando segui qualcuno, apparirà nella tua lista amici e potrai incoraggiarti a vicenda a raggiungere i tuoi obiettivi linguistici!"
+      }
+    },
+    "feedbackPrompt": "Non sei ancora sicuro di qualcosa?",
+    "sendFeedback": "INVIA FEEDBACK"
+  },
+  "PrivacyPage": {
+    "title": "Politica sulla Privacy",
+    "lastRevised": "Si noti che la Politica sulla Privacy è stata rivista l'ultima volta il 10 novembre 2024",
+    "footer": "Ultima revisione il 10 novembre 2024",
+    "sections": {
+      "general": {
+        "title": "Generale",
+        "part1": "In Puchi, ci preoccupiamo delle tue informazioni personali, per cui abbiamo preparato questa Politica sulla Privacy per spiegare come raccogliamo, usiamo e condividiamo le tue informazioni.",
+        "part2": "Questa Politica sulla Privacy si applica ai siti web, alle app mobili e ai servizi correlati di Puchi (“Servizio”). Utilizzando il Servizio, accetti la raccolta, l'uso e la condivisione delle tue informazioni personali da parte di Puchi in conformità con i termini di questa Politica sulla Privacy."
+      },
+      "updates": {
+        "title": "Aggiornamenti della Politica sulla Privacy",
+        "part1": "Potremmo aggiornare la nostra Politica sulla Privacy per riflettere modifiche nelle nostre pratiche informative.",
+        "part2": "Se lo facciamo e le modifiche sono sostanziali, pubblicheremo un avviso che indica che abbiamo modificato questa Politica sulla Privacy sul sito web per almeno sette (7) giorni prima che le modifiche abbiano effetto."
+      },
+      "retention": {
+        "title": "Conservazione dei Dati",
+        "part1": "Puchi conserverà generalmente le tue informazioni personali fino a quando il tuo account non verrà eliminato. Tuttavia, Puchi potrebbe conservare alcune informazioni per un periodo più lungo se necessario per fornire il nostro Servizio, difendere i nostri legittimi interessi o quelli di terzi, rispettare requisiti legali, risolvere o difenderci in contenziosi, indagare su abusi o interruzioni del Servizio, o eseguire accordi."
+      },
+      "doNotTrack": {
+        "title": "Non Tracciare",
+        "part1": "Il Servizio non è progettato per rispondere ai segnali di \"non tracciare\" inviati da alcuni browser."
+      },
+      "contactUs": {
+        "title": "Contattaci",
+        "part1": "Puchi, Inc. è il controllore dei tuoi dati per scopi del Regolamento Generale sulla Protezione dei Dati (GDPR) e di qualsiasi legislazione locale rilevante.",
+        "part2": "La sede di Puchi si trova in Vietnam a:",
+        "part3": "Hanoi, Vietnam",
+        "email": "Per tutte le richieste di privacy dei dati e qualsiasi domanda o preoccupazione riguardante questa Politica sulla Privacy, contatta il nostro Responsabile della Protezione dei Dati all'indirizzo: lehoan.dev@gmail.com"
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "Su Puchi",
+    "intro": "Puchi è una piattaforma innovativa progettata per aiutare gli utenti a padroneggiare il vietnamita. Con il supporto per più lingue, Puchi garantisce l'accessibilità per gli studenti di tutto il mondo.",
+    "technologies": "Costruito con tecnologie moderne come Next.js 15, Shadcn UI e autenticazione Clerk, Puchi offre un'esperienza di apprendimento veloce, sicura e fluida. L'internazionalizzazione (i18n) è una funzionalità principale che consente agli utenti di esplorare contenuti nella loro lingua preferita.",
+    "creator": "Creato da Lê Công Hoan, uno sviluppatore appassionato dedicato all'utilizzo della tecnologia per l'educazione.",
+    "joinCommunity": "Unisciti alla nostra community su <facebookLink>Facebook</facebookLink> per connetterti con altri studenti, o esplora il codice sorgente del progetto su <githubLink>GitHub</githubLink>."
+  },
+  "ProfileActions": {
+    "actions": {
+      "title": "Azioni",
+      "accountSettings": {
+        "title": "Impostazioni account",
+        "description": "Gestisci informazioni personali e sicurezza"
+      },
+      "security": {
+        "title": "Sicurezza",
+        "description": "Cambia password e autenticazione a due fattori"
+      },
+      "signOut": {
+        "title": "Disconnetti",
+        "description": "Disconnetti dall'account corrente"
+      }
+    },
+    "dangerZone": {
+      "title": "Zona pericolo",
+      "deleteAccount": {
+        "title": "Elimina account",
+        "description": "Questa azione non può essere annullata. Tutti i dati verranno eliminati permanentemente."
+      }
+    },
+    "deleteAccount": {
+      "success": "Account eliminato con successo",
+      "error": {
+        "confirmationRequired": "Inserisci 'DELETE' per confermare",
+        "general": "Si è verificato un errore durante l'eliminazione dell'account"
+      },
+      "dialog": {
+        "title": "Conferma eliminazione account",
+        "description": "Questa azione non può essere annullata. Tutti i tuoi dati verranno eliminati permanentemente.",
+        "confirmation": "Per confermare, inserisci <strong>DELETE</strong> nel campo sottostante.",
+        "confirmationLabel": "Conferma",
+        "confirmationPlaceholder": "Inserisci DELETE per confermare",
+        "cancel": "Annulla",
+        "confirm": "Elimina account",
+        "deleting": "Eliminazione in corso..."
+      }
+    }
+  },
+  "ProfileHeader": {
+    "title": "Informazioni Personali",
+    "email": "Email",
+    "username": "Nome utente",
+    "joinDate": "Data di registrazione",
+    "member": "Membro"
+  },
+  "ProfileForm": {
+    "title": "Modifica Informazioni",
+    "edit": "Modifica",
+    "save": "Salva",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "username": "Nome utente",
+    "email": "Email",
+    "emailNote": "L'email non può essere modificata. Contatta il supporto se devi cambiarla.",
+    "success": "Informazioni aggiornate con successo!",
+    "error": "Si è verificato un errore durante l'aggiornamento delle informazioni"
+  },
+  "ProfileStats": {
+    "learningStats": {
+      "title": "Statistiche di Apprendimento"
+    },
+    "progress": {
+      "title": "Progresso di Apprendimento",
+      "completedLessons": "Lezioni Completate",
+      "completed": "{count} lezioni completate",
+      "remaining": "{count} lezioni rimanenti"
+    },
+    "performance": {
+      "title": "Prestazioni di Apprendimento",
+      "averageAccuracy": "Precisione Media",
+      "excellent": "Eccellente",
+      "needsImprovement": "Necessita Miglioramento"
+    },
+    "stats": {
+      "completedLessons": "Lezioni Completate",
+      "currentStreak": "Serie Attuale",
+      "streakDays": "{days} giorni",
+      "totalXP": "XP Totale",
+      "currentLevel": "Livello Attuale",
+      "level": "Livello {level}"
+    }
+  }
+}

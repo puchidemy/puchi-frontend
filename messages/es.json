@@ -1,0 +1,225 @@
+{
+  "Locale": {
+    "key": "es",
+    "name": "Español",
+    "siteLanguage": "Idioma del sitio"
+  },
+  "Error": {
+    "description": "<p>Lamentablemente, hemos encontrado un error.</p><p>Puede intentar <retry>recargar la página</retry> que estaba visitando.</p>",
+    "title": "¡Algo salió mal!"
+  },
+  "NotFoundPage": {
+    "description": "Por favor, revise la barra de direcciones del navegador o use la navegación para ir a una página conocida.",
+    "title": "Página no encontrada"
+  },
+  "Navigation": {
+    "review": "Revisión",
+    "learn": "Aprender",
+    "conversation": "Conversación",
+    "write": "Escribir",
+    "event": "Evento"
+  },
+  "PublicLayout": {
+    "title": "Puchi - Domina el vietnamita. Aprende en movimiento.",
+    "description": "Puchi es una plataforma interactiva para aprender vietnamita de forma divertida. Únete a nosotros para una experiencia de aprendizaje agradable."
+  },
+  "Hero": {
+    "continueLearning": "Seguir aprendiendo"
+  },
+  "Languages": {
+    "multiLanguage": "Multilingüe",
+    "supportWebsite": "sitio web de soporte"
+  },
+  "Metrics": {
+    "byThe": "por el",
+    "numbers": "números",
+    "hoursOfFunContent": "horas de contenido divertido",
+    "languageCourses": "cursos de idiomas",
+    "usersGlobally": "usuarios a nivel mundial",
+    "fluencyInTwoMonths": "fluidez en dos meses"
+  },
+  "Reasons": {
+    "the": "El",
+    "future": "futuro",
+    "of": "del",
+    "learning": "aprendizaje",
+    "items": [
+      "Aprende 5 veces más rápido, 5 veces más divertido",
+      "Lecciones personalizadas respaldadas por la ciencia",
+      "Desafíos divertidos para mantenerte motivado",
+      "Usa Puchi dondequiera que vayas"
+    ]
+  },
+  "Footer": {
+    "startYourLanguageJourneyHere": "comienza tu viaje lingüístico aquí.",
+    "learnAnytimeLearnAnywhere": "aprende en cualquier momento, aprende en cualquier lugar.",
+    "start": "comenzar"
+  },
+  "HelpPage": {
+    "breadcrumbs": {
+      "helpCenter": "CENTRO DE AYUDA",
+      "home": "INICIO"
+    },
+    "faqTitle": "Preguntas Frecuentes",
+    "sections": {
+      "usingPuchi": "Usando Puchi",
+      "accountManagement": "Gestión de Cuenta"
+    },
+    "questions": {
+      "whatIsStreak": "¿Qué es una racha?",
+      "whatAreLeaderboards": "¿Qué son los rankings y las ligas?",
+      "openSourceLibraries": "¿Puchi usa bibliotecas de código abierto?",
+      "changeUsernameOrEmail": "¿Cómo cambio mi nombre de usuario o dirección de correo electrónico?",
+      "findFollowBlockUsers": "¿Cómo encuentro, sigo y bloqueo usuarios en Puchi?"
+    },
+    "answers": {
+      "whatIsStreak": {
+        "part1": "Tu racha (icono de llama) representa el número de días consecutivos que has completado una lección en Puchi.",
+        "part2": "El aprendizaje de idiomas se basa en construir objetivos a lo largo del tiempo, y la racha es una forma comprobada de motivarte para seguir aprendiendo y practicando todos los días.",
+        "part3": "Consejo: Las notificaciones de práctica pueden ayudarte a recordar hacer tus lecciones. En la configuración de notificaciones, puedes activar recordatorios de práctica y establecer el horario que mejor funcione para ti."
+      },
+      "whatAreLeaderboards": {
+        "part1": "Los rankings son una forma divertida de competir con otros estudiantes de Puchi en un concurso semanal. A medida que ganas más XP (puntos de experiencia) con cada lección, subirás en la clasificación. Cada semana te enfrentarás a un nuevo grupo de competidores. ¡Consulta la pestaña de Rankings en la aplicación para comenzar la competencia!"
+      },
+      "openSourceLibraries": {
+        "part1": "Sí. Puedes ver nuestras atribuciones de código abierto y obtener más información en esta",
+        "linkText": "página"
+      },
+      "changeUsernameOrEmail": {
+        "part1": "Si deseas editar tu nombre de usuario o dirección de correo electrónico de Puchi, ve a tu configuración",
+        "linkText": "ve a tu configuración",
+        "part2": "y edita el nombre de usuario o la dirección de correo electrónico. Tu nombre de usuario aparece en tu clasificación semanal. Recuerda presionar 'Guardar cambios' cuando realices cualquier cambio."
+      },
+      "findFollowBlockUsers": {
+        "part1": "¡Puedes conectar con otros estudiantes en Puchi!",
+        "part2": "Cuando sigues a alguien, aparecerá en tu lista de amigos y pueden motivarse mutuamente para cumplir con tus objetivos de aprendizaje de idiomas."
+      }
+    },
+    "feedbackPrompt": "¿Aún tienes dudas sobre algo?",
+    "sendFeedback": "ENVIAR COMENTARIOS"
+  },
+  "PrivacyPage": {
+    "title": "Política de Privacidad",
+    "lastRevised": "Tenga en cuenta que la Política de Privacidad fue revisada por última vez el 10 de noviembre de 2024",
+    "footer": "Última revisión el 10 de noviembre de 2024",
+    "sections": {
+      "general": {
+        "title": "General",
+        "part1": "En Puchi, nos importa su información personal, por lo que hemos preparado esta Política de Privacidad para explicar cómo recopilamos, usamos y compartimos su información.",
+        "part2": "Esta Política de Privacidad se aplica a los sitios web, aplicaciones móviles y servicios relacionados de Puchi («Servicio»). Al usar el Servicio, usted acepta la recopilación, el uso y el intercambio de su información personal por parte de Puchi de acuerdo con los términos de esta Política de Privacidad."
+      },
+      "updates": {
+        "title": "Actualizaciones de la Política de Privacidad",
+        "part1": "Podemos actualizar nuestra Política de Privacidad para reflejar los cambios en nuestras prácticas de información.",
+        "part2": "Si lo hacemos y los cambios son importantes, publicaremos un aviso que indique que hemos realizado cambios en esta Política de Privacidad en el sitio web durante al menos siete (7) días antes de que los cambios tengan efecto."
+      },
+      "retention": {
+        "title": "Retención de Datos",
+        "part1": "Puchi generalmente retendrá su información personal hasta que se elimine su cuenta. Sin embargo, Puchi puede retener cierta información por más tiempo si es necesario para proporcionar nuestro Servicio, defender nuestros intereses legítimos o los de terceros, cumplir con los requisitos legales, resolver o defendernos en disputas, investigar el mal uso o la interrupción del Servicio, o cumplir con acuerdos."
+      },
+      "doNotTrack": {
+        "title": "No Rastrear",
+        "part1": "El Servicio no está diseñado para responder a señales de «no rastrear» enviadas por algunos navegadores."
+      },
+      "contactUs": {
+        "title": "Contáctenos",
+        "part1": "Puchi, Inc. es el controlador de datos de su información para los fines del Reglamento General de Protección de Datos («GDPR») y cualquier legislación local relevante.",
+        "part2": "La sede de Puchi está ubicada en Vietnam en:",
+        "part3": "Hanói, Vietnam",
+        "email": "Para consultas sobre privacidad de datos y cualquier pregunta o inquietud que tenga sobre esta Política de Privacidad, comuníquese con nuestro Oficial de Protección de Datos en: lehoan.dev@gmail.com"
+      }
+    }
+  },
+  "AboutPage": {
+    "title": "Sobre Puchi",
+    "intro": "Puchi es una plataforma innovadora diseñada para ayudar a los usuarios a dominar el vietnamita. Con soporte para varios idiomas, Puchi garantiza accesibilidad para estudiantes de todo el mundo.",
+    "technologies": "Desarrollado con tecnologías modernas como Next.js 15, Shadcn UI y autenticación de Clerk, Puchi ofrece una experiencia de aprendizaje rápida, segura y fluida. La internacionalización (i18n) es una característica principal que permite a los usuarios explorar contenido en su idioma preferido.",
+    "creator": "Creado por Lê Công Hoan, un desarrollador apasionado dedicado a aprovechar la tecnología para la educación.",
+    "joinCommunity": "Únete a nuestra comunidad en <facebookLink>Facebook</facebookLink> para conectarte con otros estudiantes, o explora el código fuente del proyecto en <githubLink>GitHub</githubLink>."
+  },
+  "ProfileActions": {
+    "actions": {
+      "title": "Acciones",
+      "accountSettings": {
+        "title": "Configuración de cuenta",
+        "description": "Gestionar información personal y seguridad"
+      },
+      "security": {
+        "title": "Seguridad",
+        "description": "Cambiar contraseña y autenticación de dos factores"
+      },
+      "signOut": {
+        "title": "Cerrar sesión",
+        "description": "Cerrar sesión de la cuenta actual"
+      }
+    },
+    "dangerZone": {
+      "title": "Zona de peligro",
+      "deleteAccount": {
+        "title": "Eliminar cuenta",
+        "description": "Esta acción no se puede deshacer. Todos los datos se eliminarán permanentemente."
+      }
+    },
+    "deleteAccount": {
+      "success": "Cuenta eliminada exitosamente",
+      "error": {
+        "confirmationRequired": "Por favor ingrese 'DELETE' para confirmar",
+        "general": "Ocurrió un error al eliminar la cuenta"
+      },
+      "dialog": {
+        "title": "Confirmar eliminación de cuenta",
+        "description": "Esta acción no se puede deshacer. Todos sus datos se eliminarán permanentemente.",
+        "confirmation": "Para confirmar, por favor ingrese <strong>DELETE</strong> en el campo de abajo.",
+        "confirmationLabel": "Confirmación",
+        "confirmationPlaceholder": "Ingrese DELETE para confirmar",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar cuenta",
+        "deleting": "Eliminando..."
+      }
+    }
+  },
+  "ProfileHeader": {
+    "title": "Información Personal",
+    "email": "Correo electrónico",
+    "username": "Nombre de usuario",
+    "joinDate": "Fecha de registro",
+    "member": "Miembro"
+  },
+  "ProfileForm": {
+    "title": "Editar Información",
+    "edit": "Editar",
+    "save": "Guardar",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "username": "Nombre de usuario",
+    "email": "Correo electrónico",
+    "emailNote": "El correo electrónico no se puede cambiar. Por favor contacte al soporte si necesita cambiarlo.",
+    "success": "¡Información actualizada exitosamente!",
+    "error": "Ocurrió un error al actualizar la información"
+  },
+  "ProfileStats": {
+    "learningStats": {
+      "title": "Estadísticas de Aprendizaje"
+    },
+    "progress": {
+      "title": "Progreso de Aprendizaje",
+      "completedLessons": "Lecciones Completadas",
+      "completed": "{count} lecciones completadas",
+      "remaining": "{count} lecciones restantes"
+    },
+    "performance": {
+      "title": "Rendimiento de Aprendizaje",
+      "averageAccuracy": "Precisión Promedio",
+      "excellent": "Excelente",
+      "needsImprovement": "Necesita Mejora"
+    },
+    "stats": {
+      "completedLessons": "Lecciones Completadas",
+      "currentStreak": "Racha Actual",
+      "streakDays": "{days} días",
+      "totalXP": "XP Total",
+      "currentLevel": "Nivel Actual",
+      "level": "Nivel {level}"
+    }
+  }
+}
