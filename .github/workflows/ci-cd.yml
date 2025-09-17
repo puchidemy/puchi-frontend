@@ -73,6 +73,19 @@ jobs:
             --from-literal=CLERK_WEBHOOK_SECRET=${{ secrets.CLERK_WEBHOOK_SECRET }} \
             --dry-run=client -o yaml | kubectl apply -f -
 
+      - name: Create GHCR pull secret (ghcr-cred)
+        run: |
+          if [ -z "${{ secrets.GHCR_USERNAME }}" ] || [ -z "${{ secrets.GHCR_PAT }}" ]; then
+            echo "GHCR_USERNAME or GHCR_PAT is not set in secrets. Please add them." >&2
+            exit 1
+          fi
+          kubectl -n puchi create secret docker-registry ghcr-cred \
+            --docker-server=ghcr.io \
+            --docker-username=${{ secrets.GHCR_USERNAME }} \
+            --docker-password=${{ secrets.GHCR_PAT }} \
+            --docker-email=devnull@puchi.local \
+            --dry-run=client -o yaml | kubectl apply -f -
+
       - name: Backup current image (if exists)
         run: |
           OLD_IMAGE=$(kubectl get deployment puchi-fe -n puchi -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null || echo "")

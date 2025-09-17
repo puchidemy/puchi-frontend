@@ -18,6 +18,8 @@ spec:
         - key: "node-role.kubernetes.io/control-plane"
           operator: "Exists"
           effect: "NoSchedule"
+      imagePullSecrets:
+        - name: ghcr-cred
       containers:
         - name: puchi-fe
           image: ghcr.io/puchidemy/puchi-frontend:latest
