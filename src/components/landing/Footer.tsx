@@ -83,8 +83,10 @@ const Footer = () => {
           </div>
           <a
             className="flex items-center justify-end px-4 py-2 text-center font-semibold uppercase opacity-70 before:content-['@_'] after:content-['_*'] hover:opacity-100 sm:px-12 md:py-4 lg:text-2xl"
-            href="https://github.com/puchidemy/puchi-frontend"
+            href="https://github.com/puchidemy"
             target="_blank"
+            aria-label="GitHub repo"
+            title="Github repo"
           >
             Github
           </a>
