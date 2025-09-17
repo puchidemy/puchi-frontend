@@ -12,7 +12,7 @@ const LinkNav = () => {
       <ThemeToggle />
       <Button variant="ghost" size="icon" asChild>
         <a
-          href="https://github.com/puchidemy/puchi-frontend"
+          href="https://github.com/puchidemy"
           target="_blank"
           aria-label="GitHub repo"
           title="Github repo"

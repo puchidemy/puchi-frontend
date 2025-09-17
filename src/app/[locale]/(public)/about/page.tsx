@@ -32,10 +32,12 @@ const AboutPage = () => {
               ),
               githubLink: (chunks) => (
                 <a
-                  href="https://github.com/puchidemy/puchi-frontend"
+                  href="https://github.com/puchidemy"
                   className="text-blue-600 hover:underline"
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label="GitHub repo"
+                  title="Github repo"
                 >
                   {chunks}
                 </a>
