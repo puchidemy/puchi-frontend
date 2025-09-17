@@ -32,7 +32,7 @@ jobs:
       - name: Build Docker image
         run: |
           docker build \
-            --build-arg NEXT_PUBLIC_APP_URL=https://dev.puchi.io.vn/ \
+            --build-arg NEXT_PUBLIC_APP_URL=https://puchi.io.vn/ \
             --build-arg NEXT_PUBLIC_API_URL=https://api.puchi.io.vn/ \
             --build-arg NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in \
             --build-arg NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up \
@@ -65,31 +65,31 @@ jobs:
       - name: Verify cluster connection
         run: kubectl cluster-info
 
-      - name: Apply private secrets (dev)
+      - name: Apply private secrets
         run: |
-          kubectl create ns puchi-dev --dry-run=client -o yaml | kubectl apply -f -
-          kubectl -n puchi-dev create secret generic puchi-fe-secrets \
+          kubectl create ns puchi --dry-run=client -o yaml | kubectl apply -f -
+          kubectl -n puchi create secret generic puchi-fe-secrets \
             --from-literal=CLERK_SECRET_KEY=${{ secrets.CLERK_SECRET_KEY }} \
             --from-literal=CLERK_WEBHOOK_SECRET=${{ secrets.CLERK_WEBHOOK_SECRET }} \
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Backup current image (if exists)
         run: |
-          OLD_IMAGE=$(kubectl get deployment puchi-fe -n puchi-dev -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null || echo "")
+          OLD_IMAGE=$(kubectl get deployment puchi-fe -n puchi -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null || echo "")
           echo "OLD_IMAGE=$OLD_IMAGE" >> $GITHUB_ENV
 
-      - name: Deploy via Kustomize overlay (dev)
+      - name: Deploy via Kustomize
         run: |
-          kubectl kustomize k8s/overlays/dev | kubectl apply -f -
+          kubectl kustomize k8s | kubectl apply -f -
 
       - name: Update Deployment image
         run: |
           kubectl set image deployment/puchi-fe \
-            puchi-fe=ghcr.io/${{ github.repository_owner }}/puchi-frontend:$IMAGE_TAG -n puchi-dev
+            puchi-fe=ghcr.io/${{ github.repository_owner }}/puchi-frontend:$IMAGE_TAG -n puchi
 
       - name: Wait for rollout
         run: |
-          kubectl rollout status deployment/puchi-fe -n puchi-dev --timeout=180s || exit 1
+          kubectl rollout status deployment/puchi-fe -n puchi --timeout=180s || exit 1
 
       - name: Rollback if failed
         if: failure()
@@ -97,8 +97,8 @@ jobs:
           if [ -n "$OLD_IMAGE" ]; then
             echo "Rollout failed, rolling back to previous image $OLD_IMAGE"
             kubectl set image deployment/puchi-fe \
-              puchi-fe=$OLD_IMAGE -n puchi-dev
-            kubectl rollout status deployment/puchi-fe -n puchi-dev
+              puchi-fe=$OLD_IMAGE -n puchi
+            kubectl rollout status deployment/puchi-fe -n puchi
           else
             echo "No previous image found → skipping rollback"
           fi
