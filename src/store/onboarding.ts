@@ -26,6 +26,7 @@ interface OnboardingState {
   conversationHistory: Record<number, ConversationMessage[]>;
   currentConversation: ConversationMessage[];
   isAnimating: boolean;
+  isComplete: boolean;
 
   // Actions
   setCurrentStep: (step: number) => void;
@@ -33,6 +34,7 @@ interface OnboardingState {
   setConversationHistory: (step: number, conversation: ConversationMessage[]) => void;
   setCurrentConversation: (conversation: ConversationMessage[] | ((prev: ConversationMessage[]) => ConversationMessage[])) => void;
   setIsAnimating: (animating: boolean) => void;
+  setIsComplete: (complete: boolean) => void;
   reset: () => void;
 }
 
@@ -44,6 +46,7 @@ export const useOnboardingStore = create<OnboardingState>()(
       conversationHistory: {},
       currentConversation: [],
       isAnimating: false,
+      isComplete: false,
 
       setCurrentStep: (step) => set({ currentStep: step }),
 
@@ -65,20 +68,24 @@ export const useOnboardingStore = create<OnboardingState>()(
 
       setIsAnimating: (animating) => set({ isAnimating: animating }),
 
+      setIsComplete: (complete) => set({ isComplete: complete }),
+
       reset: () => set({
         currentStep: 0,
         answers: {},
         conversationHistory: {},
         currentConversation: [],
         isAnimating: false,
+        isComplete: false,
       }),
     }),
     {
-      name: 'onboarding-storage',
+      name: 'onboarding',
       partialize: (state) => ({
         currentStep: state.currentStep,
         answers: state.answers,
         conversationHistory: state.conversationHistory,
+        isComplete: state.isComplete,
       }),
     }
   )

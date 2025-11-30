@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
+import { useOnboardingStore } from "@/store/onboarding";
 
 interface OnboardingCompleteProps {
   answers: Record<number, string>;
@@ -12,6 +14,12 @@ const OnboardingComplete = ({
   answers,
   onStartLearning,
 }: OnboardingCompleteProps) => {
+  const { setIsComplete } = useOnboardingStore();
+
+  // Set onboarding as complete when this component mounts
+  useEffect(() => {
+    setIsComplete(true);
+  }, [setIsComplete]);
   const stepTitles = [
     "How did you hear about Puchi?",
     "Why are you learning Vietnamese?",
@@ -56,7 +64,12 @@ const OnboardingComplete = ({
 
       {/* Start Learning Button */}
       <div className="flex justify-center">
-        <Button variant="primary" onClick={onStartLearning} size="lg" className="px-8">
+        <Button
+          variant="primary"
+          onClick={onStartLearning}
+          size="lg"
+          className="px-8"
+        >
           Start Learning Vietnamese
         </Button>
       </div>
