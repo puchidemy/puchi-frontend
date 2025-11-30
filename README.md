@@ -12,6 +12,7 @@ Master Vietnamese. Learn On The Go.
 
 - [Introduction](#introduction)
 - [Getting Started](#getting-started)
+- [Development](#development)
 - [Key Features](#key-features)
 - [Performance](#performance)
 - [Usage](#usage)
@@ -38,11 +39,37 @@ To get started with Puchi:
 2. Sign up and choose your learning plan.
 3. Begin your Vietnamese learning journey today!
 
+## Development
+
+### Setup
+
+To set up the development environment:
+
+1. Clone the repository
+2. Install dependencies using Bun:
+   ```bash
+   bun install
+   ```
+3. Run the development server:
+   ```bash
+   bun run dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Available Scripts
+
+- `bun run dev` - Start the development server
+- `bun run build` - Build the application for production
+- `bun run start` - Start the production server
+- `bun run lint` - Run ESLint
+
 ## Key Features
 
-- 🌐 **Built with Next.js 15** & Server Actions for fast and efficient server-side rendering.
+- 🌐 **Built with Next.js 16** & Server Actions for fast and efficient server-side rendering.
 - 🔄 **React 19 Integration** for improved interactivity and dynamic updates without compromising performance.
-- 🎨 **Beautiful Component System** using Shadcn UI for a clean and consistent design.
+- 🎨 **Modern Styling with Tailwind CSS v4** - Latest utility-first CSS framework for beautiful and responsive designs.
+- 🧩 **Beautiful Component System** using Shadcn UI for a clean and consistent design.
+- ⚡ **Powered by Bun** - Fast JavaScript runtime and package manager for optimal development experience.
 - 📱 **Responsive Design** for optimal experience on mobile and desktop devices.
 - 🌍 **Internationalization (i18n)** support for multiple languages.
 - 🔒 **Secure Authentication** powered by Clerk to keep your data safe.
