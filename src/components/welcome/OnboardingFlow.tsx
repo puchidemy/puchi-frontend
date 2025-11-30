@@ -156,7 +156,8 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
   // Reset store when component mounts to avoid stale data
   useEffect(() => {
     reset();
-  }, [reset]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Initialize conversation when component mounts or step changes
   useEffect(() => {
@@ -171,7 +172,7 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
     } else {
       // Show question with animation
       setIsAnimating(true);
-      setTimeout(() => {
+      const timeoutId = setTimeout(() => {
         setCurrentConversation([
           {
             type: "question",
@@ -181,6 +182,10 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
         ]);
         setIsAnimating(false);
       }, 100);
+
+      return () => {
+        clearTimeout(timeoutId);
+      };
     }
   }, [
     currentStep,
@@ -264,7 +269,7 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="flex-shrink-0 self-center sm:self-start"
+          className="shrink-0 self-center sm:self-start"
         >
           <Image
             src="/images/panda/writing.png"
@@ -328,7 +333,7 @@ const OnboardingFlow = ({ onComplete }: OnboardingFlowProps) => {
                 transition={{ duration: 0.4, delay: index * 0.2 }}
                 className="flex items-center gap-4 p-4 rounded-lg border border-border bg-card"
               >
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <Image
                     src={feature.icon}
                     alt={feature.title}

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { type PropsWithChildren, useRef } from "react";
-import { useScroll, useTransform } from "framer-motion";
+import { useScroll, useTransform } from "motion/react";
 
 import { type PillProps, Pill } from "@/components/ui/pill";
 import { MotionDiv } from "@/components/motion";

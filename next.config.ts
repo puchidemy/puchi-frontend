@@ -1,4 +1,4 @@
-import { NextConfig } from "next";
+import type { NextConfig } from "next";
 import withNextIntl from "next-intl/plugin";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 
@@ -6,9 +6,9 @@ const bundleAnalyzer = withBundleAnalyzer({
   enabled: process.env.ANALYZE === "true",
 });
 
-const config: NextConfig = {
+const nextConfig: NextConfig = {
   output: "standalone",
-  assetPrefix: process.env.NEXT_PUBLIC_APP_URL || '', 
+  assetPrefix: process.env.NEXT_PUBLIC_APP_URL || "",
 
   webpack(config) {
     // Grab the existing rule that handles SVG imports
@@ -70,6 +70,7 @@ const config: NextConfig = {
     globalNotFound: true,
     // typedRoutes: true, // Uncomment if needed
   },
+
   turbopack: {
     rules: {
       "*.svg": {
@@ -78,11 +79,13 @@ const config: NextConfig = {
       },
     },
   },
+
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
+
   typescript: {
     // !! WARN !!
     // Dangerously allow production builds to successfully complete even if
@@ -92,4 +95,4 @@ const config: NextConfig = {
   },
 };
 
-export default bundleAnalyzer(withNextIntl()(config));
+export default bundleAnalyzer(withNextIntl()(nextConfig));

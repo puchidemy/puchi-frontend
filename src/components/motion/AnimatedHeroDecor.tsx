@@ -1,7 +1,7 @@
 "use client";
 
 import { type PropsWithChildren, useRef } from "react";
-import { useScroll, useSpring, useTransform } from "framer-motion";
+import { useScroll, useSpring, useTransform } from "motion/react";
 
 import { MotionDiv } from "@/components/motion";
 

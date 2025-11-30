@@ -18,21 +18,33 @@ const ProfilePage = () => {
   const { getAuthHeaders } = useAuthToken();
 
   useEffect(() => {
+    let isCancelled = false;
+
     const fetchProfile = async () => {
       try {
         setIsLoading(true);
         const userProfile = await getUserProfile(getAuthHeaders);
-        setProfile(userProfile);
+        if (!isCancelled) {
+          setProfile(userProfile);
+        }
       } catch (err) {
-        console.error("Error fetching profile:", err);
-        setError("Không thể tải thông tin profile");
-        toast.error("Có lỗi xảy ra khi tải thông tin profile");
+        if (!isCancelled) {
+          console.error("Error fetching profile:", err);
+          setError("Không thể tải thông tin profile");
+          toast.error("Có lỗi xảy ra khi tải thông tin profile");
+        }
       } finally {
-        setIsLoading(false);
+        if (!isCancelled) {
+          setIsLoading(false);
+        }
       }
     };
 
     fetchProfile();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [getAuthHeaders]);
 
   const handleProfileUpdate = (updatedProfile: UserProfile) => {

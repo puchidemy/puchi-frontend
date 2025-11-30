@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import type { UseInViewOptions } from "framer-motion";
-import { useInView, useAnimate, useMotionValue } from "framer-motion";
+import type { UseInViewOptions } from "motion/react";
+import { useInView, useAnimate, useMotionValue } from "motion/react";
 
 export type AnimatedNumberProps = {
   number: number;
@@ -26,25 +26,39 @@ const AnimatedNumber = ({
   });
 
   useEffect(() => {
-    if (isInView) {
-      animate(scope.current, { opacity: 1 }, { duration: 0.1 });
+    if (!isInView) {
+      // reset when not in view
+      animate(scope.current, { opacity: 0 }, { duration: 0.1 });
+      start.set(from);
+      return;
+    }
+
+    // Animate when in view
+    const controls = [
+      animate(scope.current, { opacity: 1 }, { duration: 0.1 }),
       animate(start, number, {
         type: "spring",
         mass: 0.8,
         stiffness: 75,
         damping: 15,
         onUpdate: (latest) => {
-          const formatted = Intl.NumberFormat("en-US").format(
-            Math.round(latest)
-          );
-          scope.current.textContent = `${prefix}${formatted}${suffix}`;
+          if (scope.current) {
+            const formatted = Intl.NumberFormat("en-US").format(
+              Math.round(latest)
+            );
+            scope.current.textContent = `${prefix}${formatted}${suffix}`;
+          }
         },
+      }),
+    ];
+
+    return () => {
+      controls.forEach((control) => {
+        if (typeof control.stop === "function") {
+          control.stop();
+        }
       });
-    } else {
-      // reset
-      animate(scope.current, { opacity: 0 }, { duration: 0.1 });
-      start.set(from);
-    }
+    };
   }, [isInView, animate, scope, start, from, number, prefix, suffix]);
 
   return (

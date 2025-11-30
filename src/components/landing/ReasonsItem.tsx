@@ -1,7 +1,7 @@
 "use client";
 
 import { type PropsWithChildren, useEffect } from "react";
-import { useAnimate, useInView } from "framer-motion";
+import { useAnimate, useInView } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -25,35 +25,48 @@ const ReasonsItem = ({
   });
 
   useEffect(() => {
-    if (isInView) {
-      animate([
-        [
-          scope.current,
-          { x: ["-101%", "0%"], opacity: [0, 1] },
-          {
-            duration: 1.2,
-            ease: [0.16, 1, 0.3, 1],
-            opacity: { duration: 0.1 },
-            delay,
-          },
-        ],
-        [
-          "[data-reason]",
-          { opacity: [0, 1] },
-          { duration: 0.4, ease: "easeIn", at: "-0.8" },
-        ],
-        [
-          "[data-reason-text]",
-          { y: ["100%", "0%"], x: ["7.5%", "0%"] },
-          { duration: 0.6, ease: "easeOut", at: "<" },
-        ],
-        [
-          "[data-reason-icon]",
-          { scale: [0, 1] },
-          { type: "spring", at: "-0.2" },
-        ],
-      ]);
-    }
+    if (!isInView || !scope.current) return;
+
+    const controls = animate([
+      [
+        scope.current,
+        { x: ["-101%", "0%"], opacity: [0, 1] },
+        {
+          duration: 1.2,
+          ease: [0.16, 1, 0.3, 1],
+          opacity: { duration: 0.1 },
+          delay,
+        },
+      ],
+      [
+        "[data-reason]",
+        { opacity: [0, 1] },
+        { duration: 0.4, ease: "easeIn", at: "-0.8" },
+      ],
+      [
+        "[data-reason-text]",
+        { y: ["100%", "0%"], x: ["7.5%", "0%"] },
+        { duration: 0.6, ease: "easeOut", at: "<" },
+      ],
+      [
+        "[data-reason-icon]",
+        { scale: [0, 1] },
+        { type: "spring", at: "-0.2" },
+      ],
+    ]);
+
+    return () => {
+      // Cleanup: stop animations if component unmounts or dependencies change
+      if (Array.isArray(controls)) {
+        controls.forEach((control) => {
+          if (control && typeof control.stop === "function") {
+            control.stop();
+          }
+        });
+      } else if (controls && typeof controls.stop === "function") {
+        controls.stop();
+      }
+    };
   }, [isInView, animate, scope, delay]);
 
   return (

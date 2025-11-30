@@ -8,6 +8,7 @@ const LoadingCustom = () => {
         src="/gif/panda-run.gif"
         width={240}
         height={240}
+        unoptimized
       />
     </div>
   );

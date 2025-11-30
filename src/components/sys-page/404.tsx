@@ -12,7 +12,7 @@ const Page404 = () => {
       return;
     }
     const timer = setTimeout(() => {
-      setCountdown(countdown - 1);
+      setCountdown((prev) => prev - 1);
     }, 1000);
 
     return () => clearTimeout(timer);

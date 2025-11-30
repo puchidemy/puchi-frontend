@@ -28,27 +28,29 @@ export default function ScrollHighlight() {
 
   useEffect(() => {
     const checkInterTitle = () => {
-      if (stickyRef.current) {
-        const stickyElement = stickyRef.current.getBoundingClientRect();
+      if (!stickyRef.current) return;
 
-        titlesRef.current.forEach((title, index) => {
-          if (title) {
-            const titleElement = title.getBoundingClientRect();
+      const stickyElement = stickyRef.current.getBoundingClientRect();
 
-            if (
-              titleElement.top <= stickyElement.bottom &&
-              titleElement.bottom >= stickyElement.top
-            ) {
-              setCurrentIndex(index);
-            }
+      titlesRef.current.forEach((title, index) => {
+        if (title) {
+          const titleElement = title.getBoundingClientRect();
+
+          if (
+            titleElement.top <= stickyElement.bottom &&
+            titleElement.bottom >= stickyElement.top
+          ) {
+            setCurrentIndex(index);
           }
-        });
-      }
+        }
+      });
     };
 
-    window.addEventListener("scroll", checkInterTitle);
-
+    // Set initial state
     checkInterTitle();
+
+    // Add scroll listener with passive option for better performance
+    window.addEventListener("scroll", checkInterTitle, { passive: true });
 
     // Cleanup listener khi component unmount
     return () => {
