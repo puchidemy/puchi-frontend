@@ -7,7 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useThemeToggle from "@/hooks/useToggle";
+import useThemeToggle from "@/hooks/use-toggle";
 
 const SelectTheme = () => {
   const { hydrated, theme, setTheme } = useThemeToggle();

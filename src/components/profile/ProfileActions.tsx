@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { deleteUserAccount } from "@/services/user.service";
-import { useAuthToken } from "@/hooks/useAuthToken";
+import { useAuthToken } from "@/hooks/use-auth-token";
 import { toast } from "sonner";
 import {
   AlertTriangle,

@@ -4,7 +4,7 @@ import { Sun, Moon } from "lucide-react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 
 import { cn } from "@/lib/utils";
-import useThemeToggle from "@/hooks/useToggle";
+import useThemeToggle from "@/hooks/use-toggle";
 
 const ThemeToggle = ({ className, ...props }: ButtonProps) => {
   const { isDark, toggle } = useThemeToggle();
