@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import type { Variants } from "framer-motion";
+import type { Variants } from "motion/react";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
@@ -38,7 +38,7 @@ const Languages = () => {
           {t("supportWebsite")}
         </h2>
       </AnimatedTitle>
-      <div className="mx-auto max-w-screen-lg">
+      <div className="mx-auto max-w-(--breakpoint-lg)">
         <AnimatedList
           className="flex flex-wrap justify-center gap-2 text-center lg:gap-4"
           variants={list}
@@ -56,7 +56,7 @@ const Languages = () => {
               >
                 <AspectRatio
                   ratio={3 / 2}
-                  className="!top-1/2 mx-auto h-1/2 w-1/2 -translate-y-1/2"
+                  className="top-1/2! mx-auto h-1/2 w-1/2 -translate-y-1/2"
                 >
                   <Image
                     src={`/images/flag/${country.flag}.svg`}

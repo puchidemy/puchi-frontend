@@ -26,7 +26,7 @@ const buttonVariants = cva(
         locked:
           "bg-neutral-200 text-neutral-400 border-b-4 border-current hover:bg-neutral-200/90 active:border-b-0 dark:bg-disabled dark:text-disabled-foreground dark:hover:bg-disabled/90",
         ghost:
-          "bg-transparent border-2 border-transparent hover:bg-black/5 dark:bg-white/[0.015] dark:hover:bg-white/5",
+          "bg-transparent border-2 border-transparent hover:bg-black/5 dark:bg-white/1.5 dark:hover:bg-white/5",
         immersive:
           "bg-transparent text-current border-2 border-b-4 border-black/20 hover:opacity-85 active:border-b-0",
         active:

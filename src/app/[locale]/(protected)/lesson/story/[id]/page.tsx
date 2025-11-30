@@ -14,16 +14,28 @@ const LessonStory = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
+    if (!id) return;
+
+    let isCancelled = false;
+
     const fetchLessonData = async () => {
-      if (id) {
+      try {
         const data = await getLessonData(id as string);
-        setLessonData(data);
+        if (!isCancelled) {
+          setLessonData(data);
+        }
+      } catch (error) {
+        if (!isCancelled) {
+          console.error("Failed to fetch lesson data:", error);
+        }
       }
     };
 
-    if (id) {
-      fetchLessonData();
-    }
+    fetchLessonData();
+
+    return () => {
+      isCancelled = true;
+    };
   }, [id]);
 
   useEffect(() => {
@@ -32,7 +44,10 @@ const LessonStory = () => {
         setCurrentTime(audioRef.current.currentTime);
       }
     }, 100);
-    return () => clearInterval(interval);
+
+    return () => {
+      clearInterval(interval);
+    };
   }, []);
 
   const handlePlayPause = () => {

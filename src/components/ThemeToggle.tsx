@@ -7,11 +7,10 @@ import { cn } from "@/lib/utils";
 import useThemeToggle from "@/hooks/useToggle";
 
 const ThemeToggle = ({ className, ...props }: ButtonProps) => {
-  const { isDark, toggle, hydrated } = useThemeToggle();
+  const { isDark, toggle } = useThemeToggle();
 
-  // TODO: fix layout shift from hydration
-  if (!hydrated) return null;
-
+  // Render both icons and use CSS to show/hide based on theme
+  // This avoids hydration mismatch by ensuring server and client render the same HTML
   return (
     <Button
       variant="ghost"
@@ -22,11 +21,22 @@ const ThemeToggle = ({ className, ...props }: ButtonProps) => {
       {...props}
       onClick={toggle}
     >
-      {isDark ? (
-        <Moon className="size-[1em] fill-current" />
-      ) : (
-        <Sun className="size-[1em] fill-current" />
-      )}
+      <span className="relative cursor-pointer inline-block size-[1em]">
+        <Sun
+          className={cn(
+            "absolute inset-0 size-[1em] fill-current transition-opacity",
+            isDark ? "opacity-0" : "opacity-100"
+          )}
+          suppressHydrationWarning
+        />
+        <Moon
+          className={cn(
+            "absolute inset-0 size-[1em] fill-current transition-opacity",
+            isDark ? "opacity-100" : "opacity-0"
+          )}
+          suppressHydrationWarning
+        />
+      </span>
     </Button>
   );
 };

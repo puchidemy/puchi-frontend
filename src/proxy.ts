@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-import { routing } from "./i18n/routing";
+import { routing } from "@/i18n/routing";
 import { localizedProtectedRoute } from "./constants/paths";
 
 const intlMiddleware = createMiddleware(routing);

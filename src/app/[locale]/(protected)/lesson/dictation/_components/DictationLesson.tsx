@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { X, Heart, Play } from "lucide-react";
-import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
+import { motion, AnimatePresence, LayoutGroup } from "motion/react";
 
 import type {
   DictationLesson,
@@ -13,8 +13,8 @@ import type {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { dictationService } from "@/services/dictation.service";
-import { shuffleArray } from "@/utils/shuffle-array";
 import { useDrawerStore } from "@/store/drawer";
+import { shuffleArray } from "@/lib/shuffle-array";
 
 interface DictationLessonProps {
   lesson: DictationLesson;
@@ -29,19 +29,31 @@ const DictationLessonComponent = ({
   const { openDrawer } = useDrawerStore();
   const [lesson, setLesson] = useState<DictationLesson>(initialLesson);
   const [selectedWords, setSelectedWords] = useState<DictationWord[]>([]);
-  const [shuffledWords, setShuffledWords] = useState<DictationWord[]>([]);
   const [isChecking, setIsChecking] = useState(false);
-  const [isCorrect, setIsCorrect] = useState(false);
 
   const currentQuestion = lesson.questions[lesson.currentQuestionIndex];
   const progress =
     ((lesson.currentQuestionIndex + 1) / lesson.totalQuestions) * 100;
 
-  // Shuffle từ khi đổi câu hỏi
-  useEffect(() => {
-    setShuffledWords(shuffleArray(currentQuestion.wordOptions));
-    setSelectedWords([]); // reset chọn từ
-  }, [currentQuestion.wordOptions, lesson.currentQuestionIndex]);
+  // Shuffle từ khi đổi câu hỏi - sử dụng useMemo thay vì useEffect
+  const shuffledWords = useMemo(
+    () => shuffleArray(currentQuestion.wordOptions),
+    [currentQuestion]
+  );
+
+  // Helper function to update lesson and reset selected words when question changes
+  const updateLesson = (
+    updater: (prev: DictationLesson) => DictationLesson
+  ) => {
+    setLesson((prev) => {
+      const updated = updater(prev);
+      // Reset selected words if question index changed
+      if (prev.currentQuestionIndex !== updated.currentQuestionIndex) {
+        setSelectedWords([]);
+      }
+      return updated;
+    });
+  };
 
   const remainingWords = shuffledWords.filter(
     (w) => !selectedWords.some((sw) => sw.id === w.id)
@@ -90,15 +102,13 @@ const DictationLessonComponent = ({
       return answerSet.every((id, index) => id === userAnswerIds[index]);
     });
 
-    setIsCorrect(correct);
-
     // Create callback function for when drawer is closed
     const handleDrawerClose = () => {
       setIsChecking(false);
       setSelectedWords([]);
       if (correct) {
         if (lesson.currentQuestionIndex < lesson.totalQuestions - 1) {
-          setLesson((prev) => ({
+          updateLesson((prev) => ({
             ...prev,
             currentQuestionIndex: prev.currentQuestionIndex + 1,
             progress:
@@ -106,7 +116,7 @@ const DictationLessonComponent = ({
             score: prev.score + 10,
           }));
         } else {
-          setLesson((prev) => ({
+          updateLesson((prev) => ({
             ...prev,
             isCompleted: true,
             score: prev.score + 10,
@@ -114,7 +124,7 @@ const DictationLessonComponent = ({
           handleLessonComplete();
         }
       } else {
-        setLesson((prev) => {
+        updateLesson((prev) => {
           const updated = { ...prev, lives: prev.lives - 1 };
           if (updated.lives <= 0) handleLessonFailed();
           return updated;
@@ -136,18 +146,18 @@ const DictationLessonComponent = ({
 
   const handleSkip = () => {
     if (isChecking) return;
-    const updatedLesson = {
-      ...lesson,
-      lives: lesson.lives - 1,
-      currentQuestionIndex: lesson.currentQuestionIndex + 1,
-      progress:
-        ((lesson.currentQuestionIndex + 2) / lesson.totalQuestions) * 100,
-    };
-    setLesson(updatedLesson);
-    setSelectedWords([]);
-    if (updatedLesson.lives <= 0) {
-      handleLessonFailed();
-    }
+    updateLesson((prev) => {
+      const updated = {
+        ...prev,
+        lives: prev.lives - 1,
+        currentQuestionIndex: prev.currentQuestionIndex + 1,
+        progress: ((prev.currentQuestionIndex + 2) / prev.totalQuestions) * 100,
+      };
+      if (updated.lives <= 0) {
+        handleLessonFailed();
+      }
+      return updated;
+    });
   };
 
   if (lesson.isCompleted) {
@@ -175,7 +185,7 @@ const DictationLessonComponent = ({
   }
 
   return (
-    <div className="min-h-screen max-w-screen-lg w-full mx-auto bg-background flex flex-col">
+    <div className="min-h-screen max-w-(--breakpoint-lg) w-full mx-auto bg-background flex flex-col">
       {/* Top Bar */}
       <div className="flex items-center justify-between p-4 border-b border-border">
         <Button variant="ghost" size="icon" onClick={handleExit}>

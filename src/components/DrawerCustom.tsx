@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { CheckCircle, XCircle, Star, Trophy } from "lucide-react";
 import Image from "next/image";
 import {
@@ -23,7 +23,7 @@ export const DrawerCustom = () => {
 
   return (
     <Drawer open={isOpen} onOpenChange={closeDrawer}>
-      <DrawerContent className="max-h-[80vh] max-w-screen-lg px-4 mx-auto">
+      <DrawerContent className="max-h-[80vh] max-w-(--breakpoint-lg) px-4 mx-auto">
         <Image
           alt="Panda drawer"
           src="/images/panda/panda-drawer.png"

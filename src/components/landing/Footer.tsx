@@ -28,7 +28,7 @@ const Footer = () => {
         whileInView={{ y: "0%", scale: 1, opacity: 1 }}
         transition={{ duration: 0.4 }}
         viewport={{ once: true }}
-        className="relative mx-auto flex h-80 flex-col justify-between overflow-hidden rounded-4xl bg-primary-depth/90 text-background dark:bg-card sm:h-96 lg:h-[26rem]"
+        className="relative mx-auto flex h-80 flex-col justify-between overflow-hidden rounded-4xl bg-primary-depth/90 text-background dark:bg-card sm:h-96 lg:h-104"
       >
         <div className="flex border-b-2 border-border/70 dark:border-card dark:bg-primary max-md:flex-col-reverse">
           <div className="group flex w-full flex-1 gap-12 overflow-hidden whitespace-nowrap border-border/70 py-2 text-lg capitalize max-md:border-t-2 sm:text-2xl md:border-r-2 md:py-4">
@@ -91,7 +91,7 @@ const Footer = () => {
             Github
           </a>
         </div>
-        <div className="flex-grow select-none overflow-hidden">
+        <div className="grow select-none overflow-hidden">
           <AnimatedTitle className="md:absolute md:-bottom-1/4 md:left-0 md:translate-x-0">
             <p className="pr-6 font-display text-[min(37vw,300px)] -tracking-widest dark:text-card-foreground">
               Puchi
@@ -104,7 +104,7 @@ const Footer = () => {
             transition={{ type: "spring", duration: 1.2 }}
             viewport={{ margin: "10% 0% 0% 0%" }}
           >
-            <div className="drop-shadow-2xl saturate-[0.7] dark:hue-rotate-[50deg]">
+            <div className="drop-shadow-2xl saturate-[0.7] dark:hue-rotate-50">
               <LogoSVG />
             </div>
           </MotionDiv>

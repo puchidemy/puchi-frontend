@@ -78,12 +78,12 @@ const LessonButton = ({ index, lesson, color }: LessonButtonProps) => {
                 <Button
                   size="rounded"
                   variant="immersive"
-                  className="w-[70px] h-[68px] border-b-8 hover:translate-y-[1px] hover:border-b-[7px]"
+                  className="w-[70px] h-[68px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
                   style={{ backgroundColor: color }}
                 >
                   <Icon
                     className={cn(
-                      "h-10 w-10 text-gray-50 stroke-[4]",
+                      "h-10 w-10 text-gray-50 stroke-4",
                       !isNotStarted && "fill-gray-100",
                       isCompleted && "fill-none"
                     )}
@@ -97,7 +97,7 @@ const LessonButton = ({ index, lesson, color }: LessonButtonProps) => {
                 size="rounded"
                 variant={isNotStarted ? "locked" : "secondary"}
                 // style={{ backgroundColor: currColor }}
-                className="w-[70px] h-[70px] border-b-8 hover:translate-y-[1px] hover:border-b-[7px]"
+                className="w-[70px] h-[70px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
               >
                 <Icon
                   className={cn(

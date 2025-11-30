@@ -6,7 +6,7 @@ import {
   useSpring,
   useTransform,
   type MotionValue,
-} from "framer-motion";
+} from "motion/react";
 
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { MotionDiv } from "@/components/motion";

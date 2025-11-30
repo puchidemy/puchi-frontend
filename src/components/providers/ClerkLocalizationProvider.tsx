@@ -1,4 +1,8 @@
+"use client";
+
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
+import { useTheme } from "next-themes";
 import {
   enUS,
   zhCN,
@@ -11,8 +15,7 @@ import {
   ruRU,
 } from "@clerk/localizations";
 import { LocalizationResource } from "@clerk/types";
-
-import "@/styles/clerk.css";
+import { THEME_DARK } from "@/constants/theme";
 
 export type Localizations = {
   [key: string]: LocalizationResource;
@@ -36,13 +39,17 @@ type Props = {
 };
 
 const ClerkLocalizationProvider = ({ children, locale }: Props) => {
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === THEME_DARK;
+
   return (
     <ClerkProvider
       appearance={{
+        theme: isDark ? dark : undefined,
         variables: {
-          fontSize: "0.875rem",
-          borderRadius: "0.5rem",
-          colorPrimary: "hsl(142, 71%, 45%)",
+          borderRadius: "var(--radius)",
+          colorPrimary: "var(--primary)",
+          colorBackground: "var(--background)",
         },
       }}
       localization={localizations[locale]}

@@ -1,6 +1,6 @@
 "use client";
 
-import { m } from "framer-motion";
+import { m } from "motion/react";
 
 export const MotionDiv = m.div;
 export const MotionUl = m.ul;

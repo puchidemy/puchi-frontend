@@ -1,5 +1,5 @@
 import { Globe } from "lucide-react";
-import type { Variants } from "framer-motion";
+import type { Variants } from "motion/react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -64,28 +64,28 @@ const Hero = () => {
       </div>
       <div className="absolute -left-[2%] top-[13%] -z-1 sm:left-[10%]">
         <AnimatedHeroDecor className="origin-bottom-right" delay={0.8}>
-          <div className="size-20 -rotate-12 rounded-lg bg-gradient-to-br from-highlight/70  to-transparent p-2 text-background sm:size-24 lg:size-32">
+          <div className="size-20 -rotate-12 rounded-lg bg-linear-to-br from-highlight/70  to-transparent p-2 text-background sm:size-24 lg:size-32">
             <LangSVG />
           </div>
         </AnimatedHeroDecor>
       </div>
       <div className="absolute right-[10%] top-[13%] -z-1 max-md:hidden">
         <AnimatedHeroDecor className="origin-bottom-left" move={60} delay={1}>
-          <div className="size-24 rotate-12 rounded-lg bg-gradient-to-bl from-highlight/70  to-transparent p-2 text-background lg:size-32">
+          <div className="size-24 rotate-12 rounded-lg bg-linear-to-bl from-highlight/70  to-transparent p-2 text-background lg:size-32">
             <BulbSVG />
           </div>
         </AnimatedHeroDecor>
       </div>
       <div className="absolute bottom-[10%] left-[10%] -z-1 max-md:hidden">
         <AnimatedHeroDecor className="origin-top-right" move={60} delay={1.2}>
-          <div className="size-24 -rotate-6 rounded-lg bg-gradient-to-r from-secondary/30  to-transparent p-2 text-background lg:size-32">
+          <div className="size-24 -rotate-6 rounded-lg bg-linear-to-r from-secondary/30  to-transparent p-2 text-background lg:size-32">
             <RewardSVG />
           </div>
         </AnimatedHeroDecor>
       </div>
       <div className="absolute -right-[2%] top-1/3 -z-1 sm:right-[10%] md:top-2/3">
         <AnimatedHeroDecor className="origin-top-left" delay={1.4}>
-          <div className="size-20 rotate-12 rounded-lg bg-gradient-to-l from-secondary/30  to-transparent p-2 text-background sm:size-24 lg:size-32">
+          <div className="size-20 rotate-12 rounded-lg bg-linear-to-l from-secondary/30  to-transparent p-2 text-background sm:size-24 lg:size-32">
             <VoiceSVG />
           </div>
         </AnimatedHeroDecor>

@@ -42,7 +42,7 @@ const RightBarSection = async () => {
             <div className="w-full">
               <p className="text-lg font-bold">Earn 10 XP</p>
               <div className="flex items-center">
-                <div className="h-4 w-full bg-highlight/20 rounded-l-[8px] text-center text-sm leading-[1rem]">
+                <div className="h-4 w-full bg-highlight/20 rounded-l-[8px] text-center text-sm leading-4">
                   0/10
                 </div>
                 <Image

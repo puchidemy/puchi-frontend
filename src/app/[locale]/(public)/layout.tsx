@@ -52,7 +52,7 @@ type PublicLayoutProps = {
 
 export default async function PublicLayout({ children }: PublicLayoutProps) {
   return (
-    <div className="container flex flex-grow flex-col px-0">
+    <div className="container flex grow flex-col px-0">
       <Header />
       <main className="flex flex-1 flex-col">{children}</main>
       <Footer />

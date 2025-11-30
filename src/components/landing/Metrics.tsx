@@ -2,7 +2,7 @@
 
 import { type PropsWithChildren, useRef } from "react";
 import { useTranslations } from "next-intl";
-import { useScroll, useTransform, useSpring } from "framer-motion";
+import { useScroll, useTransform, useSpring } from "motion/react";
 
 import FaceOneSVG from "@public/images/face-1.svg";
 import FaceTwoSVG from "@public/images/face-2.svg";
@@ -75,7 +75,7 @@ const Metrics = ({ children }: PropsWithChildren) => {
         </li>
         <li className="sticky top-[20%] col-start-1 col-end-13 pb-8 sm:col-start-2 sm:col-end-9 sm:pb-16 lg:top-[5%] lg:pb-40">
           <MetricsItem
-            className="bg-gradient-to-b from-primary to-primary-depth to-80%"
+            className="bg-linear-to-b from-primary to-primary-depth to-80%"
             number={93}
             suffix="%"
             description={t("fluencyInTwoMonths")}

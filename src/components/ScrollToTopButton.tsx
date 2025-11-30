@@ -20,8 +20,14 @@ const ScrollToTopButton = forwardRef<HTMLButtonElement, ButtonProps>(
         setIsVisible(window.scrollY > 300);
       };
 
-      window.addEventListener("scroll", toggleVisibility);
-      return () => window.removeEventListener("scroll", toggleVisibility);
+      // Set initial visibility
+      toggleVisibility();
+
+      // Add scroll listener with passive option for better performance
+      window.addEventListener("scroll", toggleVisibility, { passive: true });
+      return () => {
+        window.removeEventListener("scroll", toggleVisibility);
+      };
     }, []);
 
     const scrollToTop = () => {

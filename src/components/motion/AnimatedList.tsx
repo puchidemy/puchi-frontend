@@ -1,7 +1,7 @@
 "use client";
 
 import type { PropsWithChildren } from "react";
-import { type Variant } from "framer-motion";
+import { type Variant } from "motion/react";
 import { MotionLi, MotionUl } from "@/components/motion";
 
 type AnimatedListProps = {
