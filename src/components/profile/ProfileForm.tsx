@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserProfile } from "@/types/user";
 import { updateUserProfile } from "@/services/user.service";
-import { useAuthToken } from "@/hooks/useAuthToken";
+import { useAuthToken } from "@/hooks/use-auth-token";
 import { toast } from "sonner";
 import { Loader2, Save, X } from "lucide-react";
 
@@ -77,7 +77,12 @@ const ProfileForm = ({ profile, onUpdate }: ProfileFormProps) => {
             >
               <X className="h-4 w-4" />
             </Button>
-            <Button variant="primary" onClick={handleSave} size="sm" disabled={isLoading}>
+            <Button
+              variant="primary"
+              onClick={handleSave}
+              size="sm"
+              disabled={isLoading}
+            >
               {isLoading ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : (

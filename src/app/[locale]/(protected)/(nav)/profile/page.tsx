@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserProfile } from "@/services/user.service";
 import { UserProfile } from "@/types/user";
-import { useAuthToken } from "@/hooks/useAuthToken";
+import { useAuthToken } from "@/hooks/use-auth-token";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileForm from "@/components/profile/ProfileForm";
 import ProfileStats from "@/components/profile/ProfileStats";

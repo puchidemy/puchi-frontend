@@ -5,6 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --dark-mode: class;
+
+  /* Breakpoints */
+  --breakpoint-2xl: 1400px;
+  --breakpoint-app: 1600px;
+
   /* Fonts */
   --font-sans: var(--font-gabarito);
   --font-display: var(--font-capriola);
@@ -243,6 +249,10 @@
   .focus-visible {
     @apply ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
   }
+}
+
+@utility container {
+  @apply mx-auto;
 }
 
 @keyframes accordion-down {

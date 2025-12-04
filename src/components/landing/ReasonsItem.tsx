@@ -48,11 +48,7 @@ const ReasonsItem = ({
         { y: ["100%", "0%"], x: ["7.5%", "0%"] },
         { duration: 0.6, ease: "easeOut", at: "<" },
       ],
-      [
-        "[data-reason-icon]",
-        { scale: [0, 1] },
-        { type: "spring", at: "-0.2" },
-      ],
+      ["[data-reason-icon]", { scale: [0, 1] }, { type: "spring", at: "-0.2" }],
     ]);
 
     return () => {
@@ -73,7 +69,7 @@ const ReasonsItem = ({
     <div
       ref={scope}
       className={cn(
-        "-translate-x-[101%] rounded-4xl transition-colors duration-300 dark:text-background",
+        "rounded-4xl transition-colors duration-300 dark:text-background",
         className
       )}
     >

@@ -33,11 +33,11 @@ const LearnTitle = ({ data }: LearnTitleProps) => {
 
       <Link
         href={`/guidebook?section=${numSection}&unit=${numUnit}`}
-        className="items-center"
+        className="items-center text-gray-200"
       >
         <Button variant="immersive">
           <Notebook />
-          <span className="ml-2 max-xl:hidden text-gray-50">GUIDEBOOK</span>
+          <span className="ml-2 max-xl:hidden">GUIDEBOOK</span>
         </Button>
       </Link>
     </div>
