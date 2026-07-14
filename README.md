@@ -105,4 +105,25 @@ For any questions or support, please contact us at:
 
 ---
 
+## Architecture
+
+```
+puchidemy/
+├── puchi-frontend/      # Next.js PWA (this repo)
+├── puchi-backend/       # Go microservices (Kratos v3 monorepo)
+│   ├── app/core/        # Auth + User + Game
+│   ├── app/content/     # Courses, units, lessons
+│   ├── app/grading/     # Dictation, listening grading
+│   └── ...
+├── puchi-infra/         # ArgoCD GitOps on K3s
+│   ├── argocd/          # App of Apps
+│   ├── infra/           # PostgreSQL, Supertoken, Envoy
+│   └── scripts/         # Setup Garage, NATS
+└── .github/profile/     # Organization profile
+```
+
+See [puchi-backend](https://github.com/puchidemy/puchi-backend) and [puchi-infra](https://github.com/puchidemy/puchi-infra) for details.
+
+---
+
 Puchi © 2025. All rights reserved.
