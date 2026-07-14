@@ -3,21 +3,15 @@
 ############################
 # Base image
 ############################
-FROM node:24-alpine AS base
-RUN apk add --no-cache libc6-compat
+FROM imbios/bun-node:24-1.2-slim AS base
 WORKDIR /app
 
 ############################
 # Dependencies stage
 ############################
 FROM base AS deps
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci --legacy-peer-deps; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+COPY package.json bun.lock ./
+RUN bun install --frozen-lockfile
 
 ############################
 # Builder stage
@@ -55,17 +49,12 @@ ENV CLERK_SECRET_KEY=$CLERK_SECRET_KEY
 ENV CLERK_WEBHOOK_SECRET=$CLERK_WEBHOOK_SECRET
 ENV ANALYZE=$ANALYZE
 
-RUN \
-  if [ -f yarn.lock ]; then yarn build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+RUN bun run build
 
 ############################
 # Runner stage
 ############################
-FROM base AS runner
+FROM node:24-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
