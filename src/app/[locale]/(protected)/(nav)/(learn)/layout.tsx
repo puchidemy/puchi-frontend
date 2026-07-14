@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import ItemsInfo from "@/components/ItemsInfo";
 import RightBarSection from "@/components/sections/RightBarSection";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
-import LoadingCustom from "@/components/LoadingCustom";
 
 type LearnLayoutProps = {
   children: React.ReactNode;
@@ -10,8 +9,8 @@ type LearnLayoutProps = {
 
 function RightBarFallback() {
   return (
-    <div className="w-full h-full">
-      <LoadingCustom />
+    <div className="w-full h-full flex flex-col items-center justify-center py-20">
+      <div className="w-20 h-20 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin" />
     </div>
   );
 }
