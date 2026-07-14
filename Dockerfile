@@ -1,22 +1,17 @@
 # syntax=docker.io/docker/dockerfile:1
 
 ############################
-# Base image
+# Deps stage — Bun để install nhanh
 ############################
-FROM oven/bun:1.2-slim AS base
+FROM oven/bun:1.2-slim AS deps
 WORKDIR /app
-
-############################
-# Dependencies stage
-############################
-FROM base AS deps
 COPY package.json bun.lock ./
 RUN bun install --frozen-lockfile
 
 ############################
-# Builder stage
+# Builder stage — Node.js để build (Bun chưa hỗ trợ Next.js 16)
 ############################
-FROM base AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -49,7 +44,7 @@ ENV CLERK_SECRET_KEY=$CLERK_SECRET_KEY
 ENV CLERK_WEBHOOK_SECRET=$CLERK_WEBHOOK_SECRET
 ENV ANALYZE=$ANALYZE
 
-RUN bun run build
+RUN npm run build
 
 ############################
 # Runner stage
