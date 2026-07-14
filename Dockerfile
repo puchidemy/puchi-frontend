@@ -3,7 +3,7 @@
 ############################
 # Base image
 ############################
-FROM imbios/bun-node:24-1.2-slim AS base
+FROM oven/bun:1.2-slim AS base
 WORKDIR /app
 
 ############################
