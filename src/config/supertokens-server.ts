@@ -14,7 +14,7 @@ export const supertokensConfig: TypeInput = {
   appInfo: {
     appName: "Puchi",
     apiDomain:
-      process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
+      process.env.NEXT_PUBLIC_AUTH_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
     websiteDomain:
       process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || "http://localhost:3000",
     apiBasePath: "/api/auth",
@@ -89,8 +89,7 @@ export const supertokensConfig: TypeInput = {
 let initialized = false;
 
 export function ensureSupertokensInit() {
-  if (!initialized) {
-    SuperTokens.init(supertokensConfig);
-    initialized = true;
-  }
+  if (initialized) return;
+  SuperTokens.init(supertokensConfig);
+  initialized = true;
 }

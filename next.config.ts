@@ -22,27 +22,30 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
 
-  turbopack: {
-    rules: {
-      '*.svg': {
-        loaders: [
-          {
-            loader: '@svgr/webpack',
-            options: {
-              svgProps: {
-                fill: "currentColor",
-              },
-            },
-          },
-        ],
-        as: '*.js',
-      },
-    },
+  // Dùng Webpack thay vì Turbopack vì @svgr/webpack gây leak CPU/RAM trên Turbopack
+  webpack(config) {
+    // Tìm rule xử lý SVG mặc định của Next.js
+    const fileLoaderRule = config.module.rules.find((rule: any) =>
+      rule.test?.test?.('.svg')
+    );
+
+    if (fileLoaderRule) {
+      // Exclude *.svg từ file-loader mặc định
+      fileLoaderRule.exclude = /\.svg$/i;
+    }
+
+    // Cấu hình loader để import file .svg trực tiếp dưới dạng React component
+    config.module.rules.push({
+      test: /\.svg$/i,
+      use: ['@svgr/webpack'],
+    });
+
+    return config;
   },
 
   logging: {
     fetches: {
-      fullUrl: true,
+      fullUrl: false,
     },
   },
 

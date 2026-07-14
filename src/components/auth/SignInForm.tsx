@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { signIn } from "supertokens-web-js/recipe/emailpassword";
@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
+import { initSupertokens } from "@/config/supertokens";
 
 export function SignInForm() {
   const router = useRouter();
@@ -16,6 +17,10 @@ export function SignInForm() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    initSupertokens();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

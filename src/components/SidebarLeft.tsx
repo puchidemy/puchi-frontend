@@ -3,7 +3,7 @@
 import { memo, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { doesSessionExist } from "supertokens-web-js/recipe/session";
-import { signOut } from "@/config/supertokens";
+import { initSupertokens, signOut } from "@/config/supertokens";
 
 import LogoSVG from "@public/images/logo/logo.svg";
 import { Link, usePathname } from "@/i18n/routing";
@@ -49,6 +49,7 @@ const SidebarLeft = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
+    initSupertokens();
     doesSessionExist()
       .then(setIsSignedIn)
       .catch(() => setIsSignedIn(false));

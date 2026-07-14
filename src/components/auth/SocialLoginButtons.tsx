@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getAuthorisationURLWithQueryParamsAndSetState } from "supertokens-web-js/recipe/thirdparty";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { initSupertokens } from "@/config/supertokens";
 
 function GoogleIcon() {
   return (
@@ -52,6 +53,10 @@ const providers = [
 
 export function SocialLoginButtons() {
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    initSupertokens();
+  }, []);
 
   async function handleSocialLogin(providerId: string) {
     setError("");

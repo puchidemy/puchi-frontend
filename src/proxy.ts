@@ -5,19 +5,16 @@ import { getSession } from "supertokens-node/recipe/session";
 import { routing } from "@/i18n/routing";
 import { localizedProtectedRoute } from "./constants/paths";
 
-ensureSupertokensInit();
-
 const intlMiddleware = createMiddleware(routing);
 
 export async function proxy(req: NextRequest) {
   const url = new URL(req.url);
 
-  if (
-    url.pathname.startsWith("/api/auth") ||
-    url.pathname.startsWith("/_next")
-  ) {
+  if (url.pathname.startsWith("/_next")) {
     return NextResponse.next();
   }
+
+  ensureSupertokensInit();
 
   const isProtected = localizedProtectedRoute.some((route) => {
     const pattern = route.replace("/:locale", "");
@@ -42,7 +39,6 @@ export async function proxy(req: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|webm|mp4|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|txt|xml|riv)).*)",
-    "/(api|trpc)(.*)",
+    "/((?!_next|api|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|webm|mp4|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest|txt|xml|riv)).*)",
   ],
 };
