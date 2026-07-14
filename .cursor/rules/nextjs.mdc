@@ -1,0 +1,36 @@
+---
+description: Next.js 16 + React 19 conventions
+globs: src/**/*.ts, src/**/*.tsx
+alwaysApply: false
+---
+
+# Next.js & React Conventions
+
+## App Router
+
+- Dùng App Router (thư mục `app/[locale]/`)
+- i18n qua `next-intl` với `[locale]` segment
+- Server Components mặc định, Client Components khi cần interactivity
+
+## Components
+
+- **Shadcn UI** components trong `components/ui/`
+- Feature components trong `components/<feature>/`
+- Composition over inheritance
+
+## State Management
+
+- **Zustand** cho global state
+- React Context chỉ cho theme/locale
+- Server State: React Server Components + fetch trực tiếp
+
+## API Calls
+
+- Client → gọi qua service layer (`services/`)
+- Server → fetch trực tiếp, không qua service layer
+
+## i18n
+
+- Dùng `next-intl` với `useTranslations()`
+- File messages trong `messages/`
+- Không hardcode text trong component
