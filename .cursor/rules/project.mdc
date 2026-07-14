@@ -1,4 +1,4 @@
----
+﻿---
 description: Tổng quan dự án Puchi Frontend
 alwaysApply: true
 ---
@@ -14,7 +14,7 @@ Puchi là nền tảng web học tiếng Việt. Frontend dùng **Next.js 16 (Ap
 | Framework | Next.js 16 (App Router) |
 | UI | Tailwind CSS v4 + Shadcn UI (New York) |
 | State | Zustand v5 |
-| Auth | Clerk v6 → sẽ thay bằng Supertoken |
+| Auth | Supertokens (self-host, Email/Password + Google + Facebook + TikTok) |
 | i18n | next-intl (9 ngôn ngữ) |
 | Animation | Motion + Rive |
 | Runtime | Bun |
@@ -46,11 +46,11 @@ src/
 
 ## CI/CD
 
-- **CI**: GitHub Actions (`ci-cd.yml`) — Lint → Build Docker image → Push GHCR
-- **Docker**: Multi-stage build với Bun, output `standalone`
+- **CI**: GitHub Actions (`ci-cd.yml`) - Lint, Build Docker, Push GHCR
+- **Docker**: Multi-stage build voi Bun, output `standalone`
 - **Registry**: `ghcr.io/puchidemy/puchi-frontend`
 
-## Kết nối Backend
+## Kết noi Backend
 
-- API qua Envoy Gateway tại `api.puchi.io.vn`
-- Auth tạm qua Clerk, sau chuyển Supertoken
+- API qua Envoy Gateway tai `api.puchi.io.vn`
+- Auth: Supertokens (da migrate tu Clerk)
