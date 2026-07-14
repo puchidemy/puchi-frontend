@@ -108,21 +108,29 @@ For any questions or support, please contact us at:
 ## Architecture
 
 ```
-puchidemy/
-├── puchi-frontend/      # Next.js PWA (this repo)
-├── puchi-backend/       # Go microservices (Kratos v3 monorepo)
-│   ├── app/core/        # Auth + User + Game
-│   ├── app/content/     # Courses, units, lessons
-│   ├── app/grading/     # Dictation, listening grading
-│   └── ...
-├── puchi-infra/         # ArgoCD GitOps on K3s
-│   ├── argocd/          # App of Apps
-│   ├── infra/           # PostgreSQL, Supertoken, Envoy
-│   └── scripts/         # Setup Garage, NATS
-└── .github/profile/     # Organization profile
+User → Next.js PWA (CDN) → Envoy Gateway → Go Services → PostgreSQL/NATS/Garage
+         (puchi.io.vn)        (API GW)      (Kratos v3)    (K3s cluster)
 ```
 
-See [puchi-backend](https://github.com/puchidemy/puchi-backend) and [puchi-infra](https://github.com/puchidemy/puchi-infra) for details.
+### Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 16 (App Router) + React 19 |
+| Styling | Tailwind CSS v4 + Shadcn UI (New York) |
+| State | Zustand v5 |
+| Runtime | Bun |
+| i18n | next-intl (9 languages) |
+| Animation | Motion + Rive |
+| Auth | Clerk v6 → Supertoken (planned) |
+
+### Repos
+
+| Repo | Description |
+|------|-------------|
+| [puchi-frontend](https://github.com/puchidemy/puchi-frontend) | Next.js PWA (this repo) |
+| [puchi-backend](https://github.com/puchidemy/puchi-backend) | Go microservices monorepo (Kratos v3) |
+| [puchi-infra](https://github.com/puchidemy/puchi-infra) | ArgoCD GitOps on K3s |
 
 ---
 
