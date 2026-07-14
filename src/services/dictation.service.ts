@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { DictationLesson, DictationAnswer } from "@/types/dictation";
 
 export interface DictationService {

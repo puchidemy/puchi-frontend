@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ItemsInfo from "@/components/ItemsInfo";
 import RightBarSection from "@/components/sections/RightBarSection";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
@@ -5,6 +6,14 @@ import ScrollToTopButton from "@/components/ScrollToTopButton";
 type LearnLayoutProps = {
   children: React.ReactNode;
 };
+
+function RightBarFallback() {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center py-20">
+      <div className="w-20 h-20 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin" />
+    </div>
+  );
+}
 
 export default async function LearnLayout({ children }: LearnLayoutProps) {
   return (
@@ -22,7 +31,9 @@ export default async function LearnLayout({ children }: LearnLayoutProps) {
             className="max-xl:hidden w-[350px] fixed"
             style={{ right: "calc((100vw - 1276px) / 2)" }}
           >
-            <RightBarSection />
+            <Suspense fallback={<RightBarFallback />}>
+              <RightBarSection />
+            </Suspense>
           </div>
         </div>
       </div>

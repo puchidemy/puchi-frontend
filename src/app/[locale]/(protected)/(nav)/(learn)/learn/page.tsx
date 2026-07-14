@@ -5,7 +5,7 @@ import Unit from "@/components/learn/Unit";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const data = Array.from({ length: 10 }, (_, index) => ({
   numSection: 1,
@@ -26,37 +26,32 @@ export default function ScrollHighlight() {
   const stickyRef = useRef<HTMLDivElement | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  useEffect(() => {
-    const checkInterTitle = () => {
-      if (!stickyRef.current) return;
-
-      const stickyElement = stickyRef.current.getBoundingClientRect();
-
-      titlesRef.current.forEach((title, index) => {
-        if (title) {
-          const titleElement = title.getBoundingClientRect();
-
-          if (
-            titleElement.top <= stickyElement.bottom &&
-            titleElement.bottom >= stickyElement.top
-          ) {
-            setCurrentIndex(index);
-          }
+  const handleIntersect = useCallback((entries: IntersectionObserverEntry[]) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        const index = titlesRef.current.indexOf(entry.target as HTMLDivElement);
+        if (index !== -1) {
+          setCurrentIndex(index);
         }
-      });
-    };
-
-    // Set initial state
-    checkInterTitle();
-
-    // Add scroll listener with passive option for better performance
-    window.addEventListener("scroll", checkInterTitle, { passive: true });
-
-    // Cleanup listener khi component unmount
-    return () => {
-      window.removeEventListener("scroll", checkInterTitle);
-    };
+      }
+    }
   }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleIntersect, {
+      rootMargin: "-60px 0px 0px 0px",
+      threshold: 0,
+    });
+
+    const currentTitles = titlesRef.current;
+    currentTitles.forEach((title) => {
+      if (title) observer.observe(title);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [handleIntersect]);
 
   return (
     <div className="w-full xl:pr-8 pr-0 font-din">

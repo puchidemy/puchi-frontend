@@ -39,14 +39,16 @@ const LessonStory = () => {
   }, [id]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (audioRef.current) {
-        setCurrentTime(audioRef.current.currentTime);
-      }
-    }, 100);
+    const audio = audioRef.current;
+    if (!audio) return;
 
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+    };
+
+    audio.addEventListener("timeupdate", handleTimeUpdate);
     return () => {
-      clearInterval(interval);
+      audio.removeEventListener("timeupdate", handleTimeUpdate);
     };
   }, []);
 

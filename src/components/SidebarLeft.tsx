@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo } from "react";
 import Image from "next/image";
 import { useAuth, SignOutButton } from "@clerk/nextjs";
 
@@ -8,9 +9,55 @@ import { Link, usePathname } from "@/i18n/routing";
 import { navigationList } from "@/constants/navigation";
 import { Separator } from "./ui/separator";
 
+type NavItemProps = {
+  icon: string;
+  label: string;
+  slug: string;
+  pathname: string;
+};
+
+const NavItem = memo(function NavItem({ icon, label, slug, pathname }: NavItemProps) {
+  const isActive = pathname.split("/")[1] === slug;
+  return (
+    <div
+      className={`w-full gap-4 p-2 rounded-xl border-2 hover:bg-sky-100 dark:hover:bg-sky-900/40 ${
+        isActive &&
+        "text-sky-400 border-sky-400 bg-sky-100 dark:bg-sky-900/40"
+      }`}
+    >
+      <Link
+        href={`/${slug}`}
+        className="flex items-center px-2 max-lg:px-0 gap-4"
+      >
+        <Image
+          src={icon}
+          alt={label}
+          width={32}
+          height={32}
+        />
+        <span className="hidden lg:inline uppercase font-bold text-sm">
+          {label}
+        </span>
+      </Link>
+    </div>
+  );
+});
+
 const SidebarLeft = () => {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
+
+  const navItems = useMemo(() => (
+    navigationList.map((item) => (
+      <NavItem
+        key={item.slug}
+        icon={item.icon}
+        label={item.label}
+        slug={item.slug}
+        pathname={pathname}
+      />
+    ))
+  ), [pathname]);
 
   return (
     <div className="fixed top-0 left-0 h-full font-din hidden sm:flex sm:w-[84px] lg:w-60 p-4 flex-col items-center lg:items-start space-y-4 border-r-2">
@@ -26,33 +73,7 @@ const SidebarLeft = () => {
       </Link>
 
       <div className="flex-1 flex flex-col items-center lg:items-start gap-2 w-full">
-        {navigationList.map((item) => {
-          const isActive = pathname.split("/")[1] === item.slug;
-          return (
-            <div
-              key={item.slug}
-              className={`w-full gap-4 p-2 rounded-xl border-2 hover:bg-sky-100 dark:hover:bg-sky-900/40 ${
-                isActive &&
-                "text-sky-400 border-sky-400 bg-sky-100 dark:bg-sky-900/40"
-              }`}
-            >
-              <Link
-                href={`/${item.slug}`}
-                className="flex items-center px-2 max-lg:px-0 gap-4"
-              >
-                <Image
-                  src={item.icon}
-                  alt={item.label}
-                  width={32}
-                  height={32}
-                />
-                <span className="hidden lg:inline uppercase font-bold text-sm">
-                  {item.label}
-                </span>
-              </Link>
-            </div>
-          );
-        })}
+        {navItems}
         <div className="group/menu relative w-full gap-4 p-2 rounded-xl border-2 hover:bg-sky-100 dark:hover:bg-sky-900/40">
           <div className="flex items-center px-2 max-lg:px-0 gap-4">
             <Image alt="more" src="/icons/more.svg" width={32} height={32} />
