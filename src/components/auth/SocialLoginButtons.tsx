@@ -65,7 +65,7 @@ export function SocialLoginButtons() {
         thirdPartyId: providerId,
         frontendRedirectURI: `${window.location.origin}/auth/callback/${providerId}`,
       });
-      window.location.href = authUrl;
+      window.location.assign(authUrl);
     } catch (err) {
       setError(`Failed to connect to ${providerId}. Please try again.`);
     }

@@ -22,22 +22,48 @@ const nextConfig: NextConfig = {
     globalNotFound: true,
   },
 
-  // Dùng Webpack thay vì Turbopack vì @svgr/webpack gây leak CPU/RAM trên Turbopack
+  // 1. Cấu hình sẵn cho Turbopack (khi sau này Next.js vá lỗi loop và quay lại dùng)
+  turbopack: {
+    rules: {
+      "*.svg": {
+        loaders: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              svgProps: {
+                fill: "currentColor",
+              },
+            },
+          },
+        ],
+        as: "*.js",
+      },
+    },
+  },
+
+  // 2. Cấu hình cho Webpack (Dùng chính ở môi trường dev lúc này để tránh CPU 100%)
   webpack(config) {
-    // Tìm rule xử lý SVG mặc định của Next.js
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fileLoaderRule = config.module.rules.find((rule: any) =>
       rule.test?.test?.('.svg')
     );
 
     if (fileLoaderRule) {
-      // Exclude *.svg từ file-loader mặc định
       fileLoaderRule.exclude = /\.svg$/i;
     }
 
-    // Cấu hình loader để import file .svg trực tiếp dưới dạng React component
     config.module.rules.push({
       test: /\.svg$/i,
-      use: ['@svgr/webpack'],
+      use: [
+        {
+          loader: "@svgr/webpack",
+          options: {
+            svgProps: {
+              fill: "currentColor",
+            },
+          },
+        },
+      ],
     });
 
     return config;
