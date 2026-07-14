@@ -8,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { UserProfile } from "@/types/user";
 import { updateUserProfile } from "@/services/user.service";
-import { useAuthToken } from "@/hooks/use-auth-token";
 import { toast } from "sonner";
 import { Loader2, Save, X } from "lucide-react";
 
@@ -26,7 +25,7 @@ const ProfileForm = ({ profile, onUpdate }: ProfileFormProps) => {
     lastName: profile.lastName,
     username: profile.username,
   });
-  const { getAuthHeaders } = useAuthToken();
+  const { toast: showToast } = toast;
 
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({
@@ -38,7 +37,7 @@ const ProfileForm = ({ profile, onUpdate }: ProfileFormProps) => {
   const handleSave = async () => {
     setIsLoading(true);
     try {
-      const updatedProfile = await updateUserProfile(formData, getAuthHeaders);
+      const updatedProfile = await updateUserProfile(formData);
       onUpdate(updatedProfile);
       setIsEditing(false);
       toast.success(t("success"));

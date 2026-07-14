@@ -1,8 +1,9 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import { useAuth, SignOutButton } from "@clerk/nextjs";
+import { doesSessionExist } from "supertokens-web-js/recipe/session";
+import { signOut } from "@/config/supertokens";
 
 import LogoSVG from "@public/images/logo/logo.svg";
 import { Link, usePathname } from "@/i18n/routing";
@@ -45,7 +46,11 @@ const NavItem = memo(function NavItem({ icon, label, slug, pathname }: NavItemPr
 
 const SidebarLeft = () => {
   const pathname = usePathname();
-  const { isSignedIn } = useAuth();
+  const [isSignedIn, setIsSignedIn] = useState(false);
+
+  useEffect(() => {
+    doesSessionExist().then(setIsSignedIn);
+  }, []);
 
   const navItems = useMemo(() => (
     navigationList.map((item) => (
@@ -122,11 +127,12 @@ const SidebarLeft = () => {
                 Help
               </Link>
               {isSignedIn ? (
-                <SignOutButton redirectUrl={pathname}>
-                  <span className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
-                    Logout
-                  </span>
-                </SignOutButton>
+                <span
+                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  onClick={() => signOut().then(() => window.location.reload())}
+                >
+                  Logout
+                </span>
               ) : (
                 <Link
                   href="/sign-up"

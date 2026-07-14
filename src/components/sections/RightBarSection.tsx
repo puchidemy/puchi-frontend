@@ -3,11 +3,9 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import ItemsInfo from "../ItemsInfo";
 import { Link } from "@/i18n/routing";
 import { Button } from "../ui/button";
-import { currentUser } from "@clerk/nextjs/server";
 import FooterLink from "../FooterLink";
-
 const RightBarSection = async () => {
-  const user = await currentUser();
+  return (
 
   return (
     <div className="w-full h-full">

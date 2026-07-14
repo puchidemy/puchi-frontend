@@ -1,4 +1,4 @@
-import ClerkLocalizationProvider from "@/components/providers/ClerkLocalizationProvider";
+import { SupertokensProvider } from "@/providers/SupertokensProvider";
 
 type ProtectedLayoutProps = {
   children: React.ReactNode;
@@ -9,11 +9,5 @@ export default async function ProtectedLayout({
   children,
   params,
 }: ProtectedLayoutProps) {
-  const { locale } = await params;
-
-  return (
-    <ClerkLocalizationProvider locale={locale}>
-      {children}
-    </ClerkLocalizationProvider>
-  );
+  return <SupertokensProvider>{children}</SupertokensProvider>;
 }

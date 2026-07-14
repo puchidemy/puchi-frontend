@@ -1,9 +1,7 @@
 import { UserProfile } from "@/types/user";
 
-// API base URL
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-// Service class để quản lý API calls
 class UserService {
   private baseUrl: string;
 
@@ -11,12 +9,10 @@ class UserService {
     this.baseUrl = baseUrl;
   }
 
-  async getUserProfile(getAuthHeaders: () => Promise<HeadersInit>): Promise<UserProfile> {
+  async getUserProfile(): Promise<UserProfile> {
     try {
-      const headers = await getAuthHeaders();
       const response = await fetch(`${this.baseUrl}/users/profile`, {
         method: "GET",
-        headers,
         credentials: "include",
       });
 
@@ -32,15 +28,11 @@ class UserService {
     }
   }
 
-  async updateUserProfile(
-    profileData: Partial<UserProfile>,
-    getAuthHeaders: () => Promise<HeadersInit>
-  ): Promise<UserProfile> {
+  async updateUserProfile(profileData: Partial<UserProfile>): Promise<UserProfile> {
     try {
-      const headers = await getAuthHeaders();
       const response = await fetch(`${this.baseUrl}/users/profile`, {
         method: "PUT",
-        headers,
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(profileData),
         credentials: "include",
       });
@@ -57,12 +49,10 @@ class UserService {
     }
   }
 
-  async deleteUserAccount(getAuthHeaders: () => Promise<HeadersInit>): Promise<boolean> {
+  async deleteUserAccount(): Promise<boolean> {
     try {
-      const headers = await getAuthHeaders();
       const response = await fetch(`${this.baseUrl}/users/profile`, {
         method: "DELETE",
-        headers,
         credentials: "include",
       });
 
@@ -78,19 +68,11 @@ class UserService {
   }
 }
 
-// Export instance
 const userService = new UserService(API_BASE_URL);
 
-// Export functions for backward compatibility
-export const getUserProfile = (getAuthHeaders: () => Promise<HeadersInit>) =>
-  userService.getUserProfile(getAuthHeaders);
-
-export const updateUserProfile = (
-  profileData: Partial<UserProfile>,
-  getAuthHeaders: () => Promise<HeadersInit>
-) => userService.updateUserProfile(profileData, getAuthHeaders);
-
-export const deleteUserAccount = (getAuthHeaders: () => Promise<HeadersInit>) =>
-  userService.deleteUserAccount(getAuthHeaders);
+export const getUserProfile = () => userService.getUserProfile();
+export const updateUserProfile = (profileData: Partial<UserProfile>) =>
+  userService.updateUserProfile(profileData);
+export const deleteUserAccount = () => userService.deleteUserAccount();
 
 export default userService;

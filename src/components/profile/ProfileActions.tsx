@@ -16,7 +16,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { deleteUserAccount } from "@/services/user.service";
-import { useAuthToken } from "@/hooks/use-auth-token";
 import { toast } from "sonner";
 import {
   AlertTriangle,
@@ -27,14 +26,13 @@ import {
   Loader2,
   ChevronRight,
 } from "lucide-react";
-import { SignOutButton } from "@clerk/nextjs";
+import { signOut } from "@/config/supertokens";
 
 const ProfileActions = () => {
   const t = useTranslations("ProfileActions");
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [deleteConfirmation, setDeleteConfirmation] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
-  const { getAuthHeaders } = useAuthToken();
 
   const handleDeleteAccount = async () => {
     if (deleteConfirmation !== "DELETE") {
@@ -44,7 +42,7 @@ const ProfileActions = () => {
 
     setIsDeleting(true);
     try {
-      await deleteUserAccount(getAuthHeaders);
+      await deleteUserAccount();
       toast.success(t("deleteAccount.success"));
       setIsDeleteDialogOpen(false);
       // Redirect sẽ được xử lý bởi Clerk
@@ -96,8 +94,10 @@ const ProfileActions = () => {
           {actionItems.map((item, index) => (
             <div key={index}>
               {item.isSignOut ? (
-                <SignOutButton>
-                  <div className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors group">
+                <div
+                  onClick={() => signOut().then(() => window.location.reload())}
+                  className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors group"
+                >
                     <div className="flex items-center space-x-3">
                       <item.icon className="h-5 w-5 text-muted-foreground" />
                       <div>
@@ -109,7 +109,7 @@ const ProfileActions = () => {
                     </div>
                     <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                </SignOutButton>
+                </div>
               ) : (
                 <div
                   className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors group"

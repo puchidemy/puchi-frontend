@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getUserProfile } from "@/services/user.service";
 import { UserProfile } from "@/types/user";
-import { useAuthToken } from "@/hooks/use-auth-token";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ProfileForm from "@/components/profile/ProfileForm";
 import ProfileStats from "@/components/profile/ProfileStats";
@@ -15,7 +14,6 @@ const ProfilePage = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { getAuthHeaders } = useAuthToken();
 
   useEffect(() => {
     let isCancelled = false;
@@ -23,7 +21,7 @@ const ProfilePage = () => {
     const fetchProfile = async () => {
       try {
         setIsLoading(true);
-        const userProfile = await getUserProfile(getAuthHeaders);
+        const userProfile = await getUserProfile();
         if (!isCancelled) {
           setProfile(userProfile);
         }
@@ -45,7 +43,7 @@ const ProfilePage = () => {
     return () => {
       isCancelled = true;
     };
-  }, [getAuthHeaders]);
+  }, []);
 
   const handleProfileUpdate = (updatedProfile: UserProfile) => {
     setProfile(updatedProfile);
