@@ -49,7 +49,9 @@ const SidebarLeft = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
 
   useEffect(() => {
-    doesSessionExist().then(setIsSignedIn);
+    doesSessionExist()
+      .then(setIsSignedIn)
+      .catch(() => setIsSignedIn(false));
   }, []);
 
   const navItems = useMemo(() => (

@@ -5,8 +5,12 @@ import Session from "supertokens-web-js/recipe/session";
 import EmailPassword from "supertokens-web-js/recipe/emailpassword";
 import ThirdParty from "supertokens-web-js/recipe/thirdparty";
 
+let initialized = false;
+
 export function initSupertokens() {
   if (typeof window === "undefined") return;
+  if (initialized) return;
+  initialized = true;
 
   SuperTokens.init({
     appInfo: {
