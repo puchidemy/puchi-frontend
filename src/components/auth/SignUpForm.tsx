@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { emailPasswordSignUp } from "supertokens-web-js/recipe/thirdpartyemailpassword";
+import { signUp } from "supertokens-web-js/recipe/emailpassword";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -35,7 +35,7 @@ export function SignUpForm() {
     setLoading(true);
 
     try {
-      const response = await emailPasswordSignUp({
+      const response = await signUp({
         formFields: [
           { id: "email", value: email },
           { id: "password", value: password },

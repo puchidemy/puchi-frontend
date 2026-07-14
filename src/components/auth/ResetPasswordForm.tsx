@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { submitNewPassword } from "supertokens-web-js/recipe/thirdpartyemailpassword";
+import { submitNewPassword } from "supertokens-web-js/recipe/emailpassword";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";

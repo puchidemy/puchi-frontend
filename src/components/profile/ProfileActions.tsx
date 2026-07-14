@@ -45,7 +45,6 @@ const ProfileActions = () => {
       await deleteUserAccount();
       toast.success(t("deleteAccount.success"));
       setIsDeleteDialogOpen(false);
-      // Redirect sẽ được xử lý bởi Clerk
     } catch (error) {
       console.error("Error deleting account:", error);
       toast.error(t("deleteAccount.error.general"));
@@ -60,7 +59,6 @@ const ProfileActions = () => {
       description: t("actions.accountSettings.description"),
       icon: Settings,
       onClick: () => {
-        // Navigate to settings
         window.location.href = "/settings";
       },
     },
@@ -69,7 +67,6 @@ const ProfileActions = () => {
       description: t("actions.security.description"),
       icon: Shield,
       onClick: () => {
-        // Navigate to security settings
         window.location.href = "/settings/security";
       },
     },
@@ -83,7 +80,6 @@ const ProfileActions = () => {
 
   return (
     <div className="space-y-6">
-      {/* Các hành động thông thường */}
       <Card>
         <CardHeader>
           <CardTitle className="text-xl font-bold">
@@ -109,7 +105,6 @@ const ProfileActions = () => {
                     </div>
                     <ChevronRight className="h-4 w-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                   </div>
-                </div>
               ) : (
                 <div
                   className="flex items-center justify-between p-4 border rounded-lg cursor-pointer hover:bg-muted/50 transition-colors group"
@@ -132,7 +127,6 @@ const ProfileActions = () => {
         </CardContent>
       </Card>
 
-      {/* Khu vực nguy hiểm */}
       <Card className="border-destructive/50">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-destructive flex items-center space-x-2">

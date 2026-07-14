@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { emailPasswordSignIn } from "supertokens-web-js/recipe/thirdpartyemailpassword";
+import { signIn } from "supertokens-web-js/recipe/emailpassword";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -23,7 +23,7 @@ export function SignInForm() {
     setLoading(true);
 
     try {
-      const response = await emailPasswordSignIn({
+      const response = await signIn({
         formFields: [
           { id: "email", value: email },
           { id: "password", value: password },

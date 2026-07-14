@@ -1,5 +1,6 @@
-import { Skeleton } from '@/components/ui/skeleton';
-import { ClerkLoaded, ClerkLoading, SignUp } from '@clerk/nextjs';
+import { AuthCard } from "@/components/auth/AuthCard";
+import { SignUpForm } from "@/components/auth/SignUpForm";
+import { SocialLoginButtons } from "@/components/auth/SocialLoginButtons";
 
 export const metadata = {
   title: "Đăng ký",
@@ -8,14 +9,11 @@ export const metadata = {
 
 const SignUpPage = () => {
   return (
-    <div className="min-h-[665.3px]">
-      <ClerkLoading>
-        <Skeleton className="h-[665.3px] w-[400px] rounded-xl" />
-      </ClerkLoading>
-      <ClerkLoaded>
-        <SignUp />
-      </ClerkLoaded>
-    </div>
+    <AuthCard title="Create an Account" description="Start your learning journey">
+      <SocialLoginButtons />
+      <SignUpForm />
+    </AuthCard>
   );
 };
+
 export default SignUpPage;

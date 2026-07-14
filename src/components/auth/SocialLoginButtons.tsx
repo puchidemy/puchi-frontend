@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getThirdPartyAuthorisationURL } from "supertokens-web-js/recipe/thirdpartyemailpassword";
+import { getAuthorisationURLWithQueryParamsAndSetState } from "supertokens-web-js/recipe/thirdparty";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -56,7 +56,7 @@ export function SocialLoginButtons() {
   async function handleSocialLogin(providerId: string) {
     setError("");
     try {
-      const authUrl = await getThirdPartyAuthorisationURL({
+      const authUrl = await getAuthorisationURLWithQueryParamsAndSetState({
         thirdPartyId: providerId,
         frontendRedirectURI: `${window.location.origin}/auth/callback/${providerId}`,
       });

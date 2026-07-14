@@ -1,62 +1,86 @@
 import SuperTokens from "supertokens-node";
 import SessionNode from "supertokens-node/recipe/session";
-import ThirdPartyEmailPasswordNode from "supertokens-node/recipe/thirdpartyemailpassword";
+import EmailPasswordNode from "supertokens-node/recipe/emailpassword";
+import ThirdPartyNode from "supertokens-node/recipe/thirdparty";
 import { TypeInput } from "supertokens-node/types";
-import { Google, Facebook } from "supertokens-node/recipe/thirdpartyemailpassword";
 
 export const supertokensConfig: TypeInput = {
   framework: "custom",
   supertokens: {
-    connectionURI: process.env.SUPERTOKENS_CONNECTION_URI || "http://localhost:30567",
+    connectionURI:
+      process.env.SUPERTOKENS_CONNECTION_URI || "http://localhost:30567",
     apiKey: process.env.SUPERTOKENS_API_KEY || "change-in-production-please",
   },
   appInfo: {
     appName: "Puchi",
-    apiDomain: process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
-    websiteDomain: process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || "http://localhost:3000",
+    apiDomain:
+      process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000",
+    websiteDomain:
+      process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || "http://localhost:3000",
     apiBasePath: "/api/auth",
     websiteBasePath: "/auth",
   },
   recipeList: [
-    ThirdPartyEmailPasswordNode.init({
-      providers: [
-        Google({
-          clientId: process.env.GOOGLE_CLIENT_ID || "",
-          clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
-        }),
-        Facebook({
-          clientId: process.env.FACEBOOK_CLIENT_ID || "",
-          clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
-        }),
-        {
-          id: "tiktok",
-          name: "TikTok",
-          get: (redirectURI: string, authCodeFromRequest: string | undefined) => {
-            return {
-              accessTokenAPI: {
-                url: "https://open.tiktokapis.com/v2/oauth/token/",
-                params: {
-                  client_id: process.env.TIKTOK_CLIENT_KEY || "",
-                  client_secret: process.env.TIKTOK_CLIENT_SECRET || "",
-                  code: authCodeFromRequest || "",
-                  grant_type: "authorization_code",
-                  redirect_uri: redirectURI,
+    EmailPasswordNode.init(),
+    ThirdPartyNode.init({
+      signInAndUpFeature: {
+        providers: [
+          {
+            config: {
+              thirdPartyId: "google",
+              name: "Google",
+              clients: [
+                {
+                  clientId: process.env.GOOGLE_CLIENT_ID || "",
+                  clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
+                  scope: ["openid", "email"],
                 },
+              ],
+              oidcDiscoveryEndpoint:
+                "https://accounts.google.com/.well-known/openid-configuration",
+              authorizationEndpointQueryParams: {
+                included_grant_scopes: "true",
+                access_type: "offline",
               },
-              authorisationRedirect: {
-                url: "https://www.tiktok.com/v2/auth/authorize/",
-                params: {
-                  client_key: process.env.TIKTOK_CLIENT_KEY || "",
-                  scope: "user.info.basic",
-                  response_type: "code",
-                  redirect_uri: redirectURI,
-                },
-              },
-              getClientId: () => process.env.TIKTOK_CLIENT_KEY || "",
-            };
+            },
           },
-        },
-      ],
+          {
+            config: {
+              thirdPartyId: "facebook",
+              name: "Facebook",
+              clients: [
+                {
+                  clientId: process.env.FACEBOOK_CLIENT_ID || "",
+                  clientSecret: process.env.FACEBOOK_CLIENT_SECRET || "",
+                  scope: ["email"],
+                },
+              ],
+              authorizationEndpoint:
+                "https://www.facebook.com/v12.0/dialog/oauth",
+              tokenEndpoint:
+                "https://graph.facebook.com/v12.0/oauth/access_token",
+              userInfoEndpoint: "https://graph.facebook.com/me",
+            },
+          },
+          {
+            config: {
+              thirdPartyId: "tiktok",
+              name: "TikTok",
+              clients: [
+                {
+                  clientId: process.env.TIKTOK_CLIENT_KEY || "",
+                  clientSecret: process.env.TIKTOK_CLIENT_SECRET || "",
+                  scope: ["user.info.basic"],
+                },
+              ],
+              authorizationEndpoint:
+                "https://www.tiktok.com/v2/auth/authorize/",
+              tokenEndpoint: "https://open.tiktokapis.com/v2/oauth/token/",
+              userInfoEndpoint: "https://open.tiktokapis.com/v2/user/info/",
+            },
+          },
+        ],
+      },
     }),
     SessionNode.init(),
   ],

@@ -2,8 +2,8 @@
 
 import SuperTokens from "supertokens-web-js";
 import Session from "supertokens-web-js/recipe/session";
-import ThirdPartyEmailPassword from "supertokens-web-js/recipe/thirdpartyemailpassword";
-import { Google, Facebook } from "supertokens-web-js/recipe/thirdpartyemailpassword";
+import EmailPassword from "supertokens-web-js/recipe/emailpassword";
+import ThirdParty from "supertokens-web-js/recipe/thirdparty";
 
 export function initSupertokens() {
   if (typeof window === "undefined") return;
@@ -20,15 +20,8 @@ export function initSupertokens() {
       websiteBasePath: "/auth",
     },
     recipeList: [
-      ThirdPartyEmailPassword.init({
-        signInAndUpFeature: {
-          providers: [
-            Google.init(),
-            Facebook.init(),
-            { id: "tiktok", name: "TikTok" },
-          ],
-        },
-      }),
+      EmailPassword.init(),
+      ThirdParty.init(),
       Session.init(),
     ],
   });

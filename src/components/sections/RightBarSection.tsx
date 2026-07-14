@@ -4,9 +4,8 @@ import ItemsInfo from "../ItemsInfo";
 import { Link } from "@/i18n/routing";
 import { Button } from "../ui/button";
 import FooterLink from "../FooterLink";
-const RightBarSection = async () => {
-  return (
 
+const RightBarSection = async () => {
   return (
     <div className="w-full h-full">
       <ItemsInfo />
@@ -54,25 +53,23 @@ const RightBarSection = async () => {
           </CardContent>
         </Card>
 
-        {!user && (
-          <Card>
-            <CardHeader className="text-xl font-bold">
-              Create a profile to save your progress!
-            </CardHeader>
-            <CardContent className="w-full flex flex-col gap-4">
-              <Link href="/sign-up">
-                <Button variant="primary" className="w-full text-gray-200">
-                  CREATE A PROFILE
-                </Button>
-              </Link>
-              <Link href="/sign-in">
-                <Button variant="secondary" className="w-full text-gray-200">
-                  SIGN IN
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        )}
+        <Card>
+          <CardHeader className="text-xl font-bold">
+            Create a profile to save your progress!
+          </CardHeader>
+          <CardContent className="w-full flex flex-col gap-4">
+            <Link href="/sign-up">
+              <Button variant="primary" className="w-full text-gray-200">
+                CREATE A PROFILE
+              </Button>
+            </Link>
+            <Link href="/sign-in">
+              <Button variant="secondary" className="w-full text-gray-200">
+                SIGN IN
+              </Button>
+            </Link>
+          </CardContent>
+        </Card>
 
         <FooterLink />
       </div>

@@ -9,7 +9,7 @@ ensureSupertokensInit();
 
 const intlMiddleware = createMiddleware(routing);
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const url = new URL(req.url);
 
   if (
