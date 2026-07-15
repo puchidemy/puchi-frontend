@@ -44,6 +44,14 @@
       "following": "\u0110ang theo d\u00F5i",
       "leaderboard": "B\u1EA3ng x\u1EBFp h\u1EA1ng tu\u1EA7n",
       "friendsList": "Danh s\u00E1ch b\u1EA1n b\u00E8"
+    },
+    "settingsLinks": {
+      "profile": "Ch\u1EC9nh s\u1EEDa h\u1ED3 s\u01A1",
+      "preferences": "T\u00F9y ch\u1EC9nh",
+      "notifications": "Th\u00F4ng b\u00E1o",
+      "privacy": "Quy\u1EC1n ri\u00EAng t\u01B0 & B\u1EA3o m\u1EADt",
+      "language": "Ng\u00F4n ng\u1EEF",
+      "signOut": "\u0110\u0103ng xu\u1EA5t"
     }
   }
 }

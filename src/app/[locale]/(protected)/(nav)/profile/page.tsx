@@ -3,7 +3,6 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { mockFullProfile } from "@/data/mockProfile";
-import { UserProfile } from "@/types/user";
 import { FullProfile } from "@/types/profile";
 import ProfileHero from "@/components/profile/ProfileHero";
 import ProfileTabs from "@/components/profile/ProfileTabs";
@@ -36,35 +35,15 @@ export default function ProfilePage() {
   const [profile, setProfile] = useState<FullProfile>(mockFullProfile);
   const [activeTab, setActiveTab] = useState<TabId>("overview");
 
-  const userProfile: UserProfile = {
-    id: profile.user.id,
-    username: profile.user.username,
-    firstName: profile.user.firstName,
-    lastName: profile.user.lastName,
-    email: profile.user.email,
-    imageUrl: profile.user.imageUrl,
-    bio: profile.user.bio,
-    createdAt: profile.user.createdAt,
-    updatedAt: profile.user.updatedAt,
-  };
-
-  const handleUserUpdate = useCallback((updated: UserProfile) => {
+  const handleUserUpdate = useCallback((updated: FullProfile["user"]) => {
     setProfile((prev) => ({
       ...prev,
-      user: {
-        ...prev.user,
-        firstName: updated.firstName,
-        lastName: updated.lastName,
-        username: updated.username,
-        bio: updated.bio,
-      },
+      user: updated,
     }));
     toast.success("Profile updated!");
   }, []);
 
   const handleAvatarChange = useCallback((_file: File) => {
-    // In production, upload to server and update URL
-    // For now just show toast
     toast.success("Avatar uploaded! (API integration pending)");
   }, []);
 
@@ -86,9 +65,7 @@ export default function ProfilePage() {
         {activeTab === "stats" && <StatsTab profile={profile} />}
         {activeTab === "achievements" && <AchievementsTab profile={profile} />}
         {activeTab === "social" && <SocialTab profile={profile} />}
-        {activeTab === "settings" && (
-          <SettingsTab profile={userProfile} onUpdate={handleUserUpdate} />
-        )}
+        {activeTab === "settings" && <SettingsTab />}
       </div>
     </div>
   );

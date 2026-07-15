@@ -270,6 +270,14 @@
       "following": "Following",
       "leaderboard": "Weekly Leaderboard",
       "friendsList": "Friends"
+    },
+    "settingsLinks": {
+      "profile": "Edit Profile",
+      "preferences": "Preferences",
+      "notifications": "Notifications",
+      "privacy": "Privacy & Security",
+      "language": "Language",
+      "signOut": "Sign Out"
     }
   }
 }
