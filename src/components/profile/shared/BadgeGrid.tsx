@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
 import { Achievement } from "@/types/profile";
 import { Lock } from "lucide-react";
 import * as LucideIcons from "lucide-react";
@@ -16,7 +16,6 @@ function getIcon(name: string) {
 }
 
 export default function BadgeGrid({ achievements, onBadgeClick }: BadgeGridProps) {
-  const prefersReducedMotion = useReducedMotion();
 
   return (
     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
@@ -37,28 +36,15 @@ export default function BadgeGrid({ achievements, onBadgeClick }: BadgeGridProps
             }}
           >
             <div
-              className="relative w-14 h-14 rounded-2xl flex items-center justify-center overflow-hidden"
+              className="relative w-14 h-14 rounded-2xl flex items-center justify-center"
               style={{
                 backgroundColor: achievement.unlocked
-                  ? `color-mix(in srgb, ${achievement.color} 15%, transparent)`
+                  ? `color-mix(in srgb, ${achievement.color} 25%, transparent)`
                   : "var(--muted)",
                 color: achievement.unlocked ? achievement.color : "var(--muted-foreground)",
               }}
             >
-              <Icon size={24} className="relative z-10" />
-
-              {/* Glow pulse on unlocked badges */}
-              {achievement.unlocked && !prefersReducedMotion && (
-                <motion.div
-                  className="absolute inset-0 rounded-2xl"
-                  style={{ backgroundColor: achievement.color, opacity: 0.12 }}
-                  animate={{
-                    scale: [1, 1.35, 1],
-                    opacity: [0.12, 0.3, 0.12],
-                  }}
-                  transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.05 }}
-                />
-              )}
+              <Icon size={24} />
 
               {!achievement.unlocked && (
                 <div className="absolute inset-0 flex items-center justify-center">

@@ -57,10 +57,10 @@ export default function OverviewTab({ profile }: OverviewTabProps) {
         : "Start your streak today!";
 
   const cards = [
-    { icon: BookOpen, value: `${stats.completedLessons}/${stats.totalLessons}`, label: t("stats.lessonsCompleted"), color: "var(--unit-1)", bgColor: "color-mix(in srgb, var(--unit-1) 15%, transparent)" },
-    { icon: Target, value: `${stats.accuracy}%`, label: t("stats.accuracy"), color: "var(--unit-5)", bgColor: "color-mix(in srgb, var(--unit-5) 15%, transparent)" },
-    { icon: Clock, value: `${(stats.totalMinutes / 60).toFixed(1)}h`, label: t("stats.totalHours"), color: "var(--unit-6)", bgColor: "color-mix(in srgb, var(--unit-6) 15%, transparent)" },
-    { icon: BookText, value: stats.wordsLearned.toLocaleString("en-US"), label: t("stats.wordsLearned"), color: "var(--unit-2)", bgColor: "color-mix(in srgb, var(--unit-2) 15%, transparent)" },
+    { icon: BookOpen, value: `${stats.completedLessons}/${stats.totalLessons}`, label: t("stats.lessonsCompleted"), color: "var(--unit-1)" },
+    { icon: Target, value: `${stats.accuracy}%`, label: t("stats.accuracy"), color: "var(--unit-5)" },
+    { icon: Clock, value: `${(stats.totalMinutes / 60).toFixed(1)}h`, label: t("stats.totalHours"), color: "var(--unit-6)" },
+    { icon: BookText, value: stats.wordsLearned.toLocaleString("en-US"), label: t("stats.wordsLearned"), color: "var(--unit-2)" },
   ];
 
   const container = {
@@ -160,7 +160,6 @@ export default function OverviewTab({ profile }: OverviewTabProps) {
               label={card.label}
               value={card.value}
               color={card.color}
-              bgColor={card.bgColor}
             />
           </motion.div>
         ))}
