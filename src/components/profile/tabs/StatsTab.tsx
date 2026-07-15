@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "motion/react";
 import { useTranslations } from "next-intl";
 import { FullProfile, WeeklyXP } from "@/types/profile";
 import LearningCalendar from "../shared/LearningCalendar";
@@ -26,10 +27,18 @@ function WeeklyXPChart({ data }: { data: WeeklyXP[] }) {
     })
     .join(" ");
 
+  const areaPoints = `${padding.left},${padding.top + chartH} ${points} ${width - padding.right},${padding.top + chartH}`;
+
   const yTicks = [0, Math.round(maxXP / 2), maxXP];
 
   return (
-    <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-auto">
+    <motion.svg
+      viewBox={`0 0 ${width} ${height}`}
+      className="w-full h-auto"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       {yTicks.map((tick) => {
         const y = padding.top + chartH - ((tick - minXP) / (maxXP - minXP)) * chartH;
         if (y < padding.top || y > padding.top + chartH) return null;
@@ -53,27 +62,49 @@ function WeeklyXPChart({ data }: { data: WeeklyXP[] }) {
       })}
       {data.length > 0 && (
         <>
-          <polygon
-            points={`${padding.left},${padding.top + chartH} ${points} ${width - padding.right},${padding.top + chartH}`}
+          {/* Area fill */}
+          <motion.polygon
+            points={areaPoints}
             fill="var(--primary)"
             opacity={0.1}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           />
-          <polyline
+          {/* Line path */}
+          <motion.polyline
             points={points}
             fill="none"
             stroke="var(--primary)"
             strokeWidth={2.5}
             strokeLinecap="round"
             strokeLinejoin="round"
+            initial={{ pathLength: 0 }}
+            animate={{ pathLength: 1 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
           />
+          {/* Dots */}
           {data.map((d, i) => {
             const x = padding.left + (i / (data.length - 1)) * chartW;
             const y = padding.top + chartH - ((d.xp - minXP) / (maxXP - minXP)) * chartH;
-            return <circle key={i} cx={x} cy={y} r={3} fill="var(--primary)" stroke="var(--background)" strokeWidth={1.5} />;
+            return (
+              <motion.circle
+                key={i}
+                cx={x}
+                cy={y}
+                r={3}
+                fill="var(--primary)"
+                stroke="var(--background)"
+                strokeWidth={1.5}
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.6 + i * 0.04, type: "spring", stiffness: 300, damping: 15 }}
+              />
+            );
           })}
         </>
       )}
-    </svg>
+    </motion.svg>
   );
 }
 
@@ -85,40 +116,64 @@ function AccuracyWaffle({ accuracy }: { accuracy: number }) {
     <div className="flex items-center gap-4">
       <div className="grid grid-cols-10 gap-1">
         {Array.from({ length: total }).map((_, i) => (
-          <div
+          <motion.div
             key={i}
             className="w-2.5 h-2.5 rounded-[2px]"
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: i * 0.003 + 0.2, type: "spring", stiffness: 400, damping: 12 }}
             style={{
               backgroundColor: i < filled ? "var(--primary)" : "var(--muted)",
             }}
           />
         ))}
       </div>
-      <span className="text-3xl font-din font-bold tabular-nums">{accuracy}%</span>
+      <motion.span
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 12 }}
+        className="text-3xl font-din font-bold tabular-nums"
+      >
+        {accuracy}%
+      </motion.span>
     </div>
   );
 }
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { delay: i * 0.1, type: "spring", stiffness: 300, damping: 20 },
+  }),
+};
 
 export default function StatsTab({ profile }: StatsTabProps) {
   const t = useTranslations("Profile");
   const { dailyActivity, weeklyXP, stats } = profile;
 
+  const sections = [
+    { key: "calendar", title: t("stats.learningCalendar"), content: <LearningCalendar data={dailyActivity} /> },
+    { key: "xp", title: t("stats.weeklyXP"), content: <WeeklyXPChart data={weeklyXP} /> },
+    { key: "accuracy", title: t("stats.accuracy"), content: <AccuracyWaffle accuracy={stats.accuracy} /> },
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl bg-card border border-border p-5">
-        <h3 className="font-display text-lg font-bold mb-4">{t("stats.learningCalendar")}</h3>
-        <LearningCalendar data={dailyActivity} />
-      </div>
-
-      <div className="rounded-2xl bg-card border border-border p-5">
-        <h3 className="font-display text-lg font-bold mb-4">{t("stats.weeklyXP")}</h3>
-        <WeeklyXPChart data={weeklyXP} />
-      </div>
-
-      <div className="rounded-2xl bg-card border border-border p-5">
-        <h3 className="font-display text-lg font-bold mb-4">{t("stats.accuracy")}</h3>
-        <AccuracyWaffle accuracy={stats.accuracy} />
-      </div>
+      {sections.map((section, i) => (
+        <motion.div
+          key={section.key}
+          custom={i}
+          initial="hidden"
+          animate="show"
+          variants={cardVariants}
+          className="rounded-2xl bg-card border border-border p-5"
+        >
+          <h3 className="font-display text-lg font-bold mb-4">{section.title}</h3>
+          {section.content}
+        </motion.div>
+      ))}
     </div>
   );
 }
