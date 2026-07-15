@@ -14,7 +14,7 @@ type Props = {
 
 export function AuthCard({ title, description, children }: Props) {
   return (
-    <Card className="mx-auto w-full max-w-md">
+    <Card className="mx-auto w-full max-w-lg">
       <CardHeader className="space-y-1 text-center">
         <CardTitle className="text-2xl font-bold">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
