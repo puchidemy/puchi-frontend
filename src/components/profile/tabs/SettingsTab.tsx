@@ -12,12 +12,8 @@ interface SettingsTabProps {
 export default function SettingsTab({ profile, onUpdate }: SettingsTabProps) {
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl bg-card border border-border p-5">
-        <ProfileForm profile={profile} onUpdate={onUpdate} />
-      </div>
-      <div className="rounded-3xl bg-card border border-border p-5">
-        <ProfileActions />
-      </div>
+      <ProfileForm profile={profile} onUpdate={onUpdate} />
+      <ProfileActions />
     </div>
   );
 }
