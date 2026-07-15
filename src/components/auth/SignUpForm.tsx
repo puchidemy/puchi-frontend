@@ -63,7 +63,6 @@ export function SignUpForm() {
 
   return (
     <>
-      <Separator />
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <Alert variant="destructive">
@@ -107,7 +106,7 @@ export function SignUpForm() {
             disabled={loading}
           />
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" variant="primary" className="w-full" disabled={loading}>
           {loading ? "Creating account..." : "Create Account"}
         </Button>
       </form>

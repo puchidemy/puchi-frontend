@@ -8,8 +8,8 @@ export default function SignUpPage() {
       title="Create Account"
       description="Start your Japanese learning journey"
     >
-      <SocialLoginButtons />
       <SignUpForm />
+      <SocialLoginButtons />
     </AuthCard>
   );
 }

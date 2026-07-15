@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
 import { initSupertokens } from "@/config/supertokens";
 
 export function SignInForm() {
@@ -51,7 +50,6 @@ export function SignInForm() {
 
   return (
     <>
-      <Separator />
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
           <Alert variant="destructive">
@@ -90,7 +88,7 @@ export function SignInForm() {
             disabled={loading}
           />
         </div>
-        <Button type="submit" className="w-full" disabled={loading}>
+        <Button type="submit" variant="primary" className="w-full" disabled={loading}>
           {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>

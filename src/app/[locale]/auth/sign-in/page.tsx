@@ -5,8 +5,8 @@ import { SocialLoginButtons } from "@/components/auth/SocialLoginButtons";
 export default function SignInPage() {
   return (
     <AuthCard title="Sign In" description="Welcome back to Puchi">
-      <SocialLoginButtons />
       <SignInForm />
+      <SocialLoginButtons />
     </AuthCard>
   );
 }
