@@ -11,20 +11,113 @@ Puchi là nền tảng web học tiếng Việt. Frontend dùng **Next.js 16 (Ap
 
 | Thành phần | Công nghệ |
 |------------|-----------|
-| Framework | Next.js 16 (App Router) |
+| Framework | Next.js 16 (App Router, output: standalone) |
 | UI | Tailwind CSS v4 + Shadcn UI (New York) |
 | State | Zustand v5 |
-| Auth | Supertokens (self-host, Email/Password + Google + Facebook + TikTok) |
+| Auth | Supertokens self-host — `supertokens-web-js` (client) + `supertokens-node` (server) |
 | i18n | next-intl (9 ngôn ngữ) |
 | Animation | Motion + Rive |
-| Runtime | Bun |
+| Runtime | Bun (install) + Node.js 22 (build & run) |
+
+## Auth — Supertokens
+
+**Đã migrate từ Clerk → Supertokens hoàn tất.** Không còn Clerk.
+
+### Client-side (`supertokens-web-js`)
+```typescript
+// src/config/supertokens.ts
+SuperTokens.init({
+  appInfo: {
+    appName: "Puchi",
+    apiDomain: process.env.NEXT_PUBLIC_APP_URL,  // https://puchi.io.vn (same-origin!)
+    apiBasePath: "/api/auth",
+  },
+  recipeList: [EmailPassword.init(), ThirdParty.init(), Session.init()],
+});
+```
+
+**Quan trọng**: `apiDomain` = `puchi.io.vn` (cùng origin với website), **không phải** `api.puchi.io.vn`. Supertokens Node SDK cần cùng origin để set cookie đúng cách.
+
+### Server-side (`supertokens-node`)
+```typescript
+// src/config/supertokens-server.ts
+const supertokensConfig = {
+  supertokens: {
+    connectionURI: process.env.SUPERTOKENS_CONNECTION_URI || "http://localhost:30567",
+    apiKey: process.env.SUPERTOKENS_API_KEY,
+  },
+  appInfo: {
+    appName: "Puchi",
+    apiDomain: process.env.NEXT_PUBLIC_APP_URL,
+    websiteDomain: process.env.NEXT_PUBLIC_WEBSITE_DOMAIN,
+    apiBasePath: "/api/auth",
+    websiteBasePath: "/auth",
+  },
+  recipeList: [
+    EmailPasswordNode.init(),
+    ThirdPartyNode.init({
+      providers: [Google, Facebook, TikTok],
+    }),
+    SessionNode.init(),
+  ],
+};
+```
+
+### API Route handler
+Next.js API route `src/app/api/auth/[...path]/route.ts` xử lý mọi request auth:
+- GET/POST/PUT/DELETE/PATCH → `getAppDirRequestHandler()` (từ supertokens-node)
+- Request clone để tránh lỗi stream body (formData + json)
+
+### Auth flow tổng thể
+```
+Browser → supertokens-web-js → /api/auth/[...path] → supertokens-node → st-core-svc:3567
+     (puchi.io.vn)         (Next.js API route)
+```
+
+## Docker Build
+
+Multi-stage build với Bun + Node.js:
+
+| Stage | Image | Purpose |
+|-------|-------|---------|
+| deps | `oven/bun:1.2-slim` | Install dependencies (Bun nhanh) |
+| builder | `node:22-alpine` | Build Next.js (Node vì Next.js 16 chưa support Bun build) |
+| runner | `node:22-alpine` | Run production (non-root user nextjs) |
+
+Build args từ CI/CD:
+- `NEXT_PUBLIC_APP_URL` — https://puchi.io.vn
+- `NEXT_PUBLIC_API_URL` — https://api.puchi.io.vn
+
+Output: `standalone` (Next.js output tracing), copy thêm `node_modules` để đảm bảo supertokens-node hoạt động đúng.
+
+## CI/CD
+
+GitHub Actions (`ci-cd.yml`):
+- **Lint**: Bun install → ESLint
+- **Build & Push**: Docker login GHCR → Build + Push (tag: latest + sha)
+- **Build args**: NEXT_PUBLIC_APP_URL, NEXT_PUBLIC_API_URL, NEXT_PUBLIC_WEBSITE_DOMAIN
+- **Registry**: `ghcr.io/puchidemy/puchi-frontend`
+
+## Key Env Vars
+
+| Env | Production value | Notes |
+|-----|-----------------|-------|
+| `NEXT_PUBLIC_APP_URL` | `https://puchi.io.vn` | App domain, cũng là apiDomain cho supertokens |
+| `NEXT_PUBLIC_API_URL` | `https://api.puchi.io.vn` | API gateway (Envoy Gateway) |
+| `NEXT_PUBLIC_WEBSITE_DOMAIN` | `https://puchi.io.vn` | Website domain |
+| `SUPERTOKENS_CONNECTION_URI` | `http://st-core-svc.puchi-infra.svc.cluster.local:3567` | Supertokens core (dev: localhost:30567) |
+| `SUPERTOKENS_API_KEY` | (secret) | API key |
+| `GOOGLE_CLIENT_ID/SECRET` | (secret) | Google OAuth |
+| `FACEBOOK_CLIENT_ID/SECRET` | (secret) | Facebook OAuth |
+| `TIKTOK_CLIENT_KEY/SECRET` | (secret) | TikTok OAuth |
 
 ## Scripts
 
 ```bash
 bun install          # Cài dependencies
-bun run dev          # Dev server
-bun run build        # Build production
+bun run dev          # Dev server (webpack mode)
+bun run build        # Build production (chạy bằng Node.js)
+bun run start        # Start production
 bun run lint         # ESLint
 ```
 
@@ -33,7 +126,10 @@ bun run lint         # ESLint
 ```
 src/
 ├── app/[locale]/     # Next.js App Router pages (i18n)
+├── app/api/auth/     # Supertokens API route handler
 ├── components/       # UI components (Shadcn + custom)
+├── config/           # Supertokens client + server config
+├── providers/        # SupertokensProvider (init client-side)
 ├── lib/              # Utilities, API clients
 ├── store/            # Zustand stores
 ├── hooks/            # Custom hooks
@@ -44,13 +140,7 @@ src/
 └── types/            # TypeScript types
 ```
 
-## CI/CD
+## Kết nối Backend
 
-- **CI**: GitHub Actions (`ci-cd.yml`) - Lint, Build Docker, Push GHCR
-- **Docker**: Multi-stage build voi Bun, output `standalone`
-- **Registry**: `ghcr.io/puchidemy/puchi-frontend`
-
-## Kết noi Backend
-
-- API qua Envoy Gateway tai `api.puchi.io.vn`
-- Auth: Supertokens (da migrate tu Clerk)
+- API qua Envoy Gateway tại `api.puchi.io.vn`
+- Auth: Supertokens (internal, không expose ra ngoài)

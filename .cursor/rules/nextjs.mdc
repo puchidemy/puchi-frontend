@@ -12,6 +12,38 @@ alwaysApply: false
 - i18n qua `next-intl` với `[locale]` segment
 - Server Components mặc định, Client Components khi cần interactivity
 
+## Supertokens Auth Integration
+
+### Client-side init (trong Provider)
+```tsx
+"use client";
+// SupertokensProvider.tsx — gọi initSupertokens() trong useEffect
+import { initSupertokens } from "@/config/supertokens";
+
+export function SupertokensProvider({ children }) {
+  useEffect(() => { initSupertokens(); }, []);
+  return <>{children}</>;
+}
+```
+
+### Server-side (API Route)
+```typescript
+// app/api/auth/[...path]/route.ts
+// Catch-all route xử lý mọi request auth
+import { getAppDirRequestHandler } from "supertokens-node/nextjs";
+// Clone request trước khi gọi handler (supertokens cần đọc body nhiều lần)
+```
+
+### Các recipe đang dùng
+- `EmailPassword` — Email/password signin/signup
+- `ThirdParty` — Google, Facebook, TikTok OAuth
+- `Session` — Session management
+
+### Lưu ý
+- `apiDomain` = `NEXT_PUBLIC_APP_URL` (cùng origin, ko phải api.puchi.io.vn)
+- Dùng `supertokens-node/nextjs` `getAppDirRequestHandler()` cho App Router
+- Clone request trong handler do supertokens đọc body nhiều lần
+
 ## Components
 
 - **Shadcn UI** components trong `components/ui/`
@@ -28,6 +60,7 @@ alwaysApply: false
 
 - Client → gọi qua service layer (`services/`)
 - Server → fetch trực tiếp, không qua service layer
+- API base URL: `process.env.NEXT_PUBLIC_API_URL` (https://api.puchi.io.vn)
 
 ## i18n
 
