@@ -3,8 +3,6 @@ name: Frontend CI/CD
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
 
 permissions:
   contents: read
@@ -13,6 +11,8 @@ permissions:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: puchi-frontend
+  INFRA_REPO: puchidemy/puchi-infra
+  INFRA_PATH: infra/frontend/web/deployment.yaml
 
 jobs:
   lint:
@@ -44,7 +44,7 @@ jobs:
           images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
           tags: |
             type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
-            type=sha
+            type=sha,prefix=git-,format=short
 
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -62,3 +62,32 @@ jobs:
             NEXT_PUBLIC_APP_URL=https://puchi.io.vn
             NEXT_PUBLIC_API_URL=https://api.puchi.io.vn
             NEXT_PUBLIC_WEBSITE_DOMAIN=https://puchi.io.vn
+
+      - name: Checkout infra repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.INFRA_REPO }}
+          token: ${{ secrets.GH_PAT || secrets.GITHUB_TOKEN }}
+          path: puchi-infra
+
+      - name: Update deployment.yaml with new image tag
+        run: |
+          SHA_TAG="git-${GITHUB_SHA::7}"
+          NEW_IMAGE="${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:$SHA_TAG"
+          sed -i "s|image: ghcr.io/puchidemy/${{ env.IMAGE_NAME }}:.*|image: $NEW_IMAGE|" "puchi-infra/${{ env.INFRA_PATH }}"
+          echo "Updated ${{ env.INFRA_PATH }} to $NEW_IMAGE"
+
+      - name: Commit and push to infra repo
+        run: |
+          cd puchi-infra
+          git config --global user.name "puchi-bot"
+          git config --global user.email "bot@puchi.io.vn"
+          git add "${{ env.INFRA_PATH }}"
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: update ${{ env.IMAGE_NAME }} image to ${{ github.sha }}
+            
+            Automated by CI/CD for commit ${{ github.sha }}"
+            git push
+          fi
