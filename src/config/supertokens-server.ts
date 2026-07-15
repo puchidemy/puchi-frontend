@@ -56,9 +56,9 @@ export const supertokensConfig: TypeInput = {
                 },
               ],
               authorizationEndpoint:
-                "https://www.facebook.com/v12.0/dialog/oauth",
+                "https://www.facebook.com/v25.0/dialog/oauth",
               tokenEndpoint:
-                "https://graph.facebook.com/v12.0/oauth/access_token",
+                "https://graph.facebook.com/v25.0/oauth/access_token",
               userInfoEndpoint: "https://graph.facebook.com/me",
             },
           },
