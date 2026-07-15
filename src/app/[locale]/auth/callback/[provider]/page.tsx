@@ -16,14 +16,14 @@ function CallbackContent() {
   useEffect(() => {
     initSupertokens();
 
-    const code = searchParams.get("code");
-    if (!code || !provider) {
-      setStatus("error");
-      setErrorMessage("Missing authentication parameters");
-      return;
-    }
-
     async function handleCallback() {
+      const code = searchParams.get("code");
+      if (!code || !provider) {
+        setStatus("error");
+        setErrorMessage("Missing authentication parameters");
+        return;
+      }
+
       try {
         const response = await signInAndUp();
 
