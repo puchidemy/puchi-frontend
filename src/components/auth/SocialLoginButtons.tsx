@@ -76,7 +76,7 @@ export function SocialLoginButtons() {
           <Button
             key={id}
             type="button"
-            variant="outline"
+            variant="immersive"
             className="flex-1 min-w-0 h-10 px-2"
             onClick={() => handleSocialLogin(id)}
             title={name}
