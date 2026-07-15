@@ -1,57 +1,65 @@
 {
   "Profile": {
     "tabs": {
-      "overview": "T\u1ED5ng quan",
-      "stats": "Th\u1ED1ng k\u00EA",
-      "achievements": "Th\u00E0nh t\u1EF1u",
-      "social": "X\u00E3 h\u1ED9i",
-      "settings": "C\u00E0i \u0111\u1EB7t"
+      "overview": "Tổng quan",
+      "stats": "Thống kê",
+      "achievements": "Thành tựu"
     },
     "streak": "Streak",
-    "crowns": "V\u01B0\u01A1ng mi\u1EC7n",
-    "gems": "Kim c\u01B0\u01A1ng",
-    "dayStreak": "ng\u00E0y streak",
-    "days": "ng\u00E0y",
-    "longestStreak": "D\u00E0i nh\u1EA5t",
-    "freezesRemaining": "l\u1EA7n \u0111\u00F3ng b\u0103ng c\u00F2n l\u1EA1i",
-    "weeklyRecap": "T\u1ED5ng k\u1EBFt tu\u1EA7n",
-    "daysActive": "ng\u00E0y ho\u1EA1t \u0111\u1ED9ng",
-    "learningProgress": "Ti\u1EBFn \u0111\u1ED9 h\u1ECDc t\u1EADp",
-    "courseCompletion": "Ho\u00E0n th\u00E0nh kh\u00F3a h\u1ECDc",
-    "lessonsCompleted": "b\u00E0i h\u1ECDc \u0111\u00E3 ho\u00E0n th\u00E0nh",
-    "minutesLearned": "ph\u00FAt \u0111\u00E3 h\u1ECDc",
-    "totalXP": "T\u1ED5ng XP",
+    "crowns": "Vương miện",
+    "gems": "Kim cương",
+    "dayStreak": "ngày streak",
+    "days": "ngày",
+    "longestStreak": "Dài nhất",
+    "freezesRemaining": "lần đóng băng còn lại",
+    "weeklyRecap": "Tổng kết tuần",
+    "daysActive": "ngày hoạt động",
+    "learningProgress": "Tiến độ học tập",
+    "courseCompletion": "Hoàn thành khóa học",
+    "lessonsCompleted": "bài học đã hoàn thành",
+    "minutesLearned": "phút đã học",
+    "totalXP": "Tổng XP",
     "stats": {
-      "lessonsCompleted": "B\u00E0i h\u1ECDc",
-      "accuracy": "\u0110\u1ED9 ch\u00EDnh x\u00E1c",
-      "totalHours": "T\u1ED5ng gi\u1EDD",
-      "wordsLearned": "T\u1EEB \u0111\u00E3 h\u1ECDc",
-      "learningCalendar": "L\u1ECBch h\u1ECDc t\u1EADp",
-      "weeklyXP": "XP h\u00E0ng tu\u1EA7n",
-      "accuracyChart": "\u0110\u1ED9 ch\u00EDnh x\u00E1c"
+      "lessonsCompleted": "Bài học",
+      "accuracy": "Độ chính xác",
+      "totalHours": "Tổng giờ",
+      "wordsLearned": "Từ đã học",
+      "learningCalendar": "Lịch học tập",
+      "weeklyXP": "XP hàng tuần",
+      "accuracyChart": "Độ chính xác"
     },
     "achievements": {
-      "title": "Th\u00E0nh t\u1EF1u",
-      "unlocked": "\u0111\u00E3 m\u1EDF kh\u00F3a",
-      "inProgress": "\u0110ang ti\u1EBFn h\u00E0nh",
-      "all": "T\u1EA5t c\u1EA3 huy hi\u1EC7u",
-      "progress": "Ti\u1EBFn \u0111\u1ED9",
-      "unlockedAt": "\u0110\u00E3 m\u1EDF kh\u00F3a"
-    },
-    "social": {
-      "friends": "B\u1EA1n b\u00E8",
-      "followers": "Ng\u01B0\u1EDDi theo d\u00F5i",
-      "following": "\u0110ang theo d\u00F5i",
-      "leaderboard": "B\u1EA3ng x\u1EBFp h\u1EA1ng tu\u1EA7n",
-      "friendsList": "Danh s\u00E1ch b\u1EA1n b\u00E8"
+      "title": "Thành tựu",
+      "unlocked": "đã mở khóa",
+      "inProgress": "Đang tiến hành",
+      "all": "Tất cả huy hiệu",
+      "progress": "Tiến độ",
+      "unlockedAt": "Đã mở khóa"
     },
     "settingsLinks": {
-      "profile": "Ch\u1EC9nh s\u1EEDa h\u1ED3 s\u01A1",
-      "preferences": "T\u00F9y ch\u1EC9nh",
-      "notifications": "Th\u00F4ng b\u00E1o",
-      "privacy": "Quy\u1EC1n ri\u00EAng t\u01B0 & B\u1EA3o m\u1EADt",
-      "language": "Ng\u00F4n ng\u1EEF",
-      "signOut": "\u0110\u0103ng xu\u1EA5t"
+      "profile": "Chỉnh sửa hồ sơ",
+      "preferences": "Tùy chỉnh",
+      "notifications": "Thông báo",
+      "privacy": "Quyền riêng tư & Bảo mật",
+      "language": "Ngôn ngữ",
+      "signOut": "Đăng xuất"
+    },
+    "inviteFriends": {
+      "title": "Mời bạn bè",
+      "description": "Hãy nói với bạn bè rằng học tiếng Việt trên Puchi vừa miễn phí vừa vui!",
+      "linkCopied": "Đã sao chép liên kết!",
+      "orShareOn": "Hoặc chia sẻ qua",
+      "addFriends": "Thêm bạn bè",
+      "addFriendsPlaceholder": "Tìm kiếm tên đăng nhập...",
+      "addFriendsHint": "Tìm bạn bè bằng tên đăng nhập hoặc email",
+      "findFriends": "Tìm bạn bè",
+      "findFriendsDescription": "Kết nối với danh bạ của bạn và xem ai đang học trên Puchi",
+      "discoverFriends": "Khám phá bạn bè",
+      "invite": "Mời bạn bè",
+      "inviteDescription": "Chia sẻ liên kết mời của bạn và nhận XP khi bạn bè tham gia",
+      "socialStats": "Kết nối",
+      "following": "Đang theo dõi",
+      "followers": "Người theo dõi"
     }
   }
 }

@@ -10,16 +10,12 @@ import ProfileTabs from "@/components/profile/ProfileTabs";
 import OverviewTab from "@/components/profile/tabs/OverviewTab";
 import StatsTab from "@/components/profile/tabs/StatsTab";
 import AchievementsTab from "@/components/profile/tabs/AchievementsTab";
-import SocialTab from "@/components/profile/tabs/SocialTab";
-import SettingsTab from "@/components/profile/tabs/SettingsTab";
 import ProfileRightBar from "@/components/profile/ProfileRightBar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
 import {
   LayoutDashboard,
   BarChart3,
   Trophy,
-  Users,
-  Settings,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -27,8 +23,6 @@ const tabs = [
   { id: "overview", icon: LayoutDashboard },
   { id: "stats", icon: BarChart3 },
   { id: "achievements", icon: Trophy },
-  { id: "social", icon: Users },
-  { id: "settings", icon: Settings },
 ] as const;
 
 type TabId = (typeof tabs)[number]["id"];
@@ -76,8 +70,6 @@ export default function ProfilePage() {
                 {activeTab === "achievements" && (
                   <AchievementsTab profile={profile} />
                 )}
-                {activeTab === "social" && <SocialTab profile={profile} />}
-                {activeTab === "settings" && <SettingsTab />}
               </div>
             </div>
             <ScrollToTopButton className="max-sm:bottom-20 xl:right-[calc(50%-220px)]" />
