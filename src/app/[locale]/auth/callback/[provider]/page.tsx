@@ -54,39 +54,37 @@ function CallbackContent() {
   }, [provider, searchParams, router]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <div className="text-center space-y-4">
-        {status === "loading" && (
-          <>
-            <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
-            <h1 className="text-xl font-display font-bold">Signing you in...</h1>
-            <p className="text-muted-foreground">Please wait while we complete the authentication.</p>
-          </>
-        )}
+    <div className="w-full py-12 text-center space-y-4">
+      {status === "loading" && (
+        <>
+          <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
+          <h1 className="text-xl font-display font-bold">Signing you in...</h1>
+          <p className="text-muted-foreground">Please wait while we complete the authentication.</p>
+        </>
+      )}
 
-        {status === "success" && (
-          <>
-            <CheckCircle className="h-12 w-12 mx-auto text-[var(--unit-1)]" />
-            <h1 className="text-xl font-display font-bold">Signed in successfully!</h1>
-            <p className="text-muted-foreground">Redirecting you to the learning page...</p>
-          </>
-        )}
+      {status === "success" && (
+        <>
+          <CheckCircle className="h-12 w-12 mx-auto text-[var(--unit-1)]" />
+          <h1 className="text-xl font-display font-bold">Signed in successfully!</h1>
+          <p className="text-muted-foreground">Redirecting you to the learning page...</p>
+        </>
+      )}
 
-        {status === "error" && (
-          <>
-            <XCircle className="h-12 w-12 mx-auto text-destructive" />
-            <h1 className="text-xl font-display font-bold">Authentication failed</h1>
-            <p className="text-muted-foreground">{errorMessage}</p>
-            <Button
-              onClick={() => router.replace("/auth/sign-in")}
-              variant="link"
-              className="mt-4"
-            >
-              Back to sign in
-            </Button>
-          </>
-        )}
-      </div>
+      {status === "error" && (
+        <>
+          <XCircle className="h-12 w-12 mx-auto text-destructive" />
+          <h1 className="text-xl font-display font-bold">Authentication failed</h1>
+          <p className="text-muted-foreground">{errorMessage}</p>
+          <Button
+            onClick={() => router.replace("/auth/sign-in")}
+            variant="link"
+            className="mt-4"
+          >
+            Back to sign in
+          </Button>
+        </>
+      )}
     </div>
   );
 }
@@ -94,7 +92,7 @@ function CallbackContent() {
 export default function AuthCallbackPage() {
   return (
     <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="w-full py-24 text-center">
         <Loader2 className="h-12 w-12 animate-spin mx-auto text-primary" />
       </div>
     }>
