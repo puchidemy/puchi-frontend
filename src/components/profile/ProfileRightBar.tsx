@@ -4,20 +4,16 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Link } from "@/i18n/routing";
 import FooterLink from "@/components/FooterLink";
 import InviteFriendsDialog from "./InviteFriendsDialog";
 import { mockFullProfile } from "@/data/mockProfile";
 import {
-  UserPlus,
-  Search,
-  Share2,
   Settings,
   UserCheck,
   Users,
   ExternalLink,
+  Share2,
 } from "lucide-react";
 
 type SocialTab = "following" | "followers";
@@ -89,7 +85,7 @@ const ProfileRightBar = () => {
                   No one yet
                 </p>
               ) : (
-                currentList.slice(0, 5).map((person) => (
+                currentList.map((person) => (
                   <div
                     key={person.id}
                     className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-muted/30 transition-colors"
@@ -110,86 +106,49 @@ const ProfileRightBar = () => {
                 ))
               )}
             </div>
-
-            {/* View all */}
-            {currentList.length > 5 && (
-              <Link
-                href={`/friends?tab=${socialTab}`}
-                className="block text-center text-sm text-primary font-medium py-2.5 hover:bg-muted/30 transition-colors rounded-b-xl"
-              >
-                View all
-              </Link>
-            )}
           </CardContent>
         </Card>
 
-        {/* Add friends */}
+        {/* Find & Invite friends (gộp) */}
         <Card>
-          <CardContent className="p-4 space-y-3">
-            <h3 className="text-sm font-bold flex items-center gap-2">
-              <UserPlus size={18} className="text-[var(--unit-1)]" />
-              {t("inviteFriends.addFriends")}
-            </h3>
-            <div className="flex gap-2">
-              <Input
-                placeholder={t("inviteFriends.addFriendsPlaceholder")}
-                className="flex-1 rounded-xl h-9 text-sm"
-              />
-              <Button
-                variant="primary"
-                size="sm"
-                className="rounded-xl h-9 w-9 p-0"
-              >
-                <Search size={16} />
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {t("inviteFriends.addFriendsHint")}
-            </p>
-          </CardContent>
-        </Card>
-
-        {/* Find friends */}
-        <Card>
-          <CardContent className="p-4 space-y-3">
-            <h3 className="text-sm font-bold flex items-center gap-2">
-              <ExternalLink size={18} className="text-[var(--unit-3)]" />
-              {t("inviteFriends.findFriends")}
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              {t("inviteFriends.findFriendsDescription")}
-            </p>
-            <Link href="/user-search?s=">
-              <Button
-                variant="secondary"
-                size="sm"
-                className="w-full rounded-xl"
-              >
-                {t("inviteFriends.discoverFriends")}
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-
-        {/* Invite friends */}
-        <Card>
-          <CardContent className="p-4 space-y-3">
-            <h3 className="text-sm font-bold flex items-center gap-2">
-              <Share2 size={18} className="text-[var(--unit-4)]" />
-              {t("inviteFriends.invite")}
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              {t("inviteFriends.inviteDescription")}
-            </p>
-            <Button
-              variant="outline"
-              size="sm"
-              className="w-full rounded-xl"
-              onClick={() => setInviteOpen(true)}
+          <CardContent className="p-0 divide-y divide-border">
+            {/* Find friends */}
+            <Link
+              href="/user-search?s="
+              className="flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors"
             >
-              <Share2 size={16} className="mr-1.5" />
-              {t("inviteFriends.invite")}
-            </Button>
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                style={{ backgroundColor: "color-mix(in srgb, var(--unit-3) 15%, transparent)", color: "var(--unit-3)" }}
+              >
+                <ExternalLink size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium">{t("inviteFriends.findFriends")}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {t("inviteFriends.findFriendsDescription")}
+                </p>
+              </div>
+            </Link>
+
+            {/* Invite friends */}
+            <button
+              onClick={() => setInviteOpen(true)}
+              className="flex items-center gap-3 p-4 w-full text-left hover:bg-muted/50 transition-colors"
+            >
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                style={{ backgroundColor: "color-mix(in srgb, var(--unit-4) 15%, transparent)", color: "var(--unit-4)" }}
+              >
+                <Share2 size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium">{t("inviteFriends.invite")}</p>
+                <p className="text-xs text-muted-foreground truncate">
+                  {t("inviteFriends.inviteDescription")}
+                </p>
+              </div>
+            </button>
           </CardContent>
         </Card>
 
