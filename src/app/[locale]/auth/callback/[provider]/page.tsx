@@ -5,6 +5,7 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { signInAndUp } from "supertokens-web-js/recipe/thirdparty";
 import { initSupertokens } from "@/config/supertokens";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 function CallbackContent() {
   const params = useParams();
@@ -76,12 +77,13 @@ function CallbackContent() {
             <XCircle className="h-12 w-12 mx-auto text-destructive" />
             <h1 className="text-xl font-display font-bold">Authentication failed</h1>
             <p className="text-muted-foreground">{errorMessage}</p>
-            <button
+            <Button
               onClick={() => router.replace("/auth/sign-in")}
-              className="mt-4 text-primary hover:underline text-sm"
+              variant="link"
+              className="mt-4"
             >
               Back to sign in
-            </button>
+            </Button>
           </>
         )}
       </div>
