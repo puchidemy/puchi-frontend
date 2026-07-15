@@ -148,6 +148,7 @@ export default function AchievementsTab({ profile }: AchievementsTabProps) {
                       }}
                     >
                       <Icon size={32} />
+                    </div>
                   <div>
                     <SheetTitle className="text-xl">{selected.title}</SheetTitle>
                     <SheetDescription className="text-sm">{selected.description}</SheetDescription>
