@@ -10,6 +10,21 @@ import { FullProfile, Friend, LeaderboardEntry } from "@/types/profile";
 import type { SocialUser } from "@/actions/social/get-following";
 import type { LeaderboardUser } from "@/actions/social/get-leaderboard";
 
+// In-memory cache with TTL to avoid fetching all 5 endpoints on every mount
+const profileCache = new Map<string, { data: unknown; expiry: number }>();
+const CACHE_TTL = 30_000; // 30 seconds
+
+function cachedFetch<T>(key: string, fetcher: () => Promise<T>): Promise<T> {
+  const cached = profileCache.get(key);
+  if (cached && cached.expiry > Date.now()) {
+    return Promise.resolve(cached.data as T);
+  }
+  return fetcher().then((data) => {
+    profileCache.set(key, { data, expiry: Date.now() + CACHE_TTL });
+    return data;
+  });
+}
+
 function toFriend(user: SocialUser): Friend {
   return {
     id: user.id,
@@ -45,11 +60,11 @@ export function useProfileData() {
     async function fetchData() {
       const [profileResult, achievementsResult, followingResult, followersResult, leaderboardResult] =
         await Promise.allSettled([
-          getProfile(),
-          getAchievements(),
-          getFollowing(),
-          getFollowers(),
-          getLeaderboard(),
+          cachedFetch("profile", () => getProfile()),
+          cachedFetch("achievements", () => getAchievements()),
+          cachedFetch("following", () => getFollowing()),
+          cachedFetch("followers", () => getFollowers()),
+          cachedFetch("leaderboard", () => getLeaderboard()),
         ]);
 
       if (cancelled) return;
