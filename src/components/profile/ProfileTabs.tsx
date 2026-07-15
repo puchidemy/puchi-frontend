@@ -1,5 +1,7 @@
 "use client";
 
+import { motion } from "motion/react";
+
 interface Tab {
   id: string;
   label: string;
@@ -14,21 +16,30 @@ interface ProfileTabsProps {
 
 export default function ProfileTabs({ tabs, activeTab, onTabChange }: ProfileTabsProps) {
   return (
-    <div className="flex gap-1 p-1 bg-muted/50 rounded-2xl overflow-x-auto scrollbar-hide">
-      {tabs.map((tab) => {
+    <div className="relative flex gap-1 p-1.5 bg-muted/60 rounded-2xl">
+      {tabs.map((tab, i) => {
         const isActive = tab.id === activeTab;
         return (
           <button
             key={tab.id}
             onClick={() => onTabChange(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap transition-all duration-200 ${
-              isActive
-                ? "bg-background text-foreground shadow-sm"
-                : "text-muted-foreground hover:text-foreground"
-            }`}
+            className="relative flex-1 flex items-center justify-center gap-2 px-3 py-3 rounded-xl text-sm font-medium z-10 whitespace-nowrap transition-colors duration-200"
           >
-            <tab.icon size={18} />
+            <motion.div
+              animate={{ scale: isActive ? 1 : 0.85, opacity: isActive ? 1 : 0.5 }}
+              transition={{ type: "spring", stiffness: 400, damping: 20 }}
+            >
+              <tab.icon size={18} />
+            </motion.div>
             <span className="hidden sm:inline">{tab.label}</span>
+
+            {isActive && (
+              <motion.div
+                layoutId="tab-indicator"
+                className="absolute inset-0 bg-background rounded-xl shadow-sm -z-10"
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
           </button>
         );
       })}

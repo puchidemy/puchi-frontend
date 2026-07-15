@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { mockFullProfile } from "@/data/mockProfile";
 import { FullProfile } from "@/types/profile";
 import ProfileHero from "@/components/profile/ProfileHero";
@@ -27,6 +28,12 @@ const tabs = [
 
 type TabId = (typeof tabs)[number]["id"];
 
+const tabComponents: Record<TabId, React.ComponentType<{ profile: FullProfile }>> = {
+  overview: OverviewTab,
+  stats: StatsTab,
+  achievements: AchievementsTab,
+};
+
 function RightBarFallback() {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center py-20">
@@ -43,6 +50,8 @@ export default function ProfilePage() {
   const handleAvatarChange = useCallback((_file: File) => {
     toast.success("Avatar uploaded! (API integration pending)");
   }, []);
+
+  const TabComponent = tabComponents[activeTab];
 
   return (
     <>
@@ -64,13 +73,17 @@ export default function ProfilePage() {
                 onTabChange={(id) => setActiveTab(id as TabId)}
               />
 
-              <div className="min-h-[300px]">
-                {activeTab === "overview" && <OverviewTab profile={profile} />}
-                {activeTab === "stats" && <StatsTab profile={profile} />}
-                {activeTab === "achievements" && (
-                  <AchievementsTab profile={profile} />
-                )}
-              </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeTab}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.2, ease: "easeInOut" }}
+                >
+                  <TabComponent profile={profile} />
+                </motion.div>
+              </AnimatePresence>
             </div>
             <ScrollToTopButton className="max-sm:bottom-20 xl:right-[calc(50%-220px)]" />
           </main>
