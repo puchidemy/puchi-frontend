@@ -12,7 +12,13 @@ import useThemeToggle from "@/hooks/use-toggle";
 const SelectTheme = () => {
   const { hydrated, theme, setTheme } = useThemeToggle();
 
-  if (!hydrated) return null;
+  if (!hydrated)
+    return (
+      <div className="flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm opacity-50">
+        <span className="font-bold">Theme</span>
+        <svg className="h-4 w-4 opacity-50" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    );
 
   const handleThemeChange = (value: string) => {
     if (value === "system") {
