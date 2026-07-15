@@ -8,6 +8,7 @@ import LevelRing from "./shared/LevelRing";
 import StreakFlame from "./shared/StreakFlame";
 import XpProgressBar from "./shared/XpProgressBar";
 import { Crown, Gem, Camera } from "lucide-react";
+import { toast } from "sonner";
 
 interface ProfileHeroProps {
   profile: FullProfile;
@@ -33,6 +34,7 @@ export default function ProfileHero({ profile, onAvatarChange }: ProfileHeroProp
     const reader = new FileReader();
     reader.onload = (event) => {
       setAvatarSrc(event.target?.result as string);
+      toast.success("Avatar updated!");
     };
     reader.readAsDataURL(file);
     onAvatarChange?.(file);
