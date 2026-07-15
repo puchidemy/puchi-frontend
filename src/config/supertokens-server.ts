@@ -86,6 +86,12 @@ export const supertokensConfig: TypeInput = {
               userInfoEndpointQueryParams: {
                 fields: "open_id,union_id,avatar_url,avatar_large_url,display_name",
               },
+              userInfoMap: {
+                fromUserInfoAPI: {
+                  userId: "data.user.open_id",
+                  displayName: "data.user.display_name",
+                },
+              },
             },
           },
         ],
