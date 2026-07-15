@@ -282,15 +282,10 @@
       "description": "Tell your friends it's free and fun to learn a language on Puchi!",
       "linkCopied": "Link copied!",
       "orShareOn": "Or share on",
-      "addFriends": "Add friends",
-      "addFriendsPlaceholder": "Search username...",
-      "addFriendsHint": "Find your friends by username or email",
       "findFriends": "Find friends",
       "findFriendsDescription": "Connect with your contacts and see who's already learning on Puchi",
-      "discoverFriends": "Discover friends",
       "invite": "Invite friends",
       "inviteDescription": "Share your invite link and earn XP when friends join",
-      "socialStats": "Social",
       "following": "Following",
       "followers": "Followers"
     }

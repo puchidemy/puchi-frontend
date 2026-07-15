@@ -49,15 +49,10 @@
       "description": "Hãy nói với bạn bè rằng học tiếng Việt trên Puchi vừa miễn phí vừa vui!",
       "linkCopied": "Đã sao chép liên kết!",
       "orShareOn": "Hoặc chia sẻ qua",
-      "addFriends": "Thêm bạn bè",
-      "addFriendsPlaceholder": "Tìm kiếm tên đăng nhập...",
-      "addFriendsHint": "Tìm bạn bè bằng tên đăng nhập hoặc email",
       "findFriends": "Tìm bạn bè",
       "findFriendsDescription": "Kết nối với danh bạ của bạn và xem ai đang học trên Puchi",
-      "discoverFriends": "Khám phá bạn bè",
       "invite": "Mời bạn bè",
       "inviteDescription": "Chia sẻ liên kết mời của bạn và nhận XP khi bạn bè tham gia",
-      "socialStats": "Kết nối",
       "following": "Đang theo dõi",
       "followers": "Người theo dõi"
     }
