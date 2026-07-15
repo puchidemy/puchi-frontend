@@ -75,6 +75,9 @@ export const supertokensConfig: TypeInput = {
               ],
               authorizationEndpoint:
                 "https://www.tiktok.com/v2/auth/authorize/",
+              authorizationEndpointQueryParams: {
+                client_key: process.env.TIKTOK_CLIENT_KEY || "",
+              },
               tokenEndpoint: "https://open.tiktokapis.com/v2/oauth/token/",
               userInfoEndpoint: "https://open.tiktokapis.com/v2/user/info/",
             },
