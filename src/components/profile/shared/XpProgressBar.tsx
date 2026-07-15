@@ -19,7 +19,7 @@ export default function XpProgressBar({ currentLevel, currentXP, xpToNextLevel }
           XP to Lv. {currentLevel + 1}
         </span>
         <span className="font-din font-bold tabular-nums text-foreground">
-          {currentXP.toLocaleString()} / {xpToNextLevel.toLocaleString()} XP
+          {currentXP.toLocaleString("en-US")} / {xpToNextLevel.toLocaleString("en-US")} XP
         </span>
       </div>
       <div className="h-3 bg-muted rounded-full overflow-hidden">

@@ -97,7 +97,7 @@ export default function ProfileHero({ profile }: ProfileHeroProps) {
         <StatCard
           icon={BookText}
           label={t("stats.wordsLearned")}
-          value={stats.wordsLearned.toLocaleString()}
+          value={stats.wordsLearned.toLocaleString("en-US")}
           color="var(--unit-2)"
           bgColor="color-mix(in srgb, var(--unit-2) 15%, transparent)"
         />

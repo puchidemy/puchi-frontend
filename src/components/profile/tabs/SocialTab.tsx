@@ -40,7 +40,7 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
         <p className="text-xs text-muted-foreground">Lv. {entry.level}</p>
       </div>
       <div className="text-right">
-        <span className="font-din font-bold text-sm">{entry.weeklyXP.toLocaleString()}</span>
+        <span className="font-din font-bold text-sm">{entry.weeklyXP.toLocaleString("en-US")}</span>
         <span className="text-xs text-muted-foreground ml-0.5">XP</span>
       </div>
     </div>

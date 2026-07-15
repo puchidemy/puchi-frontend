@@ -57,7 +57,7 @@ export default function OverviewTab({ profile }: OverviewTabProps) {
         <h3 className="font-display text-lg font-bold">{t("weeklyRecap")}</h3>
         <WeeklyStrip />
         <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>{gamification.totalXP.toLocaleString()} XP {t("totalXP")}</span>
+          <span>{gamification.totalXP.toLocaleString("en-US")} XP {t("totalXP")}</span>
           <span>5/7 {t("daysActive")}</span>
         </div>
       </div>
@@ -98,7 +98,7 @@ export default function OverviewTab({ profile }: OverviewTabProps) {
         <div className="flex items-center justify-between">
           <h3 className="font-display text-lg font-bold">{t("totalXP")}</h3>
           <span className="text-2xl font-din font-extrabold text-[var(--unit-3)] tabular-nums">
-            {gamification.totalXP.toLocaleString()} XP
+            {gamification.totalXP.toLocaleString("en-US")} XP
           </span>
         </div>
       </div>
