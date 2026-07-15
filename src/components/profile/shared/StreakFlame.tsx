@@ -1,7 +1,7 @@
 "use client";
 
+import { motion, useReducedMotion } from "motion/react";
 import { Flame } from "lucide-react";
-import { useReducedMotion } from "motion/react";
 
 interface StreakFlameProps {
   streak: number;
@@ -20,13 +20,18 @@ export default function StreakFlame({ streak, size = "md" }: StreakFlameProps) {
 
   return (
     <div className={`flex items-center ${s.container}`}>
-      <Flame
-        size={s.icon}
-        className={prefersReducedMotion ? "text-[var(--unit-4)]" : "text-[var(--unit-4)] animate-pulse"}
-        style={{
-          fill: "var(--unit-4)",
+      <motion.div
+        animate={prefersReducedMotion ? {} : {
+          scale: [1, 1.12, 1],
+          transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
         }}
-      />
+      >
+        <Flame
+          size={s.icon}
+          className="text-[var(--unit-4)]"
+          style={{ fill: "var(--unit-4)" }}
+        />
+      </motion.div>
       <span className={`font-display font-extrabold ${s.text} tabular-nums`}>
         {streak}
       </span>

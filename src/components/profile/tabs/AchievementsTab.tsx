@@ -81,26 +81,33 @@ export default function AchievementsTab({ profile }: AchievementsTabProps) {
             const Icon = getIcon(achievement.icon);
             return (
               <motion.div
-                key={achievement.id}
-                custom={i}
-                variants={inProgressVariants}
-                className="rounded-2xl bg-card border border-border p-4 space-y-2 cursor-pointer hover:shadow-md transition-shadow"
-                onClick={() => setSelected(achievement)}
-                whileHover={{ scale: 1.01, x: 4 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <div className="flex items-center gap-3">
-                  <motion.div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
-                    style={{
-                      backgroundColor: `color-mix(in srgb, ${achievement.color} 15%, transparent)`,
-                      color: achievement.color,
-                    }}
-                    whileHover={{ rotate: [0, -10, 10, 0] }}
-                    transition={{ duration: 0.4 }}
+                    key={achievement.id}
+                    custom={i}
+                    variants={inProgressVariants}
+                    className="rounded-2xl bg-card border border-border p-4 space-y-2 cursor-pointer hover:shadow-md transition-shadow"
+                    onClick={() => setSelected(achievement)}
+                    whileHover={{ scale: 1.01, x: 4 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <Icon size={20} />
-                  </motion.div>
+                    <div className="flex items-center gap-3">
+                      <div
+                        className="relative w-10 h-10 rounded-xl flex items-center justify-center overflow-hidden shrink-0"
+                        style={{
+                          backgroundColor: `color-mix(in srgb, ${achievement.color} 15%, transparent)`,
+                          color: achievement.color,
+                        }}
+                      >
+                        <Icon size={20} className="relative z-10" />
+                        <motion.div
+                          className="absolute inset-0 rounded-xl"
+                          style={{ backgroundColor: achievement.color, opacity: 0.15 }}
+                          animate={{
+                            scale: [1, 1.4, 1],
+                            opacity: [0.15, 0.35, 0.15],
+                          }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: i * 0.1 }}
+                        />
+                      </div>
                   <div className="flex-1 min-w-0">
                     <p className="font-medium truncate">{achievement.title}</p>
                     <p className="text-xs text-muted-foreground">{achievement.progressLabel}</p>
@@ -139,18 +146,29 @@ export default function AchievementsTab({ profile }: AchievementsTabProps) {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
                 >
-                  <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center"
-                    style={{
-                      backgroundColor: selected.unlocked
-                        ? `color-mix(in srgb, ${selected.color} 15%, transparent)`
-                        : "var(--muted)",
-                      color: selected.unlocked ? selected.color : "var(--muted-foreground)",
-                      filter: selected.unlocked ? "none" : "grayscale(100%)",
-                    }}
-                  >
-                    <Icon size={32} />
-                  </div>
+                    <div
+                      className="relative w-16 h-16 rounded-2xl flex items-center justify-center overflow-hidden"
+                      style={{
+                        backgroundColor: selected.unlocked
+                          ? `color-mix(in srgb, ${selected.color} 15%, transparent)`
+                          : "var(--muted)",
+                        color: selected.unlocked ? selected.color : "var(--muted-foreground)",
+                        filter: selected.unlocked ? "none" : "grayscale(100%)",
+                      }}
+                    >
+                      <Icon size={32} className="relative z-10" />
+                      {selected.unlocked && (
+                        <motion.div
+                          className="absolute inset-0 rounded-2xl"
+                          style={{ backgroundColor: selected.color, opacity: 0.12 }}
+                          animate={{
+                            scale: [1, 1.35, 1],
+                            opacity: [0.12, 0.3, 0.12],
+                          }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+                        />
+                      )}
+                    </div>
                   <div>
                     <SheetTitle className="text-xl">{selected.title}</SheetTitle>
                     <SheetDescription className="text-sm">{selected.description}</SheetDescription>
