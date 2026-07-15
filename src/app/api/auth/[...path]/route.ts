@@ -6,20 +6,9 @@ async function handleAuth(request: NextRequest) {
   try {
     ensureSupertokensInit();
     const handler = getAppDirRequestHandler();
-
-    // Debug: check what body we actually receive
-    const rawBody = await request.clone().text();
-    console.log("BODY PREVIEW:", rawBody.substring(0, 200));
-
-    // supertokens cần đọc body 2 lần (formData + json),
-    // tạo request mới với string body cho phép đọc lại
-    const bufferedReq = new NextRequest(request.url, {
-      method: request.method,
-      headers: request.headers,
-      body: rawBody,
-    });
-
-    const result = await handler(bufferedReq);
+    // supertokens-node cần đọc body nhiều lần (formData + json),
+    // clone request để mỗi lần đọc là stream riêng
+    const result = await handler(request.clone());
     return result;
   } catch (e: unknown) {
     const err = e as Error;
