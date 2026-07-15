@@ -71,6 +71,7 @@ export interface FullProfile {
     lastName: string;
     email: string;
     imageUrl: string;
+    bio?: string;
     createdAt: string;
     updatedAt: string;
   };

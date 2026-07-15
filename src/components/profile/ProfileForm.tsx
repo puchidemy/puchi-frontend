@@ -24,6 +24,7 @@ const ProfileForm = ({ profile, onUpdate }: ProfileFormProps) => {
     firstName: profile.firstName,
     lastName: profile.lastName,
     username: profile.username,
+    bio: profile.bio || "",
   });
   const { toast: showToast } = toast;
 
@@ -54,6 +55,7 @@ const ProfileForm = ({ profile, onUpdate }: ProfileFormProps) => {
       firstName: profile.firstName,
       lastName: profile.lastName,
       username: profile.username,
+      bio: profile.bio || "",
     });
     setIsEditing(false);
   };
@@ -121,6 +123,19 @@ const ProfileForm = ({ profile, onUpdate }: ProfileFormProps) => {
             onChange={(e) => handleInputChange("username", e.target.value)}
             disabled={!isEditing}
           />
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="bio">{t("bio")}</Label>
+          <textarea
+            id="bio"
+            rows={3}
+            className="flex w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 resize-none"
+            value={formData.bio}
+            onChange={(e) => handleInputChange("bio", e.target.value)}
+            disabled={!isEditing}
+            placeholder={t("bioPlaceholder")}
+          />
+          <p className="text-xs text-muted-foreground">{t("bioNote")}</p>
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">{t("email")}</Label>

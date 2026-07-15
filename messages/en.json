@@ -194,6 +194,9 @@
     "username": "Username",
     "email": "Email",
     "emailNote": "Email cannot be changed. Please contact support if you need to change it.",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell the world about yourself...",
+    "bioNote": "Share a short bio to let others know you better.",
     "success": "Information updated successfully!",
     "error": "An error occurred while updating information"
   },

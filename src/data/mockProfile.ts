@@ -90,6 +90,7 @@ export const mockFullProfile: FullProfile = {
     lastName: "Learner",
     email: "puchi@example.com",
     imageUrl: "",
+    bio: "Learning Vietnamese every day! 🇻🇳",
     createdAt: "2026-06-15T08:00:00Z",
     updatedAt: "2026-07-14T12:00:00Z",
   },

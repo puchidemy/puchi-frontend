@@ -5,7 +5,7 @@ export interface UserData {
   lastName: string;
   email: string;
   imageUrl: string;
-  // Thêm các trường khác của user nếu cần
+  bio?: string;
 }
 
 export interface UserProfile {
@@ -15,7 +15,7 @@ export interface UserProfile {
   lastName: string;
   email: string;
   imageUrl: string;
+  bio?: string;
   createdAt: string;
   updatedAt: string;
-  // Thêm các trường profile khác
 }
