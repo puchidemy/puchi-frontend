@@ -59,7 +59,7 @@ const ProfileForm = ({ profile, onUpdate }: ProfileFormProps) => {
   };
 
   return (
-    <Card className="w-full shadow-none">
+    <Card className="w-full shadow-none rounded-2xl border">
       <CardHeader className="flex flex-row items-center justify-between">
         <CardTitle className="text-xl font-bold">{t("title")}</CardTitle>
         {!isEditing ? (

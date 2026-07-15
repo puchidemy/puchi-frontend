@@ -80,7 +80,7 @@ const ProfileActions = () => {
 
   return (
     <div className="space-y-6">
-      <Card className="shadow-none">
+      <Card className="shadow-none rounded-2xl border">
         <CardHeader>
           <CardTitle className="text-xl font-bold">
             {t("actions.title")}
@@ -127,7 +127,7 @@ const ProfileActions = () => {
         </CardContent>
       </Card>
 
-      <Card className="border-destructive/50 shadow-none">
+      <Card className="border-destructive/50 shadow-none rounded-2xl border">
         <CardHeader>
           <CardTitle className="text-xl font-bold text-destructive flex items-center space-x-2">
             <AlertTriangle className="h-5 w-5" />
