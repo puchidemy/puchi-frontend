@@ -34,7 +34,7 @@ function LeaderboardRow({ entry }: { entry: LeaderboardEntry }) {
         <p className="text-sm font-medium truncate">
           {entry.username}
           {entry.isCurrentUser && (
-            <span className="ml-1.5 text-xs text-primary font-normal">\u2190 you</span>
+            <span className="ml-1.5 text-xs text-primary font-normal">← you</span>
           )}
         </p>
         <p className="text-xs text-muted-foreground">Lv. {entry.level}</p>
@@ -64,7 +64,7 @@ function FriendRow({ friend }: { friend: Friend }) {
           {friend.firstName} {friend.lastName}
         </p>
         <p className="text-xs text-muted-foreground">
-          Lv. {friend.level} \u00B7 \uD83D\uDD25 {friend.streak}
+          Lv. {friend.level} · 🔥 {friend.streak}
         </p>
       </div>
       <Button
