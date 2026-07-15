@@ -79,6 +79,9 @@ export const supertokensConfig: TypeInput = {
                 client_key: process.env.TIKTOK_CLIENT_KEY || "",
               },
               tokenEndpoint: "https://open.tiktokapis.com/v2/oauth/token/",
+              tokenEndpointBodyParams: {
+                client_key: process.env.TIKTOK_CLIENT_KEY || "",
+              },
               userInfoEndpoint: "https://open.tiktokapis.com/v2/user/info/",
             },
           },

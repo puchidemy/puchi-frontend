@@ -77,7 +77,7 @@ function CallbackContent() {
             <h1 className="text-xl font-display font-bold">Authentication failed</h1>
             <p className="text-muted-foreground">{errorMessage}</p>
             <button
-              onClick={() => router.replace("/auth")}
+              onClick={() => router.replace("/auth/sign-in")}
               className="mt-4 text-primary hover:underline text-sm"
             >
               Back to sign in
