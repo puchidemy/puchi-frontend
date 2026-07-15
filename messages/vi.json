@@ -56,5 +56,18 @@
       "following": "Đang theo dõi",
       "followers": "Người theo dõi"
     }
+  },
+  "errors": {
+    "profile": { "notFound": "Không tìm thấy hồ sơ" },
+    "validation": {
+      "invalidInput": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại",
+      "usernameTaken": "Tên đăng nhập này đã được sử dụng"
+    },
+    "auth": { "unauthorized": "Vui lòng đăng nhập để tiếp tục" },
+    "network": {
+      "timeout": "Yêu cầu đã hết hạn. Vui lòng thử lại",
+      "connectionError": "Không thể kết nối. Vui lòng kiểm tra mạng"
+    },
+    "server": { "internalError": "Có lỗi xảy ra. Vui lòng thử lại sau" }
   }
 }

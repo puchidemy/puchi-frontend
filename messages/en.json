@@ -289,5 +289,18 @@
       "following": "Following",
       "followers": "Followers"
     }
+  },
+  "errors": {
+    "profile": { "notFound": "Profile not found" },
+    "validation": {
+      "invalidInput": "Invalid input. Please check your information",
+      "usernameTaken": "This username is already taken"
+    },
+    "auth": { "unauthorized": "Please sign in to continue" },
+    "network": {
+      "timeout": "The request timed out. Please try again",
+      "connectionError": "Unable to connect. Please check your internet"
+    },
+    "server": { "internalError": "Something went wrong. Please try again later" }
   }
 }
