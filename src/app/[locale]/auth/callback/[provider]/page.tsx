@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { signInAndUp } from "supertokens-web-js/recipe/thirdparty";
