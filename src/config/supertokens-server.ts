@@ -82,7 +82,7 @@ export const supertokensConfig: TypeInput = {
               tokenEndpointBodyParams: {
                 client_key: process.env.TIKTOK_CLIENT_KEY || "",
               },
-              userInfoEndpoint: "https://open.tiktokapis.com/v2/user/info/",
+              userInfoEndpoint: "https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,avatar_large_url,display_name",
             },
           },
         ],
