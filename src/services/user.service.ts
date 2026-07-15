@@ -11,7 +11,7 @@ class UserService {
 
   async getUserProfile(): Promise<UserProfile> {
     try {
-      const response = await fetch(`${this.baseUrl}/users/profile`, {
+      const response = await fetch(`${this.baseUrl}/user/profile`, {
         method: "GET",
         credentials: "include",
       });
@@ -30,7 +30,7 @@ class UserService {
 
   async updateUserProfile(profileData: Partial<UserProfile>): Promise<UserProfile> {
     try {
-      const response = await fetch(`${this.baseUrl}/users/profile`, {
+      const response = await fetch(`${this.baseUrl}/user/profile`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(profileData),
@@ -51,7 +51,7 @@ class UserService {
 
   async deleteUserAccount(): Promise<boolean> {
     try {
-      const response = await fetch(`${this.baseUrl}/users/profile`, {
+      const response = await fetch(`${this.baseUrl}/user/profile`, {
         method: "DELETE",
         credentials: "include",
       });
