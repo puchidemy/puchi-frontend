@@ -16,7 +16,7 @@ export function initSupertokens() {
     appInfo: {
       appName: "Puchi",
       apiDomain: process.env.NEXT_PUBLIC_AUTH_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
-      apiBasePath: "/auth",
+      apiBasePath: "/api/auth",
     },
     recipeList: [
       EmailPassword.init(),
