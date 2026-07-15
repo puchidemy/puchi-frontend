@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { signUp } from "supertokens-web-js/recipe/emailpassword";
 import { initSupertokens } from "@/config/supertokens";
 import { Button } from "@/components/ui/button";
@@ -110,12 +109,6 @@ export function SignUpForm() {
           {loading ? "Creating account..." : "Create Account"}
         </Button>
       </form>
-      <p className="text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
-        <Link href="/auth/sign-in" className="text-primary hover:underline">
-          Sign in
-        </Link>
-      </p>
     </>
   );
 }

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { signIn } from "supertokens-web-js/recipe/emailpassword";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -92,12 +91,6 @@ export function SignInForm() {
           {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>
-      <p className="text-center text-sm text-muted-foreground">
-        Don&apos;t have an account?{" "}
-        <Link href="/auth/sign-up" className="text-primary hover:underline">
-          Sign up
-        </Link>
-      </p>
     </>
   );
 }
