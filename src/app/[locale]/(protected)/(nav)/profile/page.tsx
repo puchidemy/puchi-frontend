@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { mockFullProfile } from "@/data/mockProfile";
+import { useProfileData } from "@/hooks/use-profile-data";
 import { FullProfile } from "@/types/profile";
 import ProfileHero from "@/components/profile/ProfileHero";
 import ProfileTabs from "@/components/profile/ProfileTabs";
@@ -18,7 +18,6 @@ import {
   BarChart3,
   Trophy,
 } from "lucide-react";
-import { toast } from "sonner";
 
 const tabs = [
   { id: "overview", icon: LayoutDashboard },
@@ -44,12 +43,8 @@ function RightBarFallback() {
 
 export default function ProfilePage() {
   const t = useTranslations("Profile");
-  const [profile] = useState<FullProfile>(mockFullProfile);
+  const { profile, isLoading } = useProfileData();
   const [activeTab, setActiveTab] = useState<TabId>("overview");
-
-  const handleAvatarChange = useCallback((_file: File) => {
-    toast.success("Avatar uploaded! (API integration pending)");
-  }, []);
 
   const TabComponent = tabComponents[activeTab];
 
@@ -59,10 +54,7 @@ export default function ProfilePage() {
         <div className="h-full flex xl:w-[1024px] w-full relative">
           <main className="min-w-[300px] absolute left-0 right-0 xl:right-[350px]">
             <div className="container mx-auto px-4 py-6 space-y-6">
-              <ProfileHero
-                profile={profile}
-                onAvatarChange={handleAvatarChange}
-              />
+              <ProfileHero profile={profile} />
 
               <ProfileTabs
                 tabs={tabs.map((tab) => ({
