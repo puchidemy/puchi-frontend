@@ -17,7 +17,7 @@ export const supertokensConfig: TypeInput = {
       process.env.NEXT_PUBLIC_AUTH_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000",
     websiteDomain:
       process.env.NEXT_PUBLIC_WEBSITE_DOMAIN || "http://localhost:3000",
-    apiBasePath: "/api/auth",
+    apiBasePath: "/auth",
     websiteBasePath: "/auth",
   },
   recipeList: [
