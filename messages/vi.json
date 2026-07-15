@@ -1,0 +1,49 @@
+{
+  "Profile": {
+    "tabs": {
+      "overview": "T\u1ED5ng quan",
+      "stats": "Th\u1ED1ng k\u00EA",
+      "achievements": "Th\u00E0nh t\u1EF1u",
+      "social": "X\u00E3 h\u1ED9i",
+      "settings": "C\u00E0i \u0111\u1EB7t"
+    },
+    "streak": "Streak",
+    "crowns": "V\u01B0\u01A1ng mi\u1EC7n",
+    "gems": "Kim c\u01B0\u01A1ng",
+    "dayStreak": "ng\u00E0y streak",
+    "days": "ng\u00E0y",
+    "longestStreak": "D\u00E0i nh\u1EA5t",
+    "freezesRemaining": "l\u1EA7n \u0111\u00F3ng b\u0103ng c\u00F2n l\u1EA1i",
+    "weeklyRecap": "T\u1ED5ng k\u1EBFt tu\u1EA7n",
+    "daysActive": "ng\u00E0y ho\u1EA1t \u0111\u1ED9ng",
+    "learningProgress": "Ti\u1EBFn \u0111\u1ED9 h\u1ECDc t\u1EADp",
+    "courseCompletion": "Ho\u00E0n th\u00E0nh kh\u00F3a h\u1ECDc",
+    "lessonsCompleted": "b\u00E0i h\u1ECDc \u0111\u00E3 ho\u00E0n th\u00E0nh",
+    "minutesLearned": "ph\u00FAt \u0111\u00E3 h\u1ECDc",
+    "totalXP": "T\u1ED5ng XP",
+    "stats": {
+      "lessonsCompleted": "B\u00E0i h\u1ECDc",
+      "accuracy": "\u0110\u1ED9 ch\u00EDnh x\u00E1c",
+      "totalHours": "T\u1ED5ng gi\u1EDD",
+      "wordsLearned": "T\u1EEB \u0111\u00E3 h\u1ECDc",
+      "learningCalendar": "L\u1ECBch h\u1ECDc t\u1EADp",
+      "weeklyXP": "XP h\u00E0ng tu\u1EA7n",
+      "accuracyChart": "\u0110\u1ED9 ch\u00EDnh x\u00E1c"
+    },
+    "achievements": {
+      "title": "Th\u00E0nh t\u1EF1u",
+      "unlocked": "\u0111\u00E3 m\u1EDF kh\u00F3a",
+      "inProgress": "\u0110ang ti\u1EBFn h\u00E0nh",
+      "all": "T\u1EA5t c\u1EA3 huy hi\u1EC7u",
+      "progress": "Ti\u1EBFn \u0111\u1ED9",
+      "unlockedAt": "\u0110\u00E3 m\u1EDF kh\u00F3a"
+    },
+    "social": {
+      "friends": "B\u1EA1n b\u00E8",
+      "followers": "Ng\u01B0\u1EDDi theo d\u00F5i",
+      "following": "\u0110ang theo d\u00F5i",
+      "leaderboard": "B\u1EA3ng x\u1EBFp h\u1EA1ng tu\u1EA7n",
+      "friendsList": "Danh s\u00E1ch b\u1EA1n b\u00E8"
+    }
+  }
+}

@@ -221,5 +221,52 @@
       "currentLevel": "Current Level",
       "level": "Level {level}"
     }
+  },
+  "Profile": {
+    "tabs": {
+      "overview": "Overview",
+      "stats": "Stats",
+      "achievements": "Achievements",
+      "social": "Social",
+      "settings": "Settings"
+    },
+    "streak": "Streak",
+    "crowns": "Crowns",
+    "gems": "Gems",
+    "dayStreak": "day streak",
+    "days": "days",
+    "longestStreak": "Longest",
+    "freezesRemaining": "freezes left",
+    "weeklyRecap": "Weekly Recap",
+    "daysActive": "days active",
+    "learningProgress": "Learning Progress",
+    "courseCompletion": "Course Completion",
+    "lessonsCompleted": "lessons completed",
+    "minutesLearned": "minutes learned",
+    "totalXP": "Total XP",
+    "stats": {
+      "lessonsCompleted": "Lessons",
+      "accuracy": "Accuracy",
+      "totalHours": "Total Hours",
+      "wordsLearned": "Words Learned",
+      "learningCalendar": "Learning Calendar",
+      "weeklyXP": "Weekly XP",
+      "accuracyChart": "Accuracy"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "unlocked": "unlocked",
+      "inProgress": "In Progress",
+      "all": "All Badges",
+      "progress": "Progress",
+      "unlockedAt": "Unlocked"
+    },
+    "social": {
+      "friends": "Friends",
+      "followers": "Followers",
+      "following": "Following",
+      "leaderboard": "Weekly Leaderboard",
+      "friendsList": "Friends"
+    }
   }
 }

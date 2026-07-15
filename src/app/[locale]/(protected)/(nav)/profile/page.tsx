@@ -1,111 +1,64 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
-import { getUserProfile } from "@/services/user.service";
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { mockFullProfile } from "@/data/mockProfile";
 import { UserProfile } from "@/types/user";
-import ProfileHeader from "@/components/profile/ProfileHeader";
-import ProfileForm from "@/components/profile/ProfileForm";
-import ProfileStats from "@/components/profile/ProfileStats";
-import ProfileActions from "@/components/profile/ProfileActions";
-import { toast } from "sonner";
+import ProfileHero from "@/components/profile/ProfileHero";
+import ProfileTabs from "@/components/profile/ProfileTabs";
+import OverviewTab from "@/components/profile/tabs/OverviewTab";
+import StatsTab from "@/components/profile/tabs/StatsTab";
+import AchievementsTab from "@/components/profile/tabs/AchievementsTab";
+import SocialTab from "@/components/profile/tabs/SocialTab";
+import SettingsTab from "@/components/profile/tabs/SettingsTab";
+import {
+  LayoutDashboard,
+  BarChart3,
+  Trophy,
+  Users,
+  Settings,
+} from "lucide-react";
 
-const ProfilePage = () => {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+const tabs = [
+  { id: "overview", icon: LayoutDashboard },
+  { id: "stats", icon: BarChart3 },
+  { id: "achievements", icon: Trophy },
+  { id: "social", icon: Users },
+  { id: "settings", icon: Settings },
+] as const;
 
-  useEffect(() => {
-    let isCancelled = false;
+type TabId = (typeof tabs)[number]["id"];
 
-    const fetchProfile = async () => {
-      try {
-        setIsLoading(true);
-        const userProfile = await getUserProfile();
-        if (!isCancelled) {
-          setProfile(userProfile);
-        }
-      } catch (err) {
-        if (!isCancelled) {
-          console.error("Error fetching profile:", err);
-          setError("Không thể tải thông tin profile");
-          toast.error("Có lỗi xảy ra khi tải thông tin profile");
-        }
-      } finally {
-        if (!isCancelled) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchProfile();
-
-    return () => {
-      isCancelled = true;
-    };
-  }, []);
-
-  const handleProfileUpdate = (updatedProfile: UserProfile) => {
-    setProfile(updatedProfile);
-  };
-
-  if (isLoading) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="grid gap-8 lg:grid-cols-3">
-          {/* Left column */}
-          <div className="lg:col-span-2 space-y-8">
-            <Skeleton className="h-64 w-full" />
-            <Skeleton className="h-48 w-full" />
-            <Skeleton className="h-64 w-full" />
-          </div>
-          {/* Right column */}
-          <div className="space-y-8">
-            <Skeleton className="h-48 w-full" />
-            <Skeleton className="h-64 w-full" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || !profile) {
-    return (
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-destructive mb-4">
-            {error || "Không tìm thấy thông tin profile"}
-          </h1>
-          <p className="text-muted-foreground">
-            Vui lòng thử lại sau hoặc liên hệ hỗ trợ nếu vấn đề vẫn tiếp tục.
-          </p>
-        </div>
-      </div>
-    );
-  }
+export default function ProfilePage() {
+  const t = useTranslations("Profile");
+  const [profile] = useState(mockFullProfile);
+  const [userProfile, setUserProfile] = useState<UserProfile>({
+    ...mockFullProfile.user,
+  });
+  const [activeTab, setActiveTab] = useState<TabId>("overview");
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left column - Main content */}
-        <div className="lg:col-span-2 space-y-8">
-          {/* Profile Header */}
-          <ProfileHeader profile={profile} />
+    <div className="container mx-auto px-4 py-6 max-w-3xl space-y-6">
+      <ProfileHero profile={profile} />
 
-          {/* Profile Form */}
-          <ProfileForm profile={profile} onUpdate={handleProfileUpdate} />
+      <ProfileTabs
+        tabs={tabs.map((tab) => ({
+          ...tab,
+          label: t(`tabs.${tab.id}`),
+        }))}
+        activeTab={activeTab}
+        onTabChange={(id) => setActiveTab(id as TabId)}
+      />
 
-          {/* Profile Stats */}
-          <ProfileStats />
-        </div>
-
-        {/* Right column - Actions */}
-        <div className="space-y-8">
-          <ProfileActions />
-        </div>
+      <div className="min-h-[300px]">
+        {activeTab === "overview" && <OverviewTab profile={profile} />}
+        {activeTab === "stats" && <StatsTab profile={profile} />}
+        {activeTab === "achievements" && <AchievementsTab profile={profile} />}
+        {activeTab === "social" && <SocialTab profile={profile} />}
+        {activeTab === "settings" && (
+          <SettingsTab profile={userProfile} onUpdate={setUserProfile} />
+        )}
       </div>
     </div>
   );
-};
-
-export default ProfilePage;
+}
