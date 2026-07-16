@@ -76,9 +76,8 @@ export default function SettingsProfilePage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/v1/profile", {
+      await clientFetch("/v1/profile", {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,
@@ -88,14 +87,10 @@ export default function SettingsProfilePage() {
         }),
       });
 
-      if (res.ok) {
-        toast.success(t("profileSaved"));
-      } else {
-        const err = await res.json();
-        toast.error(err.message || t("saveFailed"));
-      }
-    } catch {
-      toast.error(t("networkError"));
+      toast.success(t("profileSaved"));
+    } catch (err) {
+      console.error("Failed to save profile:", err);
+      toast.error(t("saveFailed"));
     } finally {
       setLoading(false);
     }
