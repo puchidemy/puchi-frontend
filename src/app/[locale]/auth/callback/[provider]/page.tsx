@@ -31,8 +31,35 @@ function CallbackContent() {
         const response = await signInAndUp();
 
         if (response.status === "OK") {
+          // Check onboarding status from backend
+          try {
+            const profileRes = await fetch("/v1/profile");
+            if (profileRes.ok) {
+              const profile = await profileRes.json();
+              if (profile.onboarding_completed) {
+                setStatus("success");
+                setTimeout(() => router.replace("/learn"), 1000);
+                return;
+              }
+            }
+          } catch {}
+
+          // Build redirect URL with pre-fill params
+          const urlParams = new URLSearchParams();
+
+          // Try to extract provider user info for pre-fill
+          try {
+            const sessionModule = await import("supertokens-web-js/recipe/session");
+            const session = await sessionModule.getSession();
+            const userId = session.getUserId();
+            // Provider-specific pre-fill can be added here
+            if (provider === "google") {
+              urlParams.set("firstName", "");
+            }
+          } catch {}
+
           setStatus("success");
-          setTimeout(() => router.replace("/learn"), 1000);
+          setTimeout(() => router.replace(`/welcome?${urlParams.toString()}`), 1000);
         } else if (response.status === "NO_EMAIL_GIVEN_BY_PROVIDER") {
           setStatus("error");
           setErrorMessage("The provider didn't provide an email address. Please try a different login method.");

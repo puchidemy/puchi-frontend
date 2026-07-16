@@ -1,22 +1,16 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "@/i18n/routing";
-import { useOnboardingStore } from "@/store/onboarding";
+import { Suspense } from "react";
 import { WelcomeFlow } from "@/components/welcome";
 
-const WelcomePage = () => {
-  const router = useRouter();
-  const { isComplete } = useOnboardingStore();
-
-  // Check if onboarding is complete, redirect to /learn if it is
-  useEffect(() => {
-    if (isComplete) {
-      router.push("/learn");
-    }
-  }, [isComplete, router]);
-
+function WelcomePageContent() {
   return <WelcomeFlow />;
-};
+}
 
-export default WelcomePage;
+export default function WelcomePage() {
+  return (
+    <Suspense fallback={<div className="py-24 text-center">Loading...</div>}>
+      <WelcomePageContent />
+    </Suspense>
+  );
+}
