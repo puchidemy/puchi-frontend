@@ -154,3 +154,94 @@ export async function getAuthRequest(
     throw new Error(`Failed to get auth request: ${await res.text()}`);
   return res.json();
 }
+
+// --- IDP Intents (Social Login) ---
+
+export interface IdpIntentResult {
+  idpIntentId: string;
+  authUrl: string;
+}
+
+export async function createIdpIntent(
+  idpId: string
+): Promise<IdpIntentResult> {
+  const res = await zitadelFetch("/v2beta/idp_intents", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+    },
+    body: JSON.stringify({ idpId }),
+  });
+  if (!res.ok) throw new Error(`IDP intent creation failed: ${await res.text()}`);
+  const data = await res.json();
+  return { idpIntentId: data.idpIntentId, authUrl: data.authUrl };
+}
+
+export interface SessionFromIdpIntentResult {
+  sessionId: string;
+  sessionToken: string;
+  userId: string;
+}
+
+export async function createSessionFromIdpIntent(
+  idpIntentId: string,
+  idpIntentToken: string
+): Promise<SessionFromIdpIntentResult> {
+  const res = await zitadelFetch("/v2beta/sessions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+    },
+    body: JSON.stringify({
+      checks: {
+        idpIntent: {
+          idpIntentId,
+          idpIntentToken,
+        },
+      },
+    }),
+  });
+  if (!res.ok) throw new Error(`Session from IDP intent failed: ${await res.text()}`);
+  const data = await res.json();
+  return {
+    sessionId: data.id,
+    sessionToken: data.sessionToken,
+    userId: data.factors?.user?.id || "",
+  };
+}
+
+export interface IdpIntentDetail {
+  idpIntentId: string;
+  userId?: string;
+  token: string;
+}
+
+/**
+ * After external auth, Zitadel redirects to the callback URL with these params.
+ * This function extracts them from the URL search params.
+ */
+export function parseIdpIntentCallback(
+  searchParams: URLSearchParams
+): IdpIntentDetail | null {
+  const idpIntentId = searchParams.get("idpIntentId");
+  const token = searchParams.get("token");
+  const userId = searchParams.get("userId") || undefined;
+
+  if (!idpIntentId || !token) return null;
+
+  return { idpIntentId, token, userId };
+}
+
+export async function getIdpIntent(
+  idpIntentId: string
+): Promise<any> {
+  const res = await zitadelFetch(`/v2beta/idp_intents/${idpIntentId}`, {
+    headers: {
+      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+    },
+  });
+  if (!res.ok) throw new Error(`Failed to get IDP intent: ${await res.text()}`);
+  return res.json();
+}

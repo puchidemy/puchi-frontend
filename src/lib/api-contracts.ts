@@ -6,7 +6,7 @@ export type TResponse<T extends Default> = T['result'];
 export interface APILogin extends Default {
   url: '/api/auth/login';
   method: 'post';
-  data: { email: string; password: string };
+  data: { email: string; password: string; authRequestId?: string };
   result: { success: boolean; sessionId?: string; callbackUrl?: string } | { error: string };
 }
 
@@ -29,4 +29,13 @@ export interface APIResetPassword extends Default {
   method: 'post';
   data: { userId: string; code: string; password: string };
   result: { success: boolean } | { error: string };
+}
+
+export interface APISocialLogin extends Default {
+  url: '/api/auth/social';
+  method: 'post';
+  data: { provider: string };
+  result:
+    | { idpId: string; name: string; authUrl: string; idpIntentId: string }
+    | { error: string };
 }

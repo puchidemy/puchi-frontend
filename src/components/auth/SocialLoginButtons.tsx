@@ -72,8 +72,8 @@ export function SocialLoginButtons() {
 
       const data = await res.json();
 
-      if (data.authorizeUrl) {
-        window.location.href = data.authorizeUrl;
+      if (data.authUrl) {
+        window.location.href = data.authUrl;
       } else {
         setError("Failed to get login URL. Please try again.");
       }
