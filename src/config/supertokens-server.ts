@@ -24,7 +24,11 @@ export const supertokensConfig: TypeInput = {
   },
   recipeList: [
     EmailPasswordNode.init(),
-    AccountLinking.init(),
+    AccountLinking.init({
+      shouldDoAutomaticAccountLinking: async () => {
+        return { shouldAutomaticallyLink: true, shouldRequireVerification: false };
+      },
+    }),
     ThirdPartyNode.init({
       signInAndUpFeature: {
         providers: [
@@ -92,15 +96,11 @@ export const supertokensConfig: TypeInput = {
               userInfoMap: {
                 fromUserInfoAPI: {
                   userId: "data.user.open_id",
-                  displayName: "data.user.display_name",
                 },
               },
             },
           },
         ],
-        shouldAutoLink: async (input) => {
-          return { allowed: true };
-        },
       },
     }),
     SessionNode.init(),
