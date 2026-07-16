@@ -5,14 +5,16 @@ import { ensureSupertokensInit } from "@/config/supertokens-server";
 import { getSession } from "supertokens-node/recipe/session";
 
 export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ provider: string }> }
+  request: NextRequest,
+  { params }: { params: Promise<{ provider: string }> },
 ) {
   ensureSupertokensInit();
   const { provider } = await params;
 
   try {
-    // Get Supertokens OAuth URL for this provider
+    // Verify user is authenticated
+    await getSession(request, NextResponse.next());
+
     const { getAuthorisationURL } = await import("supertokens-node/recipe/thirdparty");
     const url = await getAuthorisationURL({
       thirdPartyId: provider,
@@ -23,8 +25,8 @@ export async function GET(
   } catch (err) {
     console.error("Failed to generate link URL:", err);
     return NextResponse.json(
-      { error: "Failed to initiate account linking" },
-      { status: 500 }
+      { error: "Not authenticated or failed to initiate linking" },
+      { status: 401 },
     );
   }
 }

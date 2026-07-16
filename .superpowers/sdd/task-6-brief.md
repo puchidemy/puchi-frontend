@@ -1,8 +1,28 @@
+### Task 6: Frontend — Settings/Profile Page
+
+**Files:**
+- Modify: `src/app/[locale]/(protected)/(nav)/settings/profile/page.tsx`
+
+**Context:** Currently this file is just `<div>page</div>`. Replace with a full edit profile form + connected accounts management.
+
+The form should:
+- Fetch current profile via `getProfile()` action
+- Edit: first_name, last_name, username, bio, age_range
+- Save via `PUT /v1/profile`
+- Show connected accounts (Google, Facebook, TikTok) with Link/Unlink buttons
+- Fetch linked accounts via `GET /v1/profile/linked-accounts`
+- Link via redirect to `/api/auth/link-account/{provider}`
+- Unlink via `POST /api/auth/unlink-account`
+
+**File to write:** `src/app/[locale]/(protected)/(nav)/settings/profile/page.tsx`
+
+Replace entire file content with:
+
+```typescript
 "use client";
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { clientFetch } from "@/lib/client-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +44,6 @@ export default function SettingsProfilePage() {
   const t = useTranslations("Settings");
   const [loading, setLoading] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
-  const [loadError, setLoadError] = useState<string | null>(null);
 
   // Form state
   const [firstName, setFirstName] = useState("");
@@ -34,38 +53,27 @@ export default function SettingsProfilePage() {
   const [ageRange, setAgeRange] = useState("");
 
   // Linked accounts
-  const [linkedAccounts, setLinkedAccounts] = useState<
-    Array<{ provider: string; email: string; providerUserId?: string }>
-  >([]);
+  const [linkedAccounts, setLinkedAccounts] = useState<Array<{ provider: string; email: string; providerUserId?: string }>>([]);
 
   useEffect(() => {
     async function load() {
-      try {
-        const result = await getProfile();
-        if (result.success) {
-          setFirstName(result.data.firstName);
-          setLastName(result.data.lastName);
-          setUsername(result.data.username);
-          setBio(result.data.bio || "");
-          setAgeRange(result.data.ageRange || "");
-          setProfileLoaded(true);
-        } else {
-          setLoadError(result.error || t("saveFailed"));
-          setProfileLoaded(true);
-        }
-      } catch (error) {
-        console.error("Failed to load profile:", error);
-        setLoadError(t("networkError"));
+      const result = await getProfile();
+      if (result.success) {
+        setFirstName(result.data.firstName);
+        setLastName(result.data.lastName);
+        setUsername(result.data.username);
+        setBio(result.data.bio || "");
         setProfileLoaded(true);
       }
 
       // Fetch linked accounts
       try {
-        const data = await clientFetch<{ accounts: Array<{ provider: string; email: string; providerUserId?: string }> }>("/v1/profile/linked-accounts");
-        setLinkedAccounts(data.accounts || []);
-      } catch (error) {
-        console.error("Failed to load linked accounts:", error);
-      }
+        const res = await fetch("/v1/profile/linked-accounts");
+        if (res.ok) {
+          const data = await res.json();
+          setLinkedAccounts(data.accounts || []);
+        }
+      } catch {}
     }
     load();
   }, []);
@@ -100,7 +108,7 @@ export default function SettingsProfilePage() {
     }
   };
 
-  const handleLinkAccount = (provider: string) => {
+  const handleLinkAccount = async (provider: string) => {
     window.location.href = `/api/auth/link-account/${provider}`;
   };
 
@@ -113,9 +121,7 @@ export default function SettingsProfilePage() {
       });
 
       if (res.ok) {
-        setLinkedAccounts((prev) =>
-          prev.filter((a) => a.providerUserId !== providerUserId),
-        );
+        setLinkedAccounts((prev) => prev.filter((a) => a.providerUserId !== providerUserId));
         toast.success(t("accountUnlinked"));
       } else {
         toast.error(t("unlinkFailed"));
@@ -126,26 +132,7 @@ export default function SettingsProfilePage() {
   };
 
   if (!profileLoaded) {
-    return (
-      <div className="py-24 text-center">
-        <div className="w-8 h-8 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin mx-auto" />
-      </div>
-    );
-  }
-
-  if (loadError) {
-    return (
-      <div className="py-24 text-center">
-        <p className="text-destructive">{loadError}</p>
-        <Button
-          variant="outline"
-          className="mt-4"
-          onClick={() => window.location.reload()}
-        >
-          Retry
-        </Button>
-      </div>
-    );
+    return <div className="py-24 text-center"><div className="w-8 h-8 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin mx-auto" /></div>;
   }
 
   return (
@@ -202,15 +189,13 @@ export default function SettingsProfilePage() {
                 </SelectTrigger>
                 <SelectContent>
                   {ageRanges.map((range) => (
-                    <SelectItem key={range} value={range}>
-                      {range}
-                    </SelectItem>
+                    <SelectItem key={range} value={range}>{range}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
-            <Button type="submit" variant="default" disabled={loading}>
+            <Button type="submit" variant="primary" disabled={loading}>
               {loading ? t("saving") : t("save")}
             </Button>
           </form>
@@ -225,29 +210,20 @@ export default function SettingsProfilePage() {
         </CardHeader>
         <CardContent className="space-y-3">
           {["google", "facebook", "tiktok"].map((provider) => {
-            const account = linkedAccounts.find(
-              (a) => a.provider === provider,
-            );
+            const account = linkedAccounts.find((a: any) => a.provider === provider);
             return (
-              <div
-                key={provider}
-                className="flex items-center justify-between py-2"
-              >
+              <div key={provider} className="flex items-center justify-between py-2">
                 <div>
                   <span className="font-medium capitalize">{provider}</span>
                   {account && (
-                    <p className="text-sm text-muted-foreground">
-                      {account.email}
-                    </p>
+                    <p className="text-sm text-muted-foreground">{account.email}</p>
                   )}
                 </div>
                 {account ? (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      handleUnlinkAccount(account.providerUserId || "")
-                    }
+                    onClick={() => handleUnlinkAccount(account.providerUserId || "")}
                   >
                     {t("unlink")}
                   </Button>
@@ -268,3 +244,11 @@ export default function SettingsProfilePage() {
     </div>
   );
 }
+```
+
+- [ ] **Commit**
+
+```bash
+git add src/app/[locale]/\(protected\)/\(nav\)/settings/profile/page.tsx
+git commit -m "feat(settings): add profile edit form and connected accounts management"
+```

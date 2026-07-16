@@ -137,6 +137,19 @@
     "creator": "Created by Lê Công Hoan, a passionate developer dedicated to leveraging technology for education.",
     "joinCommunity": "Join our community on <facebookLink>Facebook</facebookLink> to connect with other learners, or explore the project source code on <githubLink>GitHub</githubLink>."
   },
+  "Welcome": {
+    "tellUsAboutYou": "Tell us about yourself",
+    "basicInfoDescription": "We just need a few details to personalize your experience",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "ageRange": "Age Range",
+    "selectAgeRange": "Select your age range",
+    "continue": "Continue",
+    "nameRequired": "Name is required",
+    "ageRequired": "Please select your age range"
+  },
   "Settings": {
     "editProfile": "Edit Profile",
     "firstName": "First Name",

@@ -26,7 +26,7 @@ const BasicInfoStep = ({
   prefilledLastName = "",
   onComplete,
 }: BasicInfoStepProps) => {
-  const t = useTranslations();
+  const t = useTranslations("Welcome");
   const [firstName, setFirstName] = useState(prefilledFirstName);
   const [lastName, setLastName] = useState(prefilledLastName);
   const [ageRange, setAgeRange] = useState("");
@@ -37,15 +37,15 @@ const BasicInfoStep = ({
     setError("");
 
     if (!firstName.trim()) {
-      setError("First name is required");
+      setError(t("nameRequired"));
       return;
     }
     if (!lastName.trim()) {
-      setError("Last name is required");
+      setError(t("nameRequired"));
       return;
     }
     if (!ageRange) {
-      setError("Please select your age range");
+      setError(t("ageRequired"));
       return;
     }
 
@@ -55,9 +55,9 @@ const BasicInfoStep = ({
   return (
     <div className="min-h-screen bg-background flex flex-col justify-center p-6 max-w-md mx-auto w-full">
       <div className="text-center space-y-2 mb-8">
-        <h1 className="text-2xl font-display font-bold">Tell us about yourself</h1>
+        <h1 className="text-2xl font-display font-bold">{t("tellUsAboutYou")}</h1>
         <p className="text-muted-foreground">
-          We just need a few details to personalize your experience
+          {t("basicInfoDescription")}
         </p>
       </div>
 
@@ -67,11 +67,11 @@ const BasicInfoStep = ({
         )}
 
         <div className="space-y-2">
-          <Label htmlFor="firstName">First Name</Label>
+          <Label htmlFor="firstName">{t("firstName")}</Label>
           <Input
             id="firstName"
             name="firstName"
-            placeholder="Enter your first name"
+            placeholder={t("firstNamePlaceholder")}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
@@ -79,11 +79,11 @@ const BasicInfoStep = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="lastName">Last Name</Label>
+          <Label htmlFor="lastName">{t("lastName")}</Label>
           <Input
             id="lastName"
             name="lastName"
-            placeholder="Enter your last name"
+            placeholder={t("lastNamePlaceholder")}
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
@@ -91,10 +91,10 @@ const BasicInfoStep = ({
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="ageRange">Age Range</Label>
+          <Label htmlFor="ageRange">{t("ageRange")}</Label>
           <Select value={ageRange} onValueChange={setAgeRange}>
             <SelectTrigger id="ageRange">
-              <SelectValue placeholder="Select your age range" />
+              <SelectValue placeholder={t("selectAgeRange")} />
             </SelectTrigger>
             <SelectContent>
               {ageRanges.map((range) => (
@@ -105,7 +105,7 @@ const BasicInfoStep = ({
         </div>
 
         <Button type="submit" variant="primary" className="w-full">
-          Continue
+          {t("continue")}
         </Button>
       </form>
     </div>

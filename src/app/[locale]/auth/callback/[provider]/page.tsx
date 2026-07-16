@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { signInAndUp } from "supertokens-web-js/recipe/thirdparty";
 import { initSupertokens } from "@/config/supertokens";
+import { clientFetch } from "@/lib/client-api";
 import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -31,32 +32,33 @@ function CallbackContent() {
         const response = await signInAndUp();
 
         if (response.status === "OK") {
+          // Check for ?mode=link (linking from Settings)
+          const mode = searchParams.get("mode");
+          if (mode === "link") {
+            setStatus("success");
+            setTimeout(() => router.replace("/settings/profile"), 1000);
+            return;
+          }
+
           // Check onboarding status from backend
           try {
-            const profileRes = await fetch("/v1/profile");
-            if (profileRes.ok) {
-              const profile = await profileRes.json();
-              if (profile.onboarding_completed) {
-                setStatus("success");
-                setTimeout(() => router.replace("/learn"), 1000);
-                return;
-              }
+            const profile = await clientFetch<{ onboarding_completed?: boolean }>("/v1/profile");
+            if (profile.onboarding_completed) {
+              setStatus("success");
+              setTimeout(() => router.replace("/learn"), 1000);
+              return;
             }
           } catch {}
 
-          // Build redirect URL with pre-fill params
+          // Build redirect URL with pre-fill params from user info
           const urlParams = new URLSearchParams();
 
-          // Try to extract provider user info for pre-fill
-          try {
-            const sessionModule = await import("supertokens-web-js/recipe/session");
-            const session = await sessionModule.getSession();
-            const userId = session.getUserId();
-            // Provider-specific pre-fill can be added here
-            if (provider === "google") {
-              urlParams.set("firstName", "");
-            }
-          } catch {}
+          // Extract user info from the signInAndUp response
+          const user = response.user;
+          if (user) {
+            if (user.firstName) urlParams.set("firstName", user.firstName);
+            if (user.lastName) urlParams.set("lastName", user.lastName);
+          }
 
           setStatus("success");
           setTimeout(() => router.replace(`/welcome?${urlParams.toString()}`), 1000);

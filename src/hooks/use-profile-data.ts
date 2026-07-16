@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { getProfile } from "@/actions/profile/get-profile";
+import { getPublicProfile } from "@/actions/profile/get-public-profile";
 import { getAchievements } from "@/actions/profile/get-achievements";
 import { getFollowing, getFollowers } from "@/actions/social/get-following";
 import { getLeaderboard } from "@/actions/social/get-leaderboard";
@@ -50,7 +51,7 @@ function toLeaderboardEntry(entry: LeaderboardUser): LeaderboardEntry {
   };
 }
 
-export function useProfileData() {
+export function useProfileData(username?: string) {
   const [profile, setProfile] = useState<FullProfile>(mockFullProfile);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -58,6 +59,44 @@ export function useProfileData() {
     let cancelled = false;
 
     async function fetchData() {
+      const cacheKey = username || "profile";
+
+      if (username) {
+        // Public profile — only fetch the basic profile info
+        const data = await cachedFetch(cacheKey, () => getPublicProfile(username));
+        if (cancelled) return;
+
+        if (data.success) {
+          setProfile((prev) => ({
+            ...prev,
+            user: {
+              ...prev.user,
+              id: data.data.id,
+              username: data.data.username,
+              firstName: data.data.firstName,
+              lastName: data.data.lastName,
+              email: data.data.email,
+              imageUrl: data.data.avatarUrl,
+              bio: data.data.bio,
+              createdAt: data.data.createdAt,
+              updatedAt: data.data.updatedAt,
+            },
+            gamification: { level: 0, currentXP: 0, xpToNextLevel: 0, totalXP: 0, streak: 0, longestStreak: 0, streakFreezes: 0, crowns: 0, gems: 0 },
+            stats: { totalLessons: 0, completedLessons: 0, totalMinutes: 0, accuracy: 0, wordsLearned: 0 },
+            dailyActivity: [],
+            weeklyXP: [],
+            achievements: [],
+            friends: [],
+            followers: [],
+            leaderboard: [],
+          }));
+        }
+
+        if (!cancelled) setIsLoading(false);
+        return;
+      }
+
+      // Own profile — fetch everything
       const [profileResult, achievementsResult, followingResult, followersResult, leaderboardResult] =
         await Promise.allSettled([
           cachedFetch("profile", () => getProfile()),
@@ -129,7 +168,7 @@ export function useProfileData() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [username]);
 
   return { profile, setProfile, isLoading };
 }

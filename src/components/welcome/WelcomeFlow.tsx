@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
+import { clientFetch } from "@/lib/client-api";
 import { useOnboardingStore } from "@/store/onboarding";
 import WelcomeIntro from "./WelcomeIntro";
 import BasicInfoStep from "./BasicInfoStep";
@@ -22,8 +23,7 @@ const WelcomeFlow = () => {
 
   // Kiểm tra login state
   useEffect(() => {
-    fetch("/api/auth/session")
-      .then(r => r.json())
+    clientFetch<{ session: unknown }>("/api/auth/session")
       .then(data => setIsLoggedIn(!!data.session))
       .catch(() => setIsLoggedIn(false));
   }, []);
@@ -40,8 +40,19 @@ const WelcomeFlow = () => {
         setCurrentStage("complete");
       }
       // else stays at "intro" — user clicks "Get Started" to begin
+    } else {
+      // Logged in: fetch profile to check onboarding_completed
+      clientFetch<{ onboarding_completed?: boolean }>("/v1/profile")
+        .then((profile) => {
+          if (profile.onboarding_completed) {
+            router.push("/learn");
+          } else {
+            setCurrentStage("basic-info");
+          }
+        })
+        .catch(() => setCurrentStage("basic-info"));
     }
-  }, [isLoggedIn, isComplete]);
+  }, [isLoggedIn, isComplete, router]);
 
   const handleStartOnboarding = () => {
     if (isLoggedIn) {
@@ -75,9 +86,8 @@ const WelcomeFlow = () => {
       const level = store.answers[2] || answers[2] || "";
 
       try {
-        await fetch("/v1/onboarding/complete", {
+        await clientFetch("/v1/onboarding/complete", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             first_name: basicInfo.firstName,
             last_name: basicInfo.lastName,
