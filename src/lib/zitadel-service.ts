@@ -1,10 +1,18 @@
 import http from "node:http";
 import https from "node:https";
 
-const ZITADEL_URL =
-  process.env.ZITADEL_INTERNAL_URL ||
-  "http://zitadel.puchi-auth.svc.cluster.local:8080";
-const ZITADEL_SERVICE_TOKEN = process.env.ZITADEL_SERVICE_TOKEN!;
+// Read env at call time to avoid Next.js module cache issues during build
+function getZitadelUrl(): string {
+  return process.env.ZITADEL_INTERNAL_URL || "https://auth.puchi.io.vn";
+}
+
+function getServiceToken(): string {
+  const token = process.env.ZITADEL_SERVICE_TOKEN || "";
+  if (!token) {
+    console.error("[zitadelFetch] ZITADEL_SERVICE_TOKEN is not set");
+  }
+  return token;
+}
 
 // Zitadel uses the Host header for instance-based routing.
 // Node.js fetch (undici) does NOT allow overriding the Host header,
@@ -23,7 +31,8 @@ export function zitadelFetch(
   text: () => Promise<string>;
 }> {
   return new Promise((resolve, reject) => {
-    const url = new URL(`${ZITADEL_URL}${path}`);
+    const zitadelUrl = getZitadelUrl();
+    const url = new URL(`${zitadelUrl}${path}`);
     const isHttps = url.protocol === "https:";
     const lib = isHttps ? https : http;
 
@@ -32,6 +41,7 @@ export function zitadelFetch(
       port: url.port || (isHttps ? 443 : 80),
       path: url.pathname + url.search,
       method: options.method || "GET",
+      rejectUnauthorized: false,
       headers: {
         ...options.headers,
         Host: "auth.puchi.io.vn",
@@ -42,6 +52,10 @@ export function zitadelFetch(
       let data = "";
       res.on("data", (chunk: Buffer) => {
         data += chunk.toString();
+      });
+      res.on("error", (err) => {
+        console.error("[zitadelFetch] response stream error:", err);
+        reject(err);
       });
       res.on("end", () => {
         resolve({
@@ -59,7 +73,10 @@ export function zitadelFetch(
       });
     });
 
-    req.on("error", reject);
+    req.on("error", (err) => {
+      console.error("[zitadelFetch] request error:", err);
+      reject(err);
+    });
 
     if (options.body) {
       req.write(options.body);
@@ -83,7 +100,7 @@ export async function createSession(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+      Authorization: `Bearer ${getServiceToken()}`,
     },
     body: JSON.stringify({
       checks: { user: { loginName: email } },
@@ -102,7 +119,7 @@ export async function verifyPassword(
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+      Authorization: `Bearer ${getServiceToken()}`,
     },
     body: JSON.stringify({
       checks: { password: { password } },
@@ -127,7 +144,7 @@ export async function completeOidcFlow(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+        Authorization: `Bearer ${getServiceToken()}`,
       },
       body: JSON.stringify({ session: { sessionId, sessionToken } }),
     }
@@ -146,7 +163,7 @@ export async function getAuthRequest(
     `/v2beta/oidc/auth_requests/${authRequestId}`,
     {
       headers: {
-        Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+        Authorization: `Bearer ${getServiceToken()}`,
       },
     }
   );
@@ -169,7 +186,7 @@ export async function createIdpIntent(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+      Authorization: `Bearer ${getServiceToken()}`,
     },
     body: JSON.stringify({ idpId }),
   });
@@ -192,7 +209,7 @@ export async function createSessionFromIdpIntent(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+      Authorization: `Bearer ${getServiceToken()}`,
     },
     body: JSON.stringify({
       checks: {
@@ -239,7 +256,7 @@ export async function getIdpIntent(
 ): Promise<any> {
   const res = await zitadelFetch(`/v2beta/idp_intents/${idpIntentId}`, {
     headers: {
-      Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
+      Authorization: `Bearer ${getServiceToken()}`,
     },
   });
   if (!res.ok) throw new Error(`Failed to get IDP intent: ${await res.text()}`);
