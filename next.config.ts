@@ -43,7 +43,6 @@ const nextConfig: NextConfig = {
 
   // 2. Cấu hình cho Webpack (Dùng chính ở môi trường dev lúc này để tránh CPU 100%)
   webpack(config) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const fileLoaderRule = config.module.rules.find((rule: any) =>
       rule.test?.test?.('.svg')
     );

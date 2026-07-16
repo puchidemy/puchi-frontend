@@ -16,7 +16,10 @@ const WelcomeFlow = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { isComplete } = useOnboardingStore();
-  const [currentStage, setCurrentStage] = useState<WelcomeStage>("intro");
+  // Lazy init: skip to complete stage if onboarding already done in localStorage
+  const [currentStage, setCurrentStage] = useState<WelcomeStage>(() =>
+    isComplete ? "complete" : "intro"
+  );
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [basicInfo, setBasicInfo] = useState<{ firstName: string; lastName: string; ageRange: string } | null>(null);
@@ -32,27 +35,20 @@ const WelcomeFlow = () => {
   const prefilledFirstName = searchParams.get("firstName") || "";
   const prefilledLastName = searchParams.get("lastName") || "";
 
-  // Determine initial stage based on auth state
+  // When logged in, check onboarding status from backend
   useEffect(() => {
-    if (!isLoggedIn) {
-      // Chưa login: intro → onboarding (nếu chưa complete) → complete
-      if (isComplete) {
-        setCurrentStage("complete");
-      }
-      // else stays at "intro" — user clicks "Get Started" to begin
-    } else {
-      // Logged in: fetch profile to check onboarding_completed
-      clientFetch<{ onboarding_completed?: boolean }>("/v1/profile")
-        .then((profile) => {
-          if (profile.onboarding_completed) {
-            router.push("/learn");
-          } else {
-            setCurrentStage("basic-info");
-          }
-        })
-        .catch(() => setCurrentStage("basic-info"));
-    }
-  }, [isLoggedIn, isComplete, router]);
+    if (!isLoggedIn) return;
+
+    clientFetch<{ onboarding_completed?: boolean }>("/v1/profile")
+      .then((profile) => {
+        if (profile.onboarding_completed) {
+          router.push("/learn");
+        } else {
+          setCurrentStage("basic-info");
+        }
+      })
+      .catch(() => setCurrentStage("basic-info"));
+  }, [isLoggedIn, router]);
 
   const handleStartOnboarding = () => {
     if (isLoggedIn) {
