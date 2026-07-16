@@ -1,4 +1,4 @@
-export const protectedRoute: string[] = ["/profile"];
+export const protectedRoute: string[] = ["/in"];
 
 export const localizedProtectedRoute = protectedRoute.map(
   (route) => `/:locale${route}(.*)`

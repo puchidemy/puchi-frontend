@@ -68,7 +68,7 @@ export default function UserSearchPage() {
       {/* Back + title */}
       <div className="flex items-center gap-3">
         <Link
-          href="/profile"
+          href="/in"
           className="w-9 h-9 rounded-xl flex items-center justify-center hover:bg-muted transition-colors"
         >
           <ArrowLeft size={20} />

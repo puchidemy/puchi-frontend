@@ -3,7 +3,7 @@ export enum NavigationSlugs {
   CHARACTERS = "characters",
   QUESTS = "quests",
   SHOP = "shop",
-  PROFILE = "profile",
+  PROFILE = "in",
 }
 
 export type ItemNav = {
