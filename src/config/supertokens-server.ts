@@ -1,6 +1,7 @@
 import SuperTokens from "supertokens-node";
 import SessionNode from "supertokens-node/recipe/session";
 import EmailPasswordNode from "supertokens-node/recipe/emailpassword";
+import AccountLinking from "supertokens-node/recipe/accountlinking";
 import ThirdPartyNode from "supertokens-node/recipe/thirdparty";
 import { TypeInput } from "supertokens-node/types";
 
@@ -22,6 +23,7 @@ export const supertokensConfig: TypeInput = {
   },
   recipeList: [
     EmailPasswordNode.init(),
+    AccountLinking.init(),
     ThirdPartyNode.init({
       signInAndUpFeature: {
         providers: [
@@ -95,6 +97,9 @@ export const supertokensConfig: TypeInput = {
             },
           },
         ],
+        shouldAutoLink: async (input) => {
+          return { allowed: true };
+        },
       },
     }),
     SessionNode.init(),
