@@ -2,6 +2,7 @@ import SuperTokens from "supertokens-node";
 import SessionNode from "supertokens-node/recipe/session";
 import EmailPasswordNode from "supertokens-node/recipe/emailpassword";
 import AccountLinking from "supertokens-node/recipe/accountlinking";
+import DashboardNode from "supertokens-node/recipe/dashboard";
 import ThirdPartyNode from "supertokens-node/recipe/thirdparty";
 import { TypeInput } from "supertokens-node/types";
 
@@ -103,6 +104,7 @@ export const supertokensConfig: TypeInput = {
       },
     }),
     SessionNode.init(),
+    DashboardNode.init(),
   ],
 };
 
