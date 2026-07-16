@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { auth } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
 import { localizedProtectedRoute } from "./constants/paths";
 
@@ -19,7 +19,7 @@ export async function proxy(req: NextRequest) {
   });
 
   if (isProtected) {
-    const session = await auth();
+    const session = await getSession(req);
     if (!session) {
       const signInUrl = new URL("/auth/sign-in", req.url);
       return NextResponse.redirect(signInUrl);

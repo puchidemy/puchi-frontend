@@ -1,5 +1,3 @@
-import { getCsrfToken } from '@zitadel/next-auth/react';
-
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
 export async function clientFetch<T>(path: string, options?: RequestInit): Promise<T> {

@@ -1,8 +1,10 @@
 "server-only";
 
-import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { getSession } from "@/lib/auth";
 
 const BACKEND_URL = process.env.API_INTERNAL_URL || "http://localhost:8000";
+const AUTH_URL = process.env.AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 export class BackendError extends Error {
   constructor(
@@ -19,7 +21,8 @@ export async function backendFetch<T>(
   path: string,
   options: RequestInit & { timeout?: number } = {},
 ): Promise<T> {
-  const session = await auth();
+  const req = new Request(AUTH_URL, { headers: await headers() });
+  const session = await getSession(req);
   const timeout = options.timeout ?? 15000;
 
   const controller = new AbortController();
@@ -41,7 +44,7 @@ export async function backendFetch<T>(
       throw new BackendError(res.status, body.code || "INTERNAL_ERROR", path);
     }
 
-    return res.status === 204 ? undefined : res.json();
+    return res.status === 204 ? (undefined as T) : res.json();
   } catch (err) {
     if (err instanceof BackendError) throw err;
     if ((err as Error).name === "AbortError") {
