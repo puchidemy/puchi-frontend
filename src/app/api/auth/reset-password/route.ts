@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 import { defaultHandler, validateRequired } from "@/lib/api-handler";
 import type { APIResetPassword } from "@/lib/api-contracts";
 import { zitadelFetch } from "@/lib/zitadel-service";
-import { env } from "@/config/env";
+import { requireSecret } from "@/config/env";
 
 export async function POST(request: NextRequest) {
   return defaultHandler<APIResetPassword>(
@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${env.ZITADEL_SERVICE_TOKEN}`,
+          Authorization: `Bearer ${requireSecret('ZITADEL_SERVICE_TOKEN')}`,
         },
         body: JSON.stringify({
           newPassword: { password: body.password, changeRequired: false },

@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server";
 import { defaultHandler, validateRequired } from "@/lib/api-handler";
 import { zitadelFetch } from "@/lib/zitadel-service";
-import { env } from "@/config/env";
+import { env, requireSecret } from "@/config/env";
 
 export async function POST(request: NextRequest) {
   return defaultHandler<{
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     async (body) => {
       const idpsRes = await zitadelFetch("/v2beta/settings/login/idps", {
         headers: {
-          Authorization: `Bearer ${env.ZITADEL_SERVICE_TOKEN}`,
+          Authorization: `Bearer ${requireSecret('ZITADEL_SERVICE_TOKEN')}`,
         },
       });
 
@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 
       const redirectUri = `${env.AUTH_URL}/api/auth/callback/zitadel`;
       const scope = encodeURIComponent("openid email profile");
-      const authorizeUrl = `https://auth.puchi.io.vn/oauth/v2/authorize?client_id=${env.ZITADEL_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&idp_hint=${idp.id}`;
+      const authorizeUrl = `https://auth.puchi.io.vn/oauth/v2/authorize?client_id=${requireSecret('ZITADEL_CLIENT_ID')}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&idp_hint=${idp.id}`;
 
       return {
         idpId: idp.id,
