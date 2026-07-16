@@ -15,7 +15,7 @@ description: Design and interaction patterns for Puchi Frontend. Use when buildi
 | Animation | `motion` (framer-motion v12) |
 | Icons | Lucide React |
 | i18n | `next-intl`, 9 locales (messages/*.json) |
-| Auth | SuperTokens (`supertokens-web-js` + `supertokens-node`) |
+| Auth | Zitadel (`@zitadel/next-auth`) |
 | State | Zustand v5 |
 | Package mgmt | Bun (install) → Node.js 22 (build & run) |
 

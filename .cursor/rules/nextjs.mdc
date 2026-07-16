@@ -12,37 +12,34 @@ alwaysApply: false
 - i18n qua `next-intl` với `[locale]` segment
 - Server Components mặc định, Client Components khi cần interactivity
 
-## Supertokens Auth Integration
+## Auth
 
-### Client-side init (trong Provider)
-```tsx
-"use client";
-// SupertokensProvider.tsx — gọi initSupertokens() trong useEffect
-import { initSupertokens } from "@/config/supertokens";
-
-export function SupertokensProvider({ children }) {
-  useEffect(() => { initSupertokens(); }, []);
-  return <>{children}</>;
-}
-```
-
-### Server-side (API Route)
+### Auth.js config
 ```typescript
-// app/api/auth/[...path]/route.ts
-// Catch-all route xử lý mọi request auth
-import { getAppDirRequestHandler } from "supertokens-node/nextjs";
-// Clone request trước khi gọi handler (supertokens cần đọc body nhiều lần)
+// src/lib/auth.ts — Zitadel OIDC provider
+NextAuth({
+  providers: [Zitadel({ clientId, issuer })],
+  session: { strategy: "jwt" },
+  callbacks: { jwt, session, redirect },
+});
 ```
 
-### Các recipe đang dùng
-- `EmailPassword` — Email/password signin/signup
-- `ThirdParty` — Google, Facebook, TikTok OAuth
-- `Session` — Session management
+### API Routes
+- `src/app/api/auth/[...nextauth]/route.ts` — Auth.js handler
+- `src/app/api/auth/login/route.ts` — Custom login (Zitadel Session API)
+- `src/app/api/auth/register/route.ts` — Custom register
+- `src/app/api/auth/forgot-password/route.ts` — Forgot password
+- `src/app/api/auth/reset-password/route.ts` — Reset password
+- `src/app/api/auth/social/route.ts` — Social login config
 
-### Lưu ý
-- `apiDomain` = `NEXT_PUBLIC_APP_URL` (cùng origin, ko phải api.puchi.io.vn)
-- Dùng `supertokens-node/nextjs` `getAppDirRequestHandler()` cho App Router
-- Clone request trong handler do supertokens đọc body nhiều lần
+### Custom Login UI Flow
+1. Form submit tới `/api/auth/login` → gọi Zitadel Session API
+2. On success → redirect tới Zitadel OIDC authorize
+3. Auth.js handle callback → `/api/auth/callback/zitadel`
+4. JWT session cookie được set
+
+### Server Actions
+- `src/actions/auth.ts` — `logoutAction()` redirect tới Auth.js signout + Zitadel end_session
 
 ## Components
 
@@ -58,8 +55,8 @@ import { getAppDirRequestHandler } from "supertokens-node/nextjs";
 
 ## API Calls
 
-- Client → gọi qua service layer (`services/`)
-- Server → fetch trực tiếp, không qua service layer
+- Client → `credentials: "include"` (gửi cookie session)
+- Server → `backendFetch()` với `Authorization: Bearer <accessToken>` từ Auth.js session
 - API base URL: `process.env.NEXT_PUBLIC_API_URL` (https://api.puchi.io.vn)
 
 ## i18n

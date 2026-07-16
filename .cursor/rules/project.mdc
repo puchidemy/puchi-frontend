@@ -14,64 +14,33 @@ Puchi là nền tảng web học tiếng Việt. Frontend dùng **Next.js 16 (Ap
 | Framework | Next.js 16 (App Router, output: standalone) |
 | UI | Tailwind CSS v4 + Shadcn UI (New York) |
 | State | Zustand v5 |
-| Auth | Supertokens self-host — `supertokens-web-js` (client) + `supertokens-node` (server) |
+| Auth | Zitadel (self-host) — `@zitadel/next-auth` + Auth.js OIDC + Custom Login UI |
 | i18n | next-intl (9 ngôn ngữ) |
 | Animation | Motion + Rive |
 | Runtime | Bun (install) + Node.js 22 (build & run) |
 
-## Auth — Supertokens
+## Auth — Zitadel
 
-**Đã migrate từ Clerk → Supertokens hoàn tất.** Không còn Clerk.
+**Đã migrate từ SuperTokens → Zitadel.** Auth flow:
 
-### Client-side (`supertokens-web-js`)
+### Auth.js config
 ```typescript
-// src/config/supertokens.ts
-SuperTokens.init({
-  appInfo: {
-    appName: "Puchi",
-    apiDomain: process.env.NEXT_PUBLIC_APP_URL,  // https://puchi.io.vn (same-origin!)
-    apiBasePath: "/api/auth",
-  },
-  recipeList: [EmailPassword.init(), ThirdParty.init(), Session.init()],
+// src/lib/auth.ts
+NextAuth({
+  providers: [Zitadel({ clientId, issuer: "https://auth.puchi.io.vn" })],
+  session: { strategy: "jwt" },
 });
 ```
 
-**Quan trọng**: `apiDomain` = `puchi.io.vn` (cùng origin với website), **không phải** `api.puchi.io.vn`. Supertokens Node SDK cần cùng origin để set cookie đúng cách.
-
-### Server-side (`supertokens-node`)
-```typescript
-// src/config/supertokens-server.ts
-const supertokensConfig = {
-  supertokens: {
-    connectionURI: process.env.SUPERTOKENS_CONNECTION_URI || "http://localhost:30567",
-    apiKey: process.env.SUPERTOKENS_API_KEY,
-  },
-  appInfo: {
-    appName: "Puchi",
-    apiDomain: process.env.NEXT_PUBLIC_APP_URL,
-    websiteDomain: process.env.NEXT_PUBLIC_WEBSITE_DOMAIN,
-    apiBasePath: "/api/auth",
-    websiteBasePath: "/auth",
-  },
-  recipeList: [
-    EmailPasswordNode.init(),
-    ThirdPartyNode.init({
-      providers: [Google, Facebook, TikTok],
-    }),
-    SessionNode.init(),
-  ],
-};
-```
-
-### API Route handler
-Next.js API route `src/app/api/auth/[...path]/route.ts` xử lý mọi request auth:
-- GET/POST/PUT/DELETE/PATCH → `getAppDirRequestHandler()` (từ supertokens-node)
-- Request clone để tránh lỗi stream body (formData + json)
+### Custom Login UI
+- Forms sign-in, register, forgot/reset password gọi Zitadel Session API (`/v2beta/sessions`)
+- API routes: `src/app/api/auth/login`, `register`, `forgot-password`, `reset-password`
+- Service user PAT dùng để xác thực API calls
 
 ### Auth flow tổng thể
 ```
-Browser → supertokens-web-js → /api/auth/[...path] → supertokens-node → st-core-svc:3567
-     (puchi.io.vn)         (Next.js API route)
+Browser → custom form → Next.js API Route → Zitadel Session API
+       → redirect OIDC authorize → Auth.js callback → JWT session cookie
 ```
 
 ## Docker Build
@@ -80,15 +49,13 @@ Multi-stage build với Bun + Node.js:
 
 | Stage | Image | Purpose |
 |-------|-------|---------|
-| deps | `oven/bun:1.2-slim` | Install dependencies (Bun nhanh) |
-| builder | `node:22-alpine` | Build Next.js (Node vì Next.js 16 chưa support Bun build) |
+| deps | `oven/bun:1.2-slim` | Install dependencies |
+| builder | `node:22-alpine` | Build Next.js |
 | runner | `node:22-alpine` | Run production (non-root user nextjs) |
 
 Build args từ CI/CD:
 - `NEXT_PUBLIC_APP_URL` — https://puchi.io.vn
 - `NEXT_PUBLIC_API_URL` — https://api.puchi.io.vn
-
-Output: `standalone` (Next.js output tracing), copy thêm `node_modules` để đảm bảo supertokens-node hoạt động đúng.
 
 ## CI/CD
 
@@ -102,11 +69,16 @@ GitHub Actions (`ci-cd.yml`):
 
 | Env | Production value | Notes |
 |-----|-----------------|-------|
-| `NEXT_PUBLIC_APP_URL` | `https://puchi.io.vn` | App domain, cũng là apiDomain cho supertokens |
+| `NEXT_PUBLIC_APP_URL` | `https://puchi.io.vn` | App domain |
 | `NEXT_PUBLIC_API_URL` | `https://api.puchi.io.vn` | API gateway (Envoy Gateway) |
 | `NEXT_PUBLIC_WEBSITE_DOMAIN` | `https://puchi.io.vn` | Website domain |
-| `SUPERTOKENS_CONNECTION_URI` | `http://st-core-svc.puchi-infra.svc.cluster.local:3567` | Supertokens core (dev: localhost:30567) |
-| `SUPERTOKENS_API_KEY` | (secret) | API key |
+| `ZITADEL_CLIENT_ID` | `382000685111116512` | OIDC client |
+| `ZITADEL_ISSUER` | `https://auth.puchi.io.vn` | Zitadel issuer |
+| `ZITADEL_INTERNAL_URL` | `http://zitadel.puchi-auth.svc:8080` | Internal cluster DNS |
+| `ZITADEL_SERVICE_TOKEN` | (secret) | Service user PAT |
+| `AUTH_SECRET` | (secret) | Auth.js secret |
+| `AUTH_URL` | `https://puchi.io.vn` | Auth.js URL |
+| `NEXTAUTH_URL` | `https://puchi.io.vn` | Auth.js URL |
 | `GOOGLE_CLIENT_ID/SECRET` | (secret) | Google OAuth |
 | `FACEBOOK_CLIENT_ID/SECRET` | (secret) | Facebook OAuth |
 | `TIKTOK_CLIENT_KEY/SECRET` | (secret) | TikTok OAuth |
@@ -126,11 +98,10 @@ bun run lint         # ESLint
 ```
 src/
 ├── app/[locale]/     # Next.js App Router pages (i18n)
-├── app/api/auth/     # Supertokens API route handler
+├── app/api/auth/     # Auth.js + Custom login API routes
 ├── components/       # UI components (Shadcn + custom)
-├── config/           # Supertokens client + server config
-├── providers/        # SupertokensProvider (init client-side)
-├── lib/              # Utilities, API clients
+├── actions/          # Server Actions (logout, etc.)
+├── lib/              # Auth.js config + Zitadel service client
 ├── store/            # Zustand stores
 ├── hooks/            # Custom hooks
 ├── i18n/             # Translation config
@@ -143,4 +114,4 @@ src/
 ## Kết nối Backend
 
 - API qua Envoy Gateway tại `api.puchi.io.vn`
-- Auth: Supertokens (internal, không expose ra ngoài)
+- Auth: Zitadel (internal, không expose ra ngoài)
