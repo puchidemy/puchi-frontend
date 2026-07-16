@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
-import { signIn } from "@zitadel/next-auth/react";
 import { clientFetch } from "@/lib/client-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProfile } from "@/actions/profile/get-profile";
 import { Separator } from "@/components/ui/separator";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 const ageRanges = ["13-17", "18-24", "25-34", "35-44", "45-54", "55+"];
 
 export default function SettingsProfilePage() {
@@ -97,12 +97,14 @@ export default function SettingsProfilePage() {
     }
   };
 
-  const handleLinkAccount = () => {
-    signIn("zitadel", { redirectTo: window.location.href });
+  const handleLinkAccount = (provider: string) => {
+    // Redirect to auth-service social link endpoint
+    window.location.href = `${API_URL}/api/auth/social/${provider}?action=link&redirect=${encodeURIComponent(window.location.href)}`;
   };
 
-  const handleUnlinkAccount = () => {
-    signIn("zitadel", { redirectTo: window.location.href });
+  const handleUnlinkAccount = (provider: string) => {
+    // Redirect to auth-service social unlink endpoint
+    window.location.href = `${API_URL}/api/auth/social/${provider}?action=unlink&redirect=${encodeURIComponent(window.location.href)}`;
   };
 
   if (!profileLoaded) {
@@ -225,7 +227,7 @@ export default function SettingsProfilePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={handleUnlinkAccount}
+                    onClick={() => handleUnlinkAccount(provider)}
                   >
                     {t("unlink")}
                   </Button>
@@ -233,7 +235,7 @@ export default function SettingsProfilePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={handleLinkAccount}
+                    onClick={() => handleLinkAccount(provider)}
                   >
                     {t("link")}
                   </Button>

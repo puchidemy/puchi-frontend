@@ -6,14 +6,14 @@ export type TResponse<T extends Default> = T['result'];
 export interface APILogin extends Default {
   url: '/api/auth/login';
   method: 'post';
-  data: { email: string; password: string; authRequestId?: string };
-  result: { success: boolean; sessionId?: string; callbackUrl?: string } | { error: string };
+  data: { email: string; password: string };
+  result: { success: boolean; access_token?: string; user?: { id: string; email: string; display_name: string; email_verified: boolean } } | { error: string };
 }
 
 export interface APIRegister extends Default {
   url: '/api/auth/register';
   method: 'post';
-  data: { email: string; password: string; firstName?: string; lastName?: string };
+  data: { email: string; password: string; display_name?: string };
   result: { success: boolean; userId?: string } | { error: string };
 }
 

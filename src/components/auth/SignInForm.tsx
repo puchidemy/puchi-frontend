@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+
 export function SignInForm() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -22,19 +23,11 @@ export function SignInForm() {
     setLoading(true);
 
     try {
-      // Build request body
-      const body: Record<string, string> = { email, password };
-
-      // If there's an authRequestId from Zitadel redirect, pass it along
-      const authRequestId = searchParams.get("authRequestId");
-      if (authRequestId) {
-        body.authRequestId = authRequestId;
-      }
-
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${API_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -44,13 +37,11 @@ export function SignInForm() {
         return;
       }
 
-      if (data.callbackUrl) {
-        // Complete OIDC flow via Zitadel redirect
-        router.replace(data.callbackUrl);
-      } else {
-        // No callback URL means session created but no OIDC flow needed
-        router.replace("/learn");
+      if (data.access_token) {
+        localStorage.setItem("access_token", data.access_token);
       }
+
+      router.replace("/learn");
     } catch (err) {
       setError("Network error. Please check your connection.");
     } finally {

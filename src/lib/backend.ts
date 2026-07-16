@@ -1,10 +1,8 @@
 "server-only";
 
 import { headers } from "next/headers";
-import { getSession } from "@/lib/auth";
 
 const BACKEND_URL = process.env.API_INTERNAL_URL || "http://localhost:8000";
-const AUTH_URL = process.env.AUTH_URL || process.env.NEXTAUTH_URL || "http://localhost:3000";
 
 export class BackendError extends Error {
   constructor(
@@ -17,12 +15,28 @@ export class BackendError extends Error {
   }
 }
 
+/**
+ * Reads the access_token from the cookie header.
+ * The auth-service sets an HTTP-only access_token cookie.
+ */
+function getAccessTokenFromCookies(cookieHeader: string | null): string | null {
+  if (!cookieHeader) return null;
+  const cookies = cookieHeader.split(";").map((c) => c.trim());
+  for (const cookie of cookies) {
+    const [name, ...rest] = cookie.split("=");
+    if (name?.trim() === "access_token") {
+      return rest.join("=");
+    }
+  }
+  return null;
+}
+
 export async function backendFetch<T>(
   path: string,
   options: RequestInit & { timeout?: number } = {},
 ): Promise<T> {
-  const req = new Request(AUTH_URL, { headers: await headers() });
-  const session = await getSession(req);
+  const reqHeaders = await headers();
+  const accessToken = getAccessTokenFromCookies(reqHeaders.get("cookie"));
   const timeout = options.timeout ?? 15000;
 
   const controller = new AbortController();
@@ -33,7 +47,7 @@ export async function backendFetch<T>(
       ...options,
       headers: {
         "Content-Type": "application/json",
-        ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
         ...options.headers,
       },
       signal: controller.signal,

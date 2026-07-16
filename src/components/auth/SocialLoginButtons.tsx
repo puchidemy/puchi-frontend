@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
-import { signIn } from "@zitadel/next-auth/react";
+import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 function GoogleIcon() {
   return (
@@ -53,18 +54,9 @@ const providers = [
 export function SocialLoginButtons() {
   const [error, setError] = useState("");
 
-  async function handleSocialLogin(provider: string) {
-    setError("");
-    try {
-      // signIn("zitadel") redirects to Zitadel OIDC authorize endpoint.
-      // Zitadel's hosted login page handles all configured IDPs (Google, Facebook, TikTok).
-      // After auth, Zitadel redirects to /api/auth/callback/zitadel,
-      // and Auth.js creates the JWT session.
-      await signIn("zitadel", { redirectTo: "/learn" });
-    } catch (err) {
-      setError("Failed to connect. Please try again.");
-    }
-  }
+  const handleSocialLogin = useCallback((provider: string) => {
+    window.location.assign(`${API_URL}/api/auth/social/${provider}`);
+  }, []);
 
   return (
     <div className="space-y-3">

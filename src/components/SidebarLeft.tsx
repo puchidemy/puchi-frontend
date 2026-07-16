@@ -2,7 +2,7 @@
 
 import { memo, useMemo } from "react";
 import Image from "next/image";
-import { useSession } from '@zitadel/next-auth/react';
+import { useAuth } from "@/providers/AuthProvider";
 import { logoutAction } from "@/actions/auth";
 
 import LogoSVG from "@public/images/logo/logo.svg";
@@ -46,8 +46,8 @@ const NavItem = memo(function NavItem({ icon, label, slug, pathname }: NavItemPr
 
 const SidebarLeft = () => {
   const pathname = usePathname();
-  const { status } = useSession();
-  const isSignedIn = status === 'authenticated';
+  const { user } = useAuth();
+  const isSignedIn = !!user;
 
   const navItems = useMemo(() => (
     navigationList.map((item) => (

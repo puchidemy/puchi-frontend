@@ -1,20 +1,19 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Separator } from "@/components/ui/separator";
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export function SignUpForm() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -36,10 +35,14 @@ export function SignUpForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(`${API_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, firstName, lastName }),
+        body: JSON.stringify({
+          email,
+          password,
+          display_name: displayName || undefined,
+        }),
       });
 
       const data = await res.json();
@@ -67,13 +70,13 @@ export function SignUpForm() {
         <Alert>
           <AlertDescription>
             Account created successfully! Please check your email to verify your
-            account, then{" "}
-            <a
+            account,             then{" "}
+            <Link
               href="/auth/sign-in"
               className="text-primary font-medium hover:underline"
             >
               sign in
-            </a>
+            </Link>
             .
           </AlertDescription>
         </Alert>
@@ -89,29 +92,16 @@ export function SignUpForm() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-2">
-            <Label htmlFor="firstName">First Name</Label>
-            <Input
-              id="firstName"
-              type="text"
-              placeholder="John"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="lastName">Last Name</Label>
-            <Input
-              id="lastName"
-              type="text"
-              placeholder="Doe"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              disabled={loading}
-            />
-          </div>
+        <div className="space-y-2">
+          <Label htmlFor="displayName">Display Name</Label>
+          <Input
+            id="displayName"
+            type="text"
+            placeholder="Your display name"
+            value={displayName}
+            onChange={(e) => setDisplayName(e.target.value)}
+            disabled={loading}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>

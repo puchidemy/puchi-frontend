@@ -1,6 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
-import { getSession } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
 import { localizedProtectedRoute } from "./constants/paths";
 
@@ -19,8 +18,9 @@ export async function proxy(req: NextRequest) {
   });
 
   if (isProtected) {
-    const session = await getSession(req);
-    if (!session) {
+    // Check for refresh_token cookie set by auth-service
+    const refreshToken = req.cookies.get("refresh_token");
+    if (!refreshToken) {
       const signInUrl = new URL("/auth/sign-in", req.url);
       return NextResponse.redirect(signInUrl);
     }

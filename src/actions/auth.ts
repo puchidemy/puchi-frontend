@@ -1,20 +1,30 @@
 "use server";
 
-import { headers } from "next/headers";
-import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+
+const AUTH_API_URL = process.env.AUTH_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export async function logoutAction() {
-  const appUrl = process.env.AUTH_URL || "https://puchi.io.vn";
-  const req = new Request(appUrl, { headers: await headers() });
-  const session = await getSession(req);
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("access_token")?.value;
 
-  if (!session) {
+  if (!accessToken) {
     redirect("/");
     return;
   }
 
-  // Redirect to Auth.js signout — clears the JWT cookie
-  // No Zitadel end_session redirect chain needed
-  redirect("/api/auth/signout");
+  // Call auth-service to revoke the session
+  try {
+    await fetch(`${AUTH_API_URL}/api/auth/logout`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+  } catch {
+    // Proceed with redirect even if server request fails
+  }
+
+  redirect("/");
 }
