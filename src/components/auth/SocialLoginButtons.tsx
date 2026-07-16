@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { signIn } from "@zitadel/next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -51,36 +52,17 @@ const providers = [
 
 export function SocialLoginButtons() {
   const [error, setError] = useState("");
-  const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
   async function handleSocialLogin(provider: string) {
     setError("");
-    setLoadingProvider(provider);
-
     try {
-      const res = await fetch("/api/auth/social", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ provider }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || "Failed to initiate social login.");
-        return;
-      }
-
-      const data = await res.json();
-
-      if (data.authUrl) {
-        window.location.href = data.authUrl;
-      } else {
-        setError("Failed to get login URL. Please try again.");
-      }
+      // signIn("zitadel") redirects to Zitadel OIDC authorize endpoint.
+      // Zitadel's hosted login page handles all configured IDPs (Google, Facebook, TikTok).
+      // After auth, Zitadel redirects to /api/auth/callback/zitadel,
+      // and Auth.js creates the JWT session.
+      await signIn("zitadel", { redirectTo: "/learn" });
     } catch (err) {
-      setError("Network error. Please try again.");
-    } finally {
-      setLoadingProvider(null);
+      setError("Failed to connect. Please try again.");
     }
   }
 
@@ -106,7 +88,6 @@ export function SocialLoginButtons() {
             variant="immersive"
             className="flex-1 min-w-0 h-10 px-2"
             onClick={() => handleSocialLogin(id)}
-            disabled={loadingProvider !== null}
             title={name}
           >
             <Icon />

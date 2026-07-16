@@ -30,12 +30,3 @@ export interface APIResetPassword extends Default {
   data: { userId: string; code: string; password: string };
   result: { success: boolean } | { error: string };
 }
-
-export interface APISocialLogin extends Default {
-  url: '/api/auth/social';
-  method: 'post';
-  data: { provider: string };
-  result:
-    | { idpId: string; name: string; authUrl: string; idpIntentId: string }
-    | { error: string };
-}
