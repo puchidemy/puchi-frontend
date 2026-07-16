@@ -72,6 +72,7 @@ export interface FullProfile {
     email: string;
     imageUrl: string;
     bio?: string;
+    onboardingCompleted?: boolean;
     createdAt: string;
     updatedAt: string;
   };

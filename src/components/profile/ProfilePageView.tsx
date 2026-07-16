@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { useProfileData } from "@/hooks/use-profile-data";
 import { FullProfile } from "@/types/profile";
 import ProfileHero from "@/components/profile/ProfileHero";
 import ProfileTabs from "@/components/profile/ProfileTabs";
@@ -13,11 +12,7 @@ import StatsTab from "@/components/profile/tabs/StatsTab";
 import AchievementsTab from "@/components/profile/tabs/AchievementsTab";
 import ProfileRightBar from "@/components/profile/ProfileRightBar";
 import ScrollToTopButton from "@/components/ScrollToTopButton";
-import {
-  LayoutDashboard,
-  BarChart3,
-  Trophy,
-} from "lucide-react";
+import { LayoutDashboard, BarChart3, Trophy } from "lucide-react";
 
 const tabs = [
   { id: "overview", icon: LayoutDashboard },
@@ -33,18 +28,23 @@ const tabComponents: Record<TabId, React.ComponentType<{ profile: FullProfile }>
   achievements: AchievementsTab,
 };
 
-function RightBarFallback() {
-  return (
-    <div className="w-full h-full flex flex-col items-center justify-center py-20">
-      <div className="w-20 h-20 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin" />
-    </div>
-  );
+interface ProfilePageViewProps {
+  profile: FullProfile;
+  isLoading?: boolean;
+  isOwnProfile?: boolean;
 }
 
-export default function ProfilePage() {
+export default function ProfilePageView({ profile, isLoading = false, isOwnProfile = false }: ProfilePageViewProps) {
   const t = useTranslations("Profile");
-  const { profile, isLoading } = useProfileData();
   const [activeTab, setActiveTab] = useState<TabId>("overview");
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center py-24">
+        <div className="w-12 h-12 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   const TabComponent = tabComponents[activeTab];
 
@@ -54,6 +54,14 @@ export default function ProfilePage() {
         <div className="h-full flex xl:w-[1024px] w-full relative">
           <main className="min-w-[300px] absolute left-0 right-0 xl:right-[350px]">
             <div className="container mx-auto px-4 py-6 space-y-6">
+              {isOwnProfile && (
+                <div className="flex justify-end">
+                  <a href="/settings/profile" className="text-sm text-primary hover:underline">
+                    {t("editProfile")}
+                  </a>
+                </div>
+              )}
+
               <ProfileHero profile={profile} />
 
               <ProfileTabs
@@ -91,5 +99,13 @@ export default function ProfilePage() {
         </div>
       </div>
     </>
+  );
+}
+
+function RightBarFallback() {
+  return (
+    <div className="w-full h-full flex flex-col items-center justify-center py-20">
+      <div className="w-20 h-20 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin" />
+    </div>
   );
 }
