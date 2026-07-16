@@ -1,8 +1,8 @@
+import { getCsrfToken } from '@zitadel/next-auth/react';
+
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
 
 export async function clientFetch<T>(path: string, options?: RequestInit): Promise<T> {
-  // API auth routes (/api/auth/*) là Next.js API routes trên cùng origin
-  // Backend routes (/v1/*) đi qua Envoy Gateway (api.puchi.io.vn)
   const base = path.startsWith("/api/") ? "" : API_BASE;
   const res = await fetch(`${base}${path}`, {
     ...options,

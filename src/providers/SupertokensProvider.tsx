@@ -1,12 +1,7 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { initSupertokens } from "@/config/supertokens";
+import { SessionProvider } from '@zitadel/next-auth/react';
 
 export function SupertokensProvider({ children }: { children: React.ReactNode }) {
-  useEffect(() => {
-    initSupertokens();
-  }, []);
-
-  return <>{children}</>;
+  return <SessionProvider>{children}</SessionProvider>;
 }

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
+import { signIn } from "@zitadel/next-auth/react";
 import { clientFetch } from "@/lib/client-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -96,29 +97,12 @@ export default function SettingsProfilePage() {
     }
   };
 
-  const handleLinkAccount = (provider: string) => {
-    window.location.href = `/api/auth/link-account/${provider}`;
+  const handleLinkAccount = () => {
+    signIn("zitadel", { redirectTo: window.location.href });
   };
 
-  const handleUnlinkAccount = async (providerUserId: string) => {
-    try {
-      const res = await fetch("/api/auth/unlink-account", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ providerUserId }),
-      });
-
-      if (res.ok) {
-        setLinkedAccounts((prev) =>
-          prev.filter((a) => a.providerUserId !== providerUserId),
-        );
-        toast.success(t("accountUnlinked"));
-      } else {
-        toast.error(t("unlinkFailed"));
-      }
-    } catch {
-      toast.error(t("networkError"));
-    }
+  const handleUnlinkAccount = () => {
+    signIn("zitadel", { redirectTo: window.location.href });
   };
 
   if (!profileLoaded) {
@@ -241,9 +225,7 @@ export default function SettingsProfilePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() =>
-                      handleUnlinkAccount(account.providerUserId || "")
-                    }
+                    onClick={handleUnlinkAccount}
                   >
                     {t("unlink")}
                   </Button>
@@ -251,7 +233,7 @@ export default function SettingsProfilePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleLinkAccount(provider)}
+                    onClick={handleLinkAccount}
                   >
                     {t("link")}
                   </Button>

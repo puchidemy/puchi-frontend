@@ -1,9 +1,8 @@
 "use client";
 
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo } from "react";
 import Image from "next/image";
-import { doesSessionExist } from "supertokens-web-js/recipe/session";
-import { initSupertokens, signOut } from "@/config/supertokens";
+import { useSession, signOut } from '@zitadel/next-auth/react';
 
 import LogoSVG from "@public/images/logo/logo.svg";
 import { Link, usePathname } from "@/i18n/routing";
@@ -46,14 +45,8 @@ const NavItem = memo(function NavItem({ icon, label, slug, pathname }: NavItemPr
 
 const SidebarLeft = () => {
   const pathname = usePathname();
-  const [isSignedIn, setIsSignedIn] = useState(false);
-
-  useEffect(() => {
-    initSupertokens();
-    doesSessionExist()
-      .then(setIsSignedIn)
-      .catch(() => setIsSignedIn(false));
-  }, []);
+  const { status } = useSession();
+  const isSignedIn = status === 'authenticated';
 
   const navItems = useMemo(() => (
     navigationList.map((item) => (

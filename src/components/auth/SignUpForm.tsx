@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signUp } from "supertokens-web-js/recipe/emailpassword";
-import { initSupertokens } from "@/config/supertokens";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,12 +13,11 @@ export function SignUpForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    initSupertokens();
-  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -39,25 +36,49 @@ export function SignUpForm() {
     setLoading(true);
 
     try {
-      const response = await signUp({
-        formFields: [
-          { id: "email", value: email },
-          { id: "password", value: password },
-        ],
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, firstName, lastName }),
       });
 
-      if (response.status === "OK") {
-        router.push("/welcome");
-      } else if (response.status === "EMAIL_ALREADY_EXISTS_ERROR") {
-        setError("An account with this email already exists");
-      } else {
-        setError("Sign up failed. Please try again.");
+      const data = await res.json();
+
+      if (!res.ok) {
+        if (res.status === 409) {
+          setError("An account with this email already exists");
+        } else {
+          setError(data.error || "Registration failed. Please try again.");
+        }
+        return;
       }
+
+      setSuccess(true);
     } catch (err) {
       setError("Network error. Please check your connection.");
     } finally {
       setLoading(false);
     }
+  }
+
+  if (success) {
+    return (
+      <div className="space-y-4 text-center">
+        <Alert>
+          <AlertDescription>
+            Account created successfully! Please check your email to verify your
+            account, then{" "}
+            <a
+              href="/auth/sign-in"
+              className="text-primary font-medium hover:underline"
+            >
+              sign in
+            </a>
+            .
+          </AlertDescription>
+        </Alert>
+      </div>
+    );
   }
 
   return (
@@ -68,6 +89,30 @@ export function SignUpForm() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         )}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="space-y-2">
+            <Label htmlFor="firstName">First Name</Label>
+            <Input
+              id="firstName"
+              type="text"
+              placeholder="John"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="lastName">Last Name</Label>
+            <Input
+              id="lastName"
+              type="text"
+              placeholder="Doe"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+        </div>
         <div className="space-y-2">
           <Label htmlFor="email">Email</Label>
           <Input

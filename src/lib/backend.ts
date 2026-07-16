@@ -1,6 +1,6 @@
 "server-only";
 
-import { getAppDirSession } from "supertokens-node/nextjs";
+import { auth } from "@/lib/auth";
 
 const BACKEND_URL = process.env.API_INTERNAL_URL || "http://localhost:8000";
 
@@ -19,7 +19,7 @@ export async function backendFetch<T>(
   path: string,
   options: RequestInit & { timeout?: number } = {},
 ): Promise<T> {
-  const session = await getAppDirSession().catch(() => null);
+  const session = await auth();
   const timeout = options.timeout ?? 15000;
 
   const controller = new AbortController();
@@ -30,7 +30,7 @@ export async function backendFetch<T>(
       ...options,
       headers: {
         "Content-Type": "application/json",
-        ...(session ? { Authorization: `Bearer ${session.getAccessToken()}` } : {}),
+        ...(session?.accessToken ? { Authorization: `Bearer ${session.accessToken}` } : {}),
         ...options.headers,
       },
       signal: controller.signal,

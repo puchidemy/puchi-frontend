@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { sendPasswordResetEmail } from "supertokens-web-js/recipe/emailpassword";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,17 +19,19 @@ export function ForgotPasswordForm() {
     setLoading(true);
 
     try {
-      const response = await sendPasswordResetEmail({
-        formFields: [{ id: "email", value: email }],
+      const res = await fetch("/api/auth/forgot-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       });
 
-      if (response.status === "OK") {
-        setSuccess(true);
-      } else {
-        setError(
-          "Failed to send reset email. Please check your email address."
-        );
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Failed to send reset email.");
+        return;
       }
+
+      setSuccess(true);
     } catch (err) {
       setError("Network error. Please try again later.");
     } finally {

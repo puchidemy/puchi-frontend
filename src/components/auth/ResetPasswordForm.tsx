@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { submitNewPassword } from "supertokens-web-js/recipe/emailpassword";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +10,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 export function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const token = searchParams.get("token");
+  const userId = searchParams.get("userId");
+  const code = searchParams.get("code");
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -19,12 +19,12 @@ export function ResetPasswordForm() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!token) {
+    if (!userId || !code) {
       setError(
-        "Invalid or missing reset token. Please request a new password reset."
+        "Invalid or missing reset parameters. Please request a new password reset."
       );
     }
-  }, [token]);
+  }, [userId, code]);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -43,17 +43,20 @@ export function ResetPasswordForm() {
     setLoading(true);
 
     try {
-      const response = await submitNewPassword({
-        formFields: [{ id: "password", value: password }],
+      const res = await fetch("/api/auth/reset-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, code, password }),
       });
 
-      if (response.status === "OK") {
-        router.push("/auth/sign-in?reset=success");
-      } else if (response.status === "RESET_PASSWORD_INVALID_TOKEN_ERROR") {
-        setError("Reset link has expired. Please request a new one.");
-      } else {
-        setError("Failed to reset password. Please try again.");
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Failed to reset password. Please try again.");
+        return;
       }
+
+      router.push("/auth/sign-in?reset=success");
     } catch (err) {
       setError("Network error. Please try again.");
     } finally {
@@ -78,7 +81,7 @@ export function ResetPasswordForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
-          disabled={loading || !token}
+          disabled={loading || !userId || !code}
         />
       </div>
       <div className="space-y-2">
@@ -90,10 +93,14 @@ export function ResetPasswordForm() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          disabled={loading || !token}
+          disabled={loading || !userId || !code}
         />
       </div>
-      <Button type="submit" className="w-full" disabled={loading || !token}>
+      <Button
+        type="submit"
+        className="w-full"
+        disabled={loading || !userId || !code}
+      >
         {loading ? "Resetting..." : "Reset Password"}
       </Button>
     </form>

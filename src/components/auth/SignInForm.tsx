@@ -1,25 +1,18 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 import Link from "next/link";
-import { signIn } from "supertokens-web-js/recipe/emailpassword";
+import { signIn } from "@zitadel/next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { initSupertokens } from "@/config/supertokens";
 
 export function SignInForm() {
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    initSupertokens();
-  }, []);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -27,23 +20,9 @@ export function SignInForm() {
     setLoading(true);
 
     try {
-      const response = await signIn({
-        formFields: [
-          { id: "email", value: email },
-          { id: "password", value: password },
-        ],
-      });
-
-      if (response.status === "OK") {
-        router.push("/learn");
-      } else if (response.status === "WRONG_CREDENTIALS_ERROR") {
-        setError("Invalid email or password");
-      } else {
-        setError("Sign in failed. Please try again.");
-      }
+      await signIn("zitadel", { redirectTo: "/learn" });
     } catch (err) {
-      setError("Network error. Please check your connection.");
-    } finally {
+      setError("Failed to connect to sign-in service. Please try again.");
       setLoading(false);
     }
   }
@@ -89,7 +68,7 @@ export function SignInForm() {
           />
         </div>
         <Button type="submit" variant="primary" className="w-full" disabled={loading}>
-          {loading ? "Signing in..." : "Sign In"}
+          {loading ? "Redirecting..." : "Sign In"}
         </Button>
       </form>
     </>
