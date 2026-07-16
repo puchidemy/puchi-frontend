@@ -2,13 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { signIn } from "@zitadel/next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export function SignInForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -20,9 +22,38 @@ export function SignInForm() {
     setLoading(true);
 
     try {
-      await signIn("zitadel", { redirectTo: "/learn" });
+      // Build request body
+      const body: Record<string, string> = { email, password };
+
+      // If there's an authRequestId from Zitadel redirect, pass it along
+      const authRequestId = searchParams.get("authRequestId");
+      if (authRequestId) {
+        body.authRequestId = authRequestId;
+      }
+
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Invalid email or password. Please try again.");
+        return;
+      }
+
+      if (data.callbackUrl) {
+        // Complete OIDC flow via Zitadel redirect
+        router.replace(data.callbackUrl);
+      } else {
+        // No callback URL means session created but no OIDC flow needed
+        router.replace("/learn");
+      }
     } catch (err) {
-      setError("Failed to connect to sign-in service. Please try again.");
+      setError("Network error. Please check your connection.");
+    } finally {
       setLoading(false);
     }
   }
@@ -68,7 +99,7 @@ export function SignInForm() {
           />
         </div>
         <Button type="submit" variant="primary" className="w-full" disabled={loading}>
-          {loading ? "Redirecting..." : "Sign In"}
+          {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>
     </>

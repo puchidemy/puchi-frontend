@@ -1,52 +1,49 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { defaultHandler, validateRequired } from "@/lib/api-handler";
 import { zitadelFetch } from "@/lib/zitadel-service";
+import { env } from "@/config/env";
 
 export async function POST(request: NextRequest) {
-  try {
-    const { provider } = await request.json();
+  return defaultHandler<{
+    url: '/api/auth/social';
+    method: 'post';
+    data: { provider: string };
+    result: { idpId: string; name: string; type: string; authorizeUrl: string } | { error: string };
+  }>(
+    {
+      request,
+      validate: (body) => validateRequired(body, ["provider"]),
+    },
+    async (body) => {
+      const idpsRes = await zitadelFetch("/v2beta/settings/login/idps", {
+        headers: {
+          Authorization: `Bearer ${env.ZITADEL_SERVICE_TOKEN}`,
+        },
+      });
 
-    if (!provider) {
-      return NextResponse.json(
-        { error: "Provider required" },
-        { status: 400 }
+      if (!idpsRes.ok) {
+        return { error: "Failed to get identity providers" } as const;
+      }
+
+      const idps = await idpsRes.json();
+      const idp = idps.identityProviders?.find(
+        (ip: any) => ip.name?.toLowerCase() === body.provider.toLowerCase(),
       );
-    }
 
-    const idpsRes = await zitadelFetch("/v2beta/settings/login/idps", {
-      headers: {
-        Authorization: `Bearer ${process.env.ZITADEL_SERVICE_TOKEN!}`,
-      },
-    });
+      if (!idp) {
+        return { error: `Provider ${body.provider} not found` } as const;
+      }
 
-    if (!idpsRes.ok) {
-      return NextResponse.json(
-        { error: "Failed to get identity providers" },
-        { status: 500 }
-      );
-    }
+      const redirectUri = `${env.AUTH_URL}/api/auth/callback/zitadel`;
+      const scope = encodeURIComponent("openid email profile");
+      const authorizeUrl = `https://auth.puchi.io.vn/oauth/v2/authorize?client_id=${env.ZITADEL_CLIENT_ID}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=code&scope=${scope}&idp_hint=${idp.id}`;
 
-    const idps = await idpsRes.json();
-    const idp = idps.identityProviders?.find(
-      (ip: any) => ip.name?.toLowerCase() === provider.toLowerCase()
-    );
-
-    if (!idp) {
-      return NextResponse.json(
-        { error: `Provider ${provider} not found` },
-        { status: 404 }
-      );
-    }
-
-    return NextResponse.json({
-      idpId: idp.id,
-      name: idp.name,
-      type: idp.type,
-    });
-  } catch (err) {
-    console.error("Social login error:", err);
-    return NextResponse.json(
-      { error: "Failed to get social login config" },
-      { status: 500 }
-    );
-  }
+      return {
+        idpId: idp.id,
+        name: idp.name,
+        type: idp.type,
+        authorizeUrl,
+      };
+    },
+  );
 }

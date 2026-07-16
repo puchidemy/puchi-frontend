@@ -1,4 +1,4 @@
-import { SupertokensProvider } from "@/providers/SupertokensProvider";
+import { AuthProvider } from "@/providers/AuthProvider";
 
 type ProtectedLayoutProps = {
   children: React.ReactNode;
@@ -9,5 +9,5 @@ export default async function ProtectedLayout({
   children,
   params,
 }: ProtectedLayoutProps) {
-  return <SupertokensProvider>{children}</SupertokensProvider>;
+  return <AuthProvider>{children}</AuthProvider>;
 }

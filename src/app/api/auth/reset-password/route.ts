@@ -1,42 +1,34 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { defaultHandler, validateRequired } from "@/lib/api-handler";
+import type { APIResetPassword } from "@/lib/api-contracts";
 import { zitadelFetch } from "@/lib/zitadel-service";
+import { env } from "@/config/env";
 
 export async function POST(request: NextRequest) {
-  try {
-    const { userId, code, password } = await request.json();
-    if (!userId || !code || !password) {
-      return NextResponse.json(
-        { error: "userId, code, and password required" },
-        { status: 400 }
-      );
-    }
+  return defaultHandler<APIResetPassword>(
+    {
+      request,
+      validate: (body) => validateRequired(body, ["userId", "code", "password"]),
+    },
+    async (body) => {
+      const res = await zitadelFetch(`/v2beta/users/${body.userId}/password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.ZITADEL_SERVICE_TOKEN}`,
+        },
+        body: JSON.stringify({
+          newPassword: { password: body.password, changeRequired: false },
+          verificationCode: body.code,
+        }),
+      });
 
-    const res = await zitadelFetch(`/v2beta/users/${userId}/password`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ZITADEL_SERVICE_TOKEN!}`,
-      },
-      body: JSON.stringify({
-        newPassword: { password, changeRequired: false },
-        verificationCode: code,
-      }),
-    });
+      if (!res.ok) {
+        const text = await res.text();
+        return { error: `Password reset failed: ${text}` } as const;
+      }
 
-    if (!res.ok) {
-      const text = await res.text();
-      return NextResponse.json(
-        { error: `Password reset failed: ${text}` },
-        { status: 400 }
-      );
-    }
-
-    return NextResponse.json({ success: true });
-  } catch (err) {
-    console.error("Reset password error:", err);
-    return NextResponse.json(
-      { error: "Password reset failed" },
-      { status: 500 }
-    );
-  }
+      return { success: true };
+    },
+  );
 }

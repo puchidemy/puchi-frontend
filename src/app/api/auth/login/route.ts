@@ -1,38 +1,33 @@
-import { NextRequest, NextResponse } from "next/server";
-import { createSession, verifyPassword } from "@/lib/zitadel-service";
+import { NextRequest } from "next/server";
+import { defaultHandler, validateRequired } from "@/lib/api-handler";
+import type { APILogin } from "@/lib/api-contracts";
+import { createSession, verifyPassword, completeOidcFlow } from "@/lib/zitadel-service";
 
 export async function POST(request: NextRequest) {
-  try {
-    const { email, password } = await request.json();
+  return defaultHandler<APILogin>(
+    {
+      request,
+      validate: (body) => validateRequired(body, ["email", "password"]),
+    },
+    async (body) => {
+      const { sessionId, sessionToken } = await createSession(body.email);
+      const verified = await verifyPassword(sessionId, body.password);
+      if (!verified) {
+        return { error: "Invalid credentials" } as const;
+      }
 
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: "Email and password required" },
-        { status: 400 }
-      );
-    }
+      const authRequestId = request.nextUrl.searchParams.get("authRequestId");
+      let callbackUrl: string | undefined;
 
-    const { sessionId, sessionToken } = await createSession(email);
+      if (authRequestId) {
+        callbackUrl = await completeOidcFlow(authRequestId, sessionId, sessionToken);
+      }
 
-    const verified = await verifyPassword(sessionId, password);
-    if (!verified) {
-      return NextResponse.json(
-        { error: "Invalid credentials" },
-        { status: 401 }
-      );
-    }
-
-    return NextResponse.json({
-      success: true,
-      sessionId,
-      sessionToken,
-    });
-  } catch (err) {
-    console.error("Login error:", err);
-    const message = err instanceof Error ? err.message : "Login failed";
-    if (message.includes("user") && message.includes("not found")) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
-    }
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+      return {
+        success: true,
+        sessionId,
+        callbackUrl,
+      };
+    },
+  );
 }

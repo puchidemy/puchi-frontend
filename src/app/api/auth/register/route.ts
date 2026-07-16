@@ -1,59 +1,47 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { defaultHandler, validateRequired } from "@/lib/api-handler";
+import type { APIRegister } from "@/lib/api-contracts";
 import { zitadelFetch } from "@/lib/zitadel-service";
+import { env } from "@/config/env";
 
 export async function POST(request: NextRequest) {
-  try {
-    const { email, password, firstName, lastName } = await request.json();
-
-    if (!email || !password) {
-      return NextResponse.json(
-        { error: "Email and password required" },
-        { status: 400 }
-      );
-    }
-
-    const res = await zitadelFetch("/management/v1/users/human", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${process.env.ZITADEL_SERVICE_TOKEN!}`,
-      },
-      body: JSON.stringify({
-        userName: email.split("@")[0],
-        email: { email, isEmailVerified: false },
-        profile: {
-          firstName: firstName || email.split("@")[0],
-          lastName: lastName || "",
-          displayName: firstName
-            ? `${firstName} ${lastName}`.trim()
-            : email,
+  return defaultHandler<APIRegister>(
+    {
+      request,
+      validate: (body) => validateRequired(body, ["email", "password"]),
+    },
+    async (body) => {
+      const res = await zitadelFetch("/management/v1/users/human", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.ZITADEL_SERVICE_TOKEN}`,
         },
-        password,
-        passwordChangeRequired: false,
-      }),
-    });
+        body: JSON.stringify({
+          userName: body.email.split("@")[0],
+          email: { email: body.email, isEmailVerified: false },
+          profile: {
+            firstName: body.firstName || body.email.split("@")[0],
+            lastName: body.lastName || "",
+            displayName: body.firstName
+              ? `${body.firstName} ${body.lastName}`.trim()
+              : body.email,
+          },
+          password: body.password,
+          passwordChangeRequired: false,
+        }),
+      });
 
-    if (!res.ok) {
-      const text = await res.text();
-      if (text.includes("already")) {
-        return NextResponse.json(
-          { error: "User already exists" },
-          { status: 409 }
-        );
+      if (!res.ok) {
+        const text = await res.text();
+        if (text.includes("already")) {
+          return { error: "User already exists" } as const;
+        }
+        return { error: `Registration failed: ${text}` } as const;
       }
-      return NextResponse.json(
-        { error: `Registration failed: ${text}` },
-        { status: 400 }
-      );
-    }
 
-    const data = await res.json();
-    return NextResponse.json({ success: true, userId: data.userId });
-  } catch (err) {
-    console.error("Register error:", err);
-    return NextResponse.json(
-      { error: "Registration failed" },
-      { status: 500 }
-    );
-  }
+      const data = await res.json();
+      return { success: true, userId: data.userId };
+    },
+  );
 }

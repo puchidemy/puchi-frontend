@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "@zitadel/next-auth/react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
@@ -52,13 +51,36 @@ const providers = [
 
 export function SocialLoginButtons() {
   const [error, setError] = useState("");
+  const [loadingProvider, setLoadingProvider] = useState<string | null>(null);
 
-  async function handleSocialLogin() {
+  async function handleSocialLogin(provider: string) {
     setError("");
+    setLoadingProvider(provider);
+
     try {
-      await signIn("zitadel", { redirectTo: "/learn" });
+      const res = await fetch("/api/auth/social", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ provider }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.error || "Failed to initiate social login.");
+        return;
+      }
+
+      const data = await res.json();
+
+      if (data.authorizeUrl) {
+        window.location.href = data.authorizeUrl;
+      } else {
+        setError("Failed to get login URL. Please try again.");
+      }
     } catch (err) {
-      setError("Failed to connect. Please try again.");
+      setError("Network error. Please try again.");
+    } finally {
+      setLoadingProvider(null);
     }
   }
 
@@ -83,7 +105,8 @@ export function SocialLoginButtons() {
             type="button"
             variant="immersive"
             className="flex-1 min-w-0 h-10 px-2"
-            onClick={handleSocialLogin}
+            onClick={() => handleSocialLogin(id)}
+            disabled={loadingProvider !== null}
             title={name}
           >
             <Icon />
