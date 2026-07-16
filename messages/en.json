@@ -137,6 +137,26 @@
     "creator": "Created by Lê Công Hoan, a passionate developer dedicated to leveraging technology for education.",
     "joinCommunity": "Join our community on <facebookLink>Facebook</facebookLink> to connect with other learners, or explore the project source code on <githubLink>GitHub</githubLink>."
   },
+  "Settings": {
+    "editProfile": "Edit Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell the world about yourself...",
+    "ageRange": "Age Range",
+    "selectAgeRange": "Select your age range",
+    "save": "Save",
+    "saving": "Saving...",
+    "profileSaved": "Profile saved successfully!",
+    "saveFailed": "Failed to save profile",
+    "networkError": "Network error. Please try again.",
+    "connectedAccounts": "Connected Accounts",
+    "unlink": "Unlink",
+    "link": "Link",
+    "accountUnlinked": "Account unlinked successfully",
+    "unlinkFailed": "Failed to unlink account"
+  },
   "ProfileActions": {
     "actions": {
       "title": "Actions",

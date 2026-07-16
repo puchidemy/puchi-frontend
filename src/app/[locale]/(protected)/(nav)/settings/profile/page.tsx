@@ -23,6 +23,7 @@ export default function SettingsProfilePage() {
   const t = useTranslations("Settings");
   const [loading, setLoading] = useState(false);
   const [profileLoaded, setProfileLoaded] = useState(false);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
   // Form state
   const [firstName, setFirstName] = useState("");
@@ -38,12 +39,22 @@ export default function SettingsProfilePage() {
 
   useEffect(() => {
     async function load() {
-      const result = await getProfile();
-      if (result.success) {
-        setFirstName(result.data.firstName);
-        setLastName(result.data.lastName);
-        setUsername(result.data.username);
-        setBio(result.data.bio || "");
+      try {
+        const result = await getProfile();
+        if (result.success) {
+          setFirstName(result.data.firstName);
+          setLastName(result.data.lastName);
+          setUsername(result.data.username);
+          setBio(result.data.bio || "");
+          setAgeRange(result.data.ageRange || "");
+          setProfileLoaded(true);
+        } else {
+          setLoadError(result.error || t("saveFailed"));
+          setProfileLoaded(true);
+        }
+      } catch (error) {
+        console.error("Failed to load profile:", error);
+        setLoadError(t("networkError"));
         setProfileLoaded(true);
       }
 
@@ -54,7 +65,9 @@ export default function SettingsProfilePage() {
           const data = await res.json();
           setLinkedAccounts(data.accounts || []);
         }
-      } catch {}
+      } catch (error) {
+        console.error("Failed to load linked accounts:", error);
+      }
     }
     load();
   }, []);
@@ -89,7 +102,7 @@ export default function SettingsProfilePage() {
     }
   };
 
-  const handleLinkAccount = async (provider: string) => {
+  const handleLinkAccount = (provider: string) => {
     window.location.href = `/api/auth/link-account/${provider}`;
   };
 
@@ -118,6 +131,21 @@ export default function SettingsProfilePage() {
     return (
       <div className="py-24 text-center">
         <div className="w-8 h-8 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin mx-auto" />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="py-24 text-center">
+        <p className="text-destructive">{loadError}</p>
+        <Button
+          variant="outline"
+          className="mt-4"
+          onClick={() => window.location.reload()}
+        >
+          Retry
+        </Button>
       </div>
     );
   }
@@ -184,7 +212,7 @@ export default function SettingsProfilePage() {
               </Select>
             </div>
 
-            <Button type="submit" variant="primary" disabled={loading}>
+            <Button type="submit" variant="default" disabled={loading}>
               {loading ? t("saving") : t("save")}
             </Button>
           </form>
@@ -200,7 +228,7 @@ export default function SettingsProfilePage() {
         <CardContent className="space-y-3">
           {["google", "facebook", "tiktok"].map((provider) => {
             const account = linkedAccounts.find(
-              (a: any) => a.provider === provider,
+              (a) => a.provider === provider,
             );
             return (
               <div
