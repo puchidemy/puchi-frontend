@@ -9,7 +9,7 @@ export default function AuthLayout({
 }) {
   return (
     <SupertokensProvider>
-      <div className="flex min-h-screen flex-col">
+      <div className="container flex grow flex-col px-0">
         <Header />
         <main className="flex flex-1 items-center justify-center px-4 py-10">
           {children}
