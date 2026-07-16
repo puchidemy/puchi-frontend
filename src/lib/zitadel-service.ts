@@ -1,5 +1,6 @@
 import http from "node:http";
 import https from "node:https";
+import dns from "node:dns";
 
 // Read env at call time to avoid Next.js module cache issues during build
 function getZitadelUrl(): string {
@@ -14,10 +15,26 @@ function getServiceToken(): string {
   return token;
 }
 
+const dnsCache = new Map<string, Promise<string>>();
+
+// Resolve hostname to IPv4 synchronously to avoid IPv6 DNS issues on Windows
+function resolveIPv4(hostname: string): Promise<string> {
+  const cached = dnsCache.get(hostname);
+  if (cached) return cached;
+  const promise = new Promise<string>((resolve, reject) => {
+    dns.lookup(hostname, { family: 4 }, (err, addr) => {
+      if (err) reject(err);
+      else resolve(addr);
+    });
+  });
+  dnsCache.set(hostname, promise);
+  return promise;
+}
+
 // Zitadel uses the Host header for instance-based routing.
 // Node.js fetch (undici) does NOT allow overriding the Host header,
 // so we use the built-in http/https module instead.
-export function zitadelFetch(
+export async function zitadelFetch(
   path: string,
   options: {
     method?: string;
@@ -30,21 +47,29 @@ export function zitadelFetch(
   json: () => Promise<any>;
   text: () => Promise<string>;
 }> {
-  return new Promise((resolve, reject) => {
-    const zitadelUrl = getZitadelUrl();
-    const url = new URL(`${zitadelUrl}${path}`);
-    const isHttps = url.protocol === "https:";
-    const lib = isHttps ? https : http;
+  const zitadelUrl = getZitadelUrl();
+  const url = new URL(`${zitadelUrl}${path}`);
+  const isHttps = url.protocol === "https:";
+  const lib = isHttps ? https : http;
 
+  // Pre-resolve DNS to IPv4 to avoid ENOTFOUND on Windows IPv6
+  let resolvedHostname = url.hostname;
+  try {
+    resolvedHostname = await resolveIPv4(url.hostname);
+  } catch (dnsErr) {
+    console.warn("[zitadelFetch] DNS resolution failed, using hostname as-is:", dnsErr);
+  }
+
+  return new Promise((resolve, reject) => {
     const requestOptions: http.RequestOptions = {
-      hostname: url.hostname,
+      hostname: resolvedHostname,
       port: url.port || (isHttps ? 443 : 80),
       path: url.pathname + url.search,
       method: options.method || "GET",
       rejectUnauthorized: false,
       headers: {
         ...options.headers,
-        Host: "auth.puchi.io.vn",
+        Host: url.hostname,
       },
     };
 
