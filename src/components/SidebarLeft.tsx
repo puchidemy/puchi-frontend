@@ -2,7 +2,8 @@
 
 import { memo, useMemo } from "react";
 import Image from "next/image";
-import { useSession, signOut } from '@zitadel/next-auth/react';
+import { useSession } from '@zitadel/next-auth/react';
+import { logoutAction } from "@/actions/auth";
 
 import LogoSVG from "@public/images/logo/logo.svg";
 import { Link, usePathname } from "@/i18n/routing";
@@ -123,12 +124,13 @@ const SidebarLeft = () => {
                 Help
               </Link>
               {isSignedIn ? (
-                <span
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                  onClick={() => signOut().then(() => window.location.reload())}
-                >
-                  Logout
-                </span>
+                <form action={logoutAction}>
+                  <button type="submit"
+                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                  >
+                    Logout
+                  </button>
+                </form>
               ) : (
                 <Link
                   href="/sign-up"

@@ -10,7 +10,7 @@ declare module '@zitadel/next-auth' {
 
 const authUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL;
 
-export const { handlers, getSession, signIn, signOut } = NextAuth({
+export const { handlers, getSession, auth, signIn, signOut } = NextAuth({
   providers: [
     Zitadel({
       clientId: process.env.ZITADEL_CLIENT_ID!,
@@ -38,7 +38,6 @@ export const { handlers, getSession, signIn, signOut } = NextAuth({
       return session;
     },
     async redirect({ url, baseUrl }) {
-      // Ensure redirects use the configured AUTH_URL
       if (authUrl) {
         const base = new URL(authUrl).origin;
         if (url.startsWith('/')) return `${base}${url}`;
