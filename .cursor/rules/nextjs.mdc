@@ -32,8 +32,13 @@ NextAuth({
 - `src/app/api/auth/reset-password/route.ts` — Reset password
 - `src/app/api/auth/social/route.ts` — Social login config
 
+### Typed API Contracts
+- Define contracts in `src/lib/api-contracts.ts` (APILogin, APIRegister, etc.)
+- Wrapper pattern: `src/lib/api-handler.ts` — `defaultHandler<T>()` auto-parses, validates, and error-handles
+- Each route uses `defaultHandler` with typed contract for type safety
+
 ### Custom Login UI Flow
-1. Form submit tới `/api/auth/login` → gọi Zitadel Session API
+1. Form submit tới `/api/auth/login` → `defaultHandler<APILogin>()` validates + gọi Zitadel Session API
 2. On success → redirect tới Zitadel OIDC authorize
 3. Auth.js handle callback → `/api/auth/callback/zitadel`
 4. JWT session cookie được set
@@ -58,6 +63,7 @@ NextAuth({
 - Client → `credentials: "include"` (gửi cookie session)
 - Server → `backendFetch()` với `Authorization: Bearer <accessToken>` từ Auth.js session
 - API base URL: `process.env.NEXT_PUBLIC_API_URL` (https://api.puchi.io.vn)
+- Middleware file: `src/lib/proxy.ts` — proxy utility cho API requests
 
 ## i18n
 

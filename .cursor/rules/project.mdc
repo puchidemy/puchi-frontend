@@ -32,10 +32,11 @@ NextAuth({
 });
 ```
 
-### Custom Login UI
-- Forms sign-in, register, forgot/reset password gọi Zitadel Session API (`/v2beta/sessions`)
-- API routes: `src/app/api/auth/login`, `register`, `forgot-password`, `reset-password`
-- Service user PAT dùng để xác thực API calls
+### Typed API Contracts Pattern
+- Define request/response contracts trong `src/lib/api-contracts.ts` (APILogin, APIRegister, APIForgotPassword, APIResetPassword)
+- API handler wrapper: `src/lib/api-handler.ts` — `defaultHandler<T>()` auto-parses body, validates với Zod schema, trả về typed response
+- Mỗi route dùng `defaultHandler` với typed contract để đảm bảo type safety
+- `src/config/env.ts` (Zod-validated env config) validate biến môi trường ở runtime
 
 ### Auth flow tổng thể
 ```
@@ -98,16 +99,17 @@ bun run lint         # ESLint
 ```
 src/
 ├── app/[locale]/     # Next.js App Router pages (i18n)
-├── app/api/auth/     # Auth.js + Custom login API routes
+├── app/api/auth/     # Auth.js + Custom login API routes + typed contracts
 ├── components/       # UI components (Shadcn + custom)
 ├── actions/          # Server Actions (logout, etc.)
-├── lib/              # Auth.js config + Zitadel service client
+├── lib/              # Auth.js config, api-contracts.ts, api-handler.ts, Zitadel service client
 ├── store/            # Zustand stores
 ├── hooks/            # Custom hooks
 ├── i18n/             # Translation config
-├── services/         # API service layer
 ├── styles/           # Global styles
 ├── constants/        # Constants
+├── config/           # env.ts (Zod-validated env config)
+├── middleware/       # proxy.ts (request proxy)
 └── types/            # TypeScript types
 ```
 
