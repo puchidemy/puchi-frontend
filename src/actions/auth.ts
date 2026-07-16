@@ -9,13 +9,12 @@ export async function logoutAction() {
   const req = new Request(appUrl, { headers: await headers() });
   const session = await getSession(req);
 
-  // Redirect tới Auth.js signout -> clear cookies -> callback tới Zitadel end_session
-  if (session?.idToken) {
-    const zitadelUrl = new URL("https://auth.puchi.io.vn/oidc/v1/end_session");
-    zitadelUrl.searchParams.set("id_token_hint", session.idToken);
-    zitadelUrl.searchParams.set("post_logout_redirect_uri", appUrl);
-    redirect(`/api/auth/signout?callbackUrl=${encodeURIComponent(zitadelUrl.toString())}`);
+  if (!session) {
+    redirect("/");
+    return;
   }
 
+  // Redirect to Auth.js signout — clears the JWT cookie
+  // No Zitadel end_session redirect chain needed
   redirect("/api/auth/signout");
 }

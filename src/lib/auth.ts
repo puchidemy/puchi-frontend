@@ -8,7 +8,7 @@ declare module '@zitadel/next-auth' {
   }
 }
 
-const authUrl = process.env.AUTH_URL || process.env.NEXTAUTH_URL;
+const authUrl = process.env.AUTH_URL;
 
 export const { handlers, getSession, auth, signIn, signOut } = NextAuth({
   providers: [
