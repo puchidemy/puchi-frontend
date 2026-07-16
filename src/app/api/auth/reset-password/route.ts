@@ -1,9 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
-const ZITADEL_URL =
-  process.env.ZITADEL_INTERNAL_URL ||
-  "http://zitadel.puchi-auth.svc.cluster.local:8080";
-const ZITADEL_SERVICE_TOKEN = process.env.ZITADEL_SERVICE_TOKEN!;
+import { zitadelFetch } from "@/lib/zitadel-service";
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,21 +11,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const res = await fetch(
-      `${ZITADEL_URL}/v2beta/users/${userId}/password`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${ZITADEL_SERVICE_TOKEN}`,
-          Host: "auth.puchi.io.vn",
-        },
-        body: JSON.stringify({
-          newPassword: { password, changeRequired: false },
-          verificationCode: code,
-        }),
-      }
-    );
+    const res = await zitadelFetch(`/v2beta/users/${userId}/password`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.ZITADEL_SERVICE_TOKEN!}`,
+      },
+      body: JSON.stringify({
+        newPassword: { password, changeRequired: false },
+        verificationCode: code,
+      }),
+    });
 
     if (!res.ok) {
       const text = await res.text();
