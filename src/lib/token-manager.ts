@@ -1,5 +1,7 @@
 "client-only";
 
+import { useAuthStore } from "@/store/auth";
+
 let currentToken: string | null = null;
 let currentBaseUrl = "http://localhost:8080";
 let refreshPromise: Promise<string | null> | null = null;
@@ -12,6 +14,8 @@ export function getToken(): string | null {
 export function setToken(token: string | null): void {
   currentToken = token;
   tokenListeners.forEach((fn) => fn(token));
+  // Sync to Zustand store (sessionStorage persist)
+  useAuthStore.getState().setAccessToken(token);
 }
 
 export function clearToken(): void {
@@ -27,6 +31,19 @@ export function subscribeToToken(fn: (token: string | null) => void): () => void
 
 export function setBaseUrl(url: string): void {
   currentBaseUrl = url;
+}
+
+/**
+ * Restore token from Zustand store (sessionStorage) on page reload.
+ * Returns the token if found, otherwise null.
+ */
+export function restoreTokenFromStore(): string | null {
+  const stored = useAuthStore.getState().accessToken;
+  if (stored && !currentToken) {
+    currentToken = stored;
+    tokenListeners.forEach((fn) => fn(stored));
+  }
+  return currentToken;
 }
 
 /**
@@ -73,6 +90,8 @@ export async function tryRefreshToken(): Promise<string | null> {
       const data = await res.json();
       currentToken = data.access_token ?? null;
       tokenListeners.forEach((fn) => fn(currentToken));
+      // Sync to Zustand store
+      useAuthStore.getState().setAccessToken(currentToken);
       return currentToken;
     } catch {
       if (currentToken) {

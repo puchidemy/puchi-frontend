@@ -57,6 +57,15 @@ export default function SocialCallbackPage() {
         setToken(accessToken);
         await syncTokenToCookie();
 
+        // Fallback: also set session_active directly in case server Set-Cookie
+        // hasn't been committed to the cookie jar before navigation.
+        document.cookie =
+          "session_active=1; path=/; max-age=900; SameSite=Lax; " +
+          (location.protocol === "https:" ? "secure;" : "");
+
+        // Small guard to let cookie jar settle before hard navigation
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
         if (cancelled) return;
 
         setStatus("success");

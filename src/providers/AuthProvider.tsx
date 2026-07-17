@@ -1,14 +1,9 @@
 'use client'
 
-import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react'
-import { getToken, setToken, clearToken, tryRefreshToken, syncTokenToCookie, setBaseUrl } from '@/lib/token-manager'
-
-interface User {
-  id: string
-  email: string
-  display_name: string
-  email_verified: boolean
-}
+import { createContext, useContext, useEffect, useCallback, ReactNode } from 'react'
+import { getToken, setToken, clearToken, tryRefreshToken, syncTokenToCookie, setBaseUrl, restoreTokenFromStore } from '@/lib/token-manager'
+import { useAuthStore } from '@/store/auth'
+import type { User } from '@/store/auth'
 
 interface AuthContextType {
   user: User | null
@@ -24,18 +19,22 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseUrl: string }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+  const user = useAuthStore((s) => s.user)
+  const loading = useAuthStore((s) => s.loading)
+  const setUser = useAuthStore((s) => s.setUser)
+  const setLoading = useAuthStore((s) => s.setLoading)
+  const clear = useAuthStore((s) => s.clear)
 
-  // Sync baseUrl to token-manager for auto-refresh calls
+  // Sync baseUrl to token-manager
   useEffect(() => {
     setBaseUrl(baseUrl)
   }, [baseUrl])
 
   const refreshSession = useCallback(async () => {
-    let accessToken = getToken()
+    // 1) Try restoring from Zustand store (sessionStorage — synchronous)
+    let accessToken = restoreTokenFromStore()
 
-    // No token in memory — try restoring from SSR cookie
+    // 2) If no token in store, try SSR cookie restore
     if (!accessToken) {
       try {
         const restoreRes = await fetch('/api/auth/restore-session')
@@ -47,15 +46,21 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
           }
         }
       } catch {
-        // restore is best-effort
+        // best-effort
       }
     }
 
     if (!accessToken) {
-      setLoading(false)
-      return
+      // 3) No token at all — try refresh with HttpOnly cookie
+      const newToken = await tryRefreshToken()
+      if (!newToken) {
+        setLoading(false)
+        return
+      }
+      accessToken = newToken
     }
 
+    // 4) Validate token with /auth/sessions
     try {
       const res = await fetch(`${baseUrl}/auth/sessions`, {
         credentials: 'include',
@@ -63,17 +68,20 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
       })
 
       if (res.ok) {
-        // Session is valid, keep existing user state if present
+        const data = await res.json()
+        // /auth/sessions returns { sessions: [...] } — no user info.
+        // If we already have user from store, keep it.
+        if (!user && data.user) {
+          setUser(data.user)
+        }
         setLoading(false)
         return
       }
 
+      // 401 — token expired, try refresh
       if (res.status === 401) {
-        // Token might be expired — try refreshing
         const newToken = await tryRefreshToken()
-
         if (newToken) {
-          // Refresh succeeded, retry session check
           const retryRes = await fetch(`${baseUrl}/auth/sessions`, {
             credentials: 'include',
             headers: { Authorization: `Bearer ${newToken}` },
@@ -86,14 +94,13 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
       }
 
       // All attempts failed
-      clearToken()
-      setUser(null)
+      clear()
     } catch {
-      setUser(null)
+      clear()
     } finally {
       setLoading(false)
     }
-  }, [baseUrl])
+  }, [baseUrl, user, setUser, setLoading, clear])
 
   useEffect(() => {
     refreshSession()
@@ -112,10 +119,8 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
     }
     const data = await res.json()
 
-    // Store access_token in-memory (not localStorage)
+    // Store access_token in-memory + Zustand store (sessionStorage)
     setToken(data.access_token)
-
-    // Sync to SSR cookie (best-effort)
     syncTokenToCookie()
 
     if (data.user) {
@@ -139,14 +144,16 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
     try {
       const res = await fetch(`${baseUrl}/auth/email/verify`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${getToken()}`,
+        },
         body: JSON.stringify({ code }),
       })
       const data = await res.json()
       if (!res.ok) {
         return { ok: false, error: data.error || 'Verification failed' }
       }
-      // Update user's email_verified status
       if (user) {
         setUser({ ...user, email_verified: true })
       }
@@ -184,17 +191,14 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
       // Proceed with local cleanup even if server request fails
     }
 
-    // Clear in-memory token
+    // Clear everything
     clearToken()
-
-    // Clear SSR cookies
+    clear()
     try {
       await fetch('/api/auth/clear-session', { method: 'POST' })
     } catch {
       // Best-effort
     }
-
-    setUser(null)
   }
 
   return (
