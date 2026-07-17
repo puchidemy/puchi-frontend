@@ -33,7 +33,7 @@ To get started with Puchi:
      <a href="https://www.google.com/search?q=puchi+vietnamese">
        <img src=".github/assets/search-puchi-vietnamese.png" alt="Search Puchi" />
      </a>
-     <p>*(Hint: You’ll find it right at the top of the search results! 😘)*</p>
+     <p>*(Hint: You'll find it right at the top of the search results! 😘)*</p>
    </div>
 
 2. Sign up and choose your learning plan.
@@ -56,6 +56,8 @@ To set up the development environment:
    ```
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
+> **Note:** Dùng **Bun** để install dependencies, nhưng build bằng **Node.js** (Next.js 16 chưa support Bun build).
+
 ### Available Scripts
 
 - `bun run dev` - Start the development server
@@ -71,8 +73,8 @@ To set up the development environment:
 - 🧩 **Beautiful Component System** using Shadcn UI for a clean and consistent design.
 - ⚡ **Powered by Bun** - Fast JavaScript runtime and package manager for optimal development experience.
 - 📱 **Responsive Design** for optimal experience on mobile and desktop devices.
-- 🌍 **Internationalization (i18n)** support for multiple languages.
-- 🔒 **Secure Authentication** powered by Clerk to keep your data safe.
+- 🌍 **Internationalization (i18n)** support for multiple languages via next-intl.
+- 🔒 **Secure Authentication** powered by self-hosted auth-service (JWT RS256 + opaque refresh token).
 - 📊 **Analytics Integration** to track user progress and optimize the learning experience.
 - 🚀 **Optimized Performance** with efficient resource handling and caching.
 
@@ -82,7 +84,7 @@ Puchi is optimized for speed and performance. Check the latest Google PageSpeed 
 
 [![Google PageSpeed Insights](https://img.shields.io/badge/Google%20PageSpeed-Test%20Puchi-blue?style=for-the-badge&logo=google&labelColor=white)](https://pagespeed.web.dev/analysis?url=https%3A%2F%2Fpuchi.io.vn%2Fen)
 
-Click the badge above to see Puchi’s current performance score and suggestions for further optimization.
+Click the badge above to see Puchi's current performance score and suggestions for further optimization.
 
 ## Usage
 
@@ -119,17 +121,17 @@ User → Next.js PWA (CDN) → Envoy Gateway → Go Services → PostgreSQL/NATS
 | Framework | Next.js 16 (App Router) + React 19 |
 | Styling | Tailwind CSS v4 + Shadcn UI (New York) |
 | State | Zustand v5 |
-| Runtime | Bun |
+| Runtime | Bun (install) + Node.js (build) |
 | i18n | next-intl (9 languages) |
 | Animation | Motion + Rive |
-| Auth | Clerk v6 → Supertoken (planned) |
+| Auth | Custom AuthProvider — gọi trực tiếp auth-service (JWT RS256 + opaque refresh) |
 
 ### Repos
 
 | Repo | Description |
 |------|-------------|
 | [puchi-frontend](https://github.com/puchidemy/puchi-frontend) | Next.js PWA (this repo) |
-| [puchi-backend](https://github.com/puchidemy/puchi-backend) | Go microservices monorepo (Kratos v3) |
+| [puchi-backend](https://github.com/puchidemy/puchi-backend) | Go microservices monorepo (Kratos v3, 8 services) |
 | [puchi-infra](https://github.com/puchidemy/puchi-infra) | ArgoCD GitOps on K3s |
 
 ---
