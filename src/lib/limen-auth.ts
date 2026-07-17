@@ -28,6 +28,10 @@ export const authClient = createAuthClient<typeof plugins, UserFields>({
   parseSession: (raw) => {
     const body = raw as { user?: Record<string, unknown>; token?: string };
     const u = (body.user ?? raw) as Record<string, unknown>;
+    const token =
+      typeof body.token === "string" && body.token.trim() !== ""
+        ? body.token.trim()
+        : undefined;
     return {
       user: {
         id: String(u.id ?? ""),
@@ -46,6 +50,8 @@ export const authClient = createAuthClient<typeof plugins, UserFields>({
           (u.lastName as string | null | undefined) ??
           null,
       },
+      // Exposed so AuthProvider can sync Bearer for Go APIs (cookie is HttpOnly).
+      ...(token ? { token } : {}),
     };
   },
 });

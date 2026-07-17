@@ -57,8 +57,10 @@ export function AuthProvider({
       if (session?.user) {
         const sessionUser = userFromLimen(session.user);
         setUser(sessionUser);
-        const token = authClient.bearer.getTokens()?.accessToken;
-        if (token) setToken(token);
+        const sessionToken =
+          (session as { token?: string }).token ??
+          authClient.bearer.getTokens()?.accessToken;
+        if (sessionToken) setToken(sessionToken);
         await runPostAuthClaims(sessionUser.id);
         setLoading(false);
         return;
@@ -92,8 +94,10 @@ export function AuthProvider({
     const sessionUser = data?.user ?? (await authClient.getSession())?.user;
     if (!sessionUser) throw new Error("Login failed");
     setUser(userFromLimen(sessionUser));
-    const token = authClient.bearer.getTokens()?.accessToken;
-    if (token) setToken(token);
+    const sessionToken =
+      (data as { token?: string } | null | undefined)?.token ??
+      authClient.bearer.getTokens()?.accessToken;
+    if (sessionToken) setToken(sessionToken);
     await runPostAuthClaims(userFromLimen(sessionUser).id);
   };
 
