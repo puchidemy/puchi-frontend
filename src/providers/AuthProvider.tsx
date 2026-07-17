@@ -38,25 +38,42 @@ export function AuthProvider({
   const setLoading = useAuthStore((s) => s.setLoading);
   const clear = useAuthStore((s) => s.clear);
 
+  const claimAttemptedForUser = useRef<string | null>(null);
+
+  const runPostAuthClaims = useCallback(async (userId: string) => {
+    if (claimAttemptedForUser.current === userId) return;
+    claimAttemptedForUser.current = userId;
+    const { useGuestStore } = await import("@/store/guest");
+    const { claimGuestIfNeeded } = await import("@/hooks/use-claim-guest");
+    await Promise.all([
+      useGuestStore.getState().mergeIfNeeded(),
+      claimGuestIfNeeded(),
+    ]);
+  }, []);
+
   const refreshSession = useCallback(async () => {
     try {
       const session = await authClient.getSession();
       if (session?.user) {
-        setUser(userFromLimen(session.user));
+        const sessionUser = userFromLimen(session.user);
+        setUser(sessionUser);
         const token = authClient.bearer.getTokens()?.accessToken;
         if (token) setToken(token);
+        await runPostAuthClaims(sessionUser.id);
         setLoading(false);
         return;
       }
+      claimAttemptedForUser.current = null;
       clearToken();
       clear();
     } catch {
+      claimAttemptedForUser.current = null;
       clearToken();
       clear();
     } finally {
       setLoading(false);
     }
-  }, [setUser, setLoading, clear]);
+  }, [setUser, setLoading, clear, runPostAuthClaims]);
 
   const sessionChecked = useRef(false);
 
@@ -77,12 +94,7 @@ export function AuthProvider({
     setUser(userFromLimen(sessionUser));
     const token = authClient.bearer.getTokens()?.accessToken;
     if (token) setToken(token);
-    const { useGuestStore } = await import("@/store/guest");
-    const { claimGuestIfNeeded } = await import("@/hooks/use-claim-guest");
-    await Promise.all([
-      useGuestStore.getState().mergeIfNeeded(),
-      claimGuestIfNeeded(),
-    ]);
+    await runPostAuthClaims(userFromLimen(sessionUser).id);
   };
 
   const register = async (
@@ -129,6 +141,7 @@ export function AuthProvider({
     } catch {
       // local cleanup anyway
     }
+    claimAttemptedForUser.current = null;
     clearToken();
     clear();
   };

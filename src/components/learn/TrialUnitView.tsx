@@ -12,6 +12,7 @@ import {
   type LearnSkill,
   type LearnUnit,
 } from "@/lib/learn-api";
+import { progressFromUnit } from "@/lib/trial-progress";
 import { useAuthStore } from "@/store/auth";
 import { useTrialLearnStore } from "@/store/trial-learn";
 import { SoftGateDialog } from "./SoftGateDialog";
@@ -20,8 +21,11 @@ import { TrialUnitHeader, TrialUnitPath } from "./TrialUnitPath";
 export function TrialUnitView() {
   const t = useTranslations("TrialLearn");
   const user = useAuthStore((s) => s.user);
+  const authLoading = useAuthStore((s) => s.loading);
   const unitCompleted = useTrialLearnStore((s) => s.unitCompleted);
   const completedLessonIds = useTrialLearnStore((s) => s.completedLessonIds);
+  const hydrateFromServer = useTrialLearnStore((s) => s.hydrateFromServer);
+  const mergeServerProgress = useTrialLearnStore((s) => s.mergeServerProgress);
 
   const [unit, setUnit] = useState<LearnUnit | null>(null);
   const [skills, setSkills] = useState<LearnSkill[]>([]);
@@ -30,6 +34,7 @@ export function TrialUnitView() {
   const [gateOpen, setGateOpen] = useState(false);
 
   const loadUnit = useCallback(async () => {
+    if (authLoading) return;
     setLoading(true);
     setError("");
     try {
@@ -39,12 +44,36 @@ export function TrialUnitView() {
       const data = await getTrialUnit(TRIAL_UNIT_ID);
       setUnit(data.unit);
       setSkills(data.skills);
+
+      const progress = progressFromUnit(data);
+      if (user) {
+        if (progress.completedLessonIds.length > 0 || progress.unitCompleted) {
+          hydrateFromServer(
+            progress.completedLessonIds,
+            progress.unitCompleted,
+          );
+        }
+      } else if (
+        progress.completedLessonIds.length > 0 ||
+        progress.unitCompleted
+      ) {
+        mergeServerProgress(
+          progress.completedLessonIds,
+          progress.unitCompleted,
+        );
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : t("loadError"));
     } finally {
       setLoading(false);
     }
-  }, [user, t]);
+  }, [
+    user,
+    authLoading,
+    t,
+    hydrateFromServer,
+    mergeServerProgress,
+  ]);
 
   useEffect(() => {
     loadUnit();
@@ -56,7 +85,7 @@ export function TrialUnitView() {
     }
   }, [user, unitCompleted]);
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="flex justify-center py-24">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />

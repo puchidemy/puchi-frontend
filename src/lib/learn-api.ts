@@ -23,6 +23,8 @@ export interface LearnLesson {
   title: string;
   xpReward: number;
   required: boolean;
+  /** Present when the API includes owner progress for this lesson. */
+  status?: "not_started" | "in_progress" | "completed";
 }
 
 export interface LearnSkill {
@@ -93,9 +95,16 @@ export async function claimGuest(): Promise<ClaimGuestResponse> {
   });
 }
 
+export interface TrialUnitResponse {
+  unit: LearnUnit;
+  skills: LearnSkill[];
+  /** Owner unit progress when returned by learn-service. */
+  unitStatus?: "not_started" | "in_progress" | "completed";
+}
+
 export async function getTrialUnit(
   unitId: string = TRIAL_UNIT_ID,
-): Promise<{ unit: LearnUnit; skills: LearnSkill[] }> {
+): Promise<TrialUnitResponse> {
   return learnRequest(`/v1/learn/units/${unitId}`);
 }
 
