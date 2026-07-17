@@ -16,18 +16,14 @@ export class BackendError extends Error {
 }
 
 /**
- * Reads the access_token from the cookie header.
- * The access_token cookie is set by the /api/auth/set-session Route Handler
- * on the puchi.io.vn domain (not by auth-service, which only sets refresh_token).
+ * Optional Bearer from Authorization request header (client-forwarded).
+ * Limen sessions are primarily cookie/Bearer on the API domain; SSR without
+ * a forwarded token runs as unauthenticated.
  */
-function getAccessTokenFromCookies(cookieHeader: string | null): string | null {
-  if (!cookieHeader) return null;
-  const cookies = cookieHeader.split(";").map((c) => c.trim());
-  for (const cookie of cookies) {
-    const [name, ...rest] = cookie.split("=");
-    if (name?.trim() === "access_token") {
-      return rest.join("=");
-    }
+function getBearerFromRequest(headerStore: Headers): string | null {
+  const auth = headerStore.get("authorization");
+  if (auth?.startsWith("Bearer ")) {
+    return auth.slice(7);
   }
   return null;
 }
@@ -37,7 +33,7 @@ export async function backendFetch<T>(
   options: RequestInit & { timeout?: number } = {},
 ): Promise<T> {
   const reqHeaders = await headers();
-  const accessToken = getAccessTokenFromCookies(reqHeaders.get("cookie"));
+  const accessToken = getBearerFromRequest(reqHeaders);
   const timeout = options.timeout ?? 15000;
 
   const controller = new AbortController();

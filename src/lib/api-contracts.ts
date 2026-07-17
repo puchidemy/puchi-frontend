@@ -2,31 +2,31 @@ export type Default = { url: string; method: string; data: unknown; result: unkn
 export type TRequest<T extends Default> = { url: T['url']; method?: T['method']; data: T['data'] };
 export type TResponse<T extends Default> = T['result'];
 
-// Auth contracts
+// Limen auth contracts (mounted at /auth)
 export interface APILogin extends Default {
-  url: '/auth/login';
+  url: '/auth/signin/credential';
   method: 'post';
-  data: { email: string; password: string };
-  result: { success: boolean; access_token?: string; user?: { id: string; email: string; display_name: string; email_verified: boolean } } | { error: string };
+  data: { credential: string; password: string; remember_me?: boolean };
+  result: { user: { id: string; email: string } } | { message: string };
 }
 
 export interface APIRegister extends Default {
-  url: '/auth/register';
+  url: '/auth/signup/credential';
   method: 'post';
-  data: { email: string; password: string; display_name?: string };
-  result: { success: boolean; userId?: string } | { error: string };
+  data: { email: string; password: string; username?: string; firstname?: string };
+  result: { user: { id: string; email: string } } | { message: string };
 }
 
 export interface APIForgotPassword extends Default {
-  url: '/auth/forgot-password';
+  url: '/auth/passwords/request-reset';
   method: 'post';
   data: { email: string };
-  result: { success: boolean } | { error: string };
+  result: Record<string, unknown> | { message: string };
 }
 
 export interface APIResetPassword extends Default {
-  url: '/auth/reset-password';
+  url: '/auth/passwords/reset';
   method: 'post';
-  data: { userId: string; code: string; password: string };
-  result: { success: boolean } | { error: string };
+  data: { token: string; newPassword: string };
+  result: Record<string, unknown> | { message: string };
 }

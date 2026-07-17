@@ -11,15 +11,14 @@ import { resetPassword } from "@/lib/auth-client";
 export function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const userId = searchParams.get("userId");
-  const code = searchParams.get("code");
+  const token = searchParams.get("token");
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const missingParams = !userId || !code;
+  const missingParams = !token;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -36,7 +35,7 @@ export function ResetPasswordForm() {
 
     setLoading(true);
 
-    const result = await resetPassword(userId!, code!, password);
+    const result = await resetPassword(token!, "", password);
 
     if (!result.ok) {
       setError(result.error || "Failed to reset password. Please try again.");
@@ -52,7 +51,7 @@ export function ResetPasswordForm() {
       {missingParams && (
         <Alert variant="destructive">
           <AlertDescription>
-            Invalid or missing reset parameters. Please request a new password reset.
+            Invalid or missing reset token. Please request a new password reset.
           </AlertDescription>
         </Alert>
       )}
@@ -71,7 +70,7 @@ export function ResetPasswordForm() {
           onChange={(e) => setPassword(e.target.value)}
           required
           minLength={8}
-          disabled={loading || !userId || !code}
+          disabled={loading || !token}
         />
       </div>
       <div className="space-y-2">
@@ -83,14 +82,10 @@ export function ResetPasswordForm() {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          disabled={loading || !userId || !code}
+          disabled={loading || !token}
         />
       </div>
-      <Button
-        type="submit"
-        className="w-full"
-        disabled={loading || !userId || !code}
-      >
+      <Button type="submit" className="w-full" disabled={loading || !token}>
         {loading ? "Resetting..." : "Reset Password"}
       </Button>
     </form>

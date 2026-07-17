@@ -1,15 +1,11 @@
 "client-only";
 
-import { getToken, tryRefreshToken, syncTokenToCookie } from "./token-manager";
+import { getToken, tryRefreshToken } from "./token-manager";
 
-/**
- * Build headers from a RequestInit headers value into a plain object.
- */
 function normalizeHeaders(
   headersInit: HeadersInit | undefined,
 ): Record<string, string> {
   if (!headersInit) return {};
-
   if (headersInit instanceof Headers) {
     const out: Record<string, string> = {};
     headersInit.forEach((value, key) => {
@@ -17,7 +13,6 @@ function normalizeHeaders(
     });
     return out;
   }
-
   if (Array.isArray(headersInit)) {
     const out: Record<string, string> = {};
     for (const [key, value] of headersInit) {
@@ -25,16 +20,11 @@ function normalizeHeaders(
     }
     return out;
   }
-
   return headersInit as Record<string, string>;
 }
 
 /**
- * fetch wrapper that:
- * 1. Automatically attaches `Authorization: Bearer <token>` from in-memory token-manager
- * 2. On 401, silently attempts to refresh the token via POST /auth/refresh
- * 3. Retries the original request with the new token on successful refresh
- * 4. Falls back to unauthenticated request if no token is available
+ * Attaches Bearer session token from Limen. On 401, revalidates session once.
  */
 export async function fetchWithAuth<T = unknown>(
   url: string,
@@ -44,23 +34,16 @@ export async function fetchWithAuth<T = unknown>(
     const headers: Record<string, string> = {
       "Content-Type": "application/json",
     };
-
-    // Merge user-provided headers
     Object.assign(headers, normalizeHeaders(options.headers));
-
-    // Attach Bearer token if available
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
-
-    // Don't set Content-Type for FormData — browser sets it with boundary
     const finalHeaders =
       options.body instanceof FormData
         ? Object.fromEntries(
             Object.entries(headers).filter(([k]) => k !== "Content-Type"),
           )
         : headers;
-
     return fetch(url, {
       ...options,
       headers: finalHeaders,
@@ -71,12 +54,9 @@ export async function fetchWithAuth<T = unknown>(
   let token = getToken();
   let res = await doFetch(token);
 
-  // On 401, try to refresh the token and retry once
   if (res.status === 401) {
     const newToken = await tryRefreshToken();
     if (newToken) {
-      // Sync new token to SSR cookie (best-effort)
-      syncTokenToCookie();
       res = await doFetch(newToken);
     }
   }
@@ -88,15 +68,10 @@ export async function fetchWithAuth<T = unknown>(
     );
   }
 
-  // Handle 204 No Content
   if (res.status === 204) return undefined as T;
-
   return res.json();
 }
 
-/**
- * Result-style variant of fetchWithAuth (no throw).
- */
 export async function fetchWithAuthResult<T = unknown>(
   url: string,
   options: RequestInit = {},

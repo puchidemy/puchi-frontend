@@ -2,15 +2,18 @@
 
 import { useAuthStore } from "@/store/auth";
 import type { User } from "@/store/auth";
+import { authClient } from "@/lib/limen-auth";
 
 let currentToken: string | null = null;
-let currentBaseUrl = "http://localhost:8080";
-let refreshPromise: Promise<string | null> | null = null;
 let tokenListeners: Array<(token: string | null) => void> = [];
 
 export function getToken(): string | null {
   if (currentToken) return currentToken;
-  // Fallback to Zustand store (sessionStorage persists across hard redirects)
+  const fromBearer = authClient.bearer.getTokens()?.accessToken ?? null;
+  if (fromBearer) {
+    currentToken = fromBearer;
+    return currentToken;
+  }
   const stored = useAuthStore.getState().accessToken;
   if (stored) {
     currentToken = stored;
@@ -21,17 +24,14 @@ export function getToken(): string | null {
 export function setToken(token: string | null): void {
   currentToken = token;
   tokenListeners.forEach((fn) => fn(token));
-  // Sync to Zustand store (sessionStorage persist)
   useAuthStore.getState().setAccessToken(token);
-
-  // Set session_active cookie synchronously for middleware/proxy
-  // This is the client-side fallback — server-side Set-Cookie from
-  // /api/auth/set-session is more reliable but async.
   if (token) {
+    authClient.bearer.setTokens({ accessToken: token });
     document.cookie =
-      "session_active=1; path=/; max-age=900; SameSite=Lax; " +
+      "session_active=1; path=/; max-age=604800; SameSite=Lax; " +
       (location.protocol === "https:" ? "secure;" : "");
   } else {
+    authClient.bearer.clear();
     document.cookie =
       "session_active=; path=/; max-age=0; SameSite=Lax; " +
       (location.protocol === "https:" ? "secure;" : "");
@@ -49,101 +49,60 @@ export function subscribeToToken(fn: (token: string | null) => void): () => void
   };
 }
 
-export function setBaseUrl(url: string): void {
-  currentBaseUrl = url;
+export function setBaseUrl(_url: string): void {
+  // base URL is fixed via NEXT_PUBLIC_API_URL / limen-auth client
 }
 
-/**
- * Restore token from Zustand store (sessionStorage) on page reload.
- * Returns the token if found, otherwise null.
- */
 export function restoreTokenFromStore(): string | null {
   const stored = useAuthStore.getState().accessToken;
   if (stored && !currentToken) {
-    currentToken = stored;
-    tokenListeners.forEach((fn) => fn(stored));
+    setToken(stored);
   }
-  return currentToken;
+  return getToken();
 }
 
-/**
- * Sync the in-memory token to the SSR cookie via the set-session Route Handler.
- * Should be called after login, register+login, or refresh to keep SSR in sync.
- */
 export async function syncTokenToCookie(): Promise<void> {
-  if (!currentToken) return;
-  try {
-    await fetch("/api/auth/set-session", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ access_token: currentToken }),
-    });
-  } catch {
-    // Cookie sync is best-effort — SSR will use in-memory fallback
-  }
+  // Limen session cookie lives on API domain; no SSR JWT cookie bridge needed.
 }
 
-/**
- * Attempt to refresh the access token using the HttpOnly refresh_token cookie.
- * The refresh_token is set by auth-service on api.puchi.io.vn domain.
- * The browser automatically sends it when making a fetch with credentials: 'include'.
- */
+/** Re-validate session via Limen GET /auth/me; sync bearer token if present. */
 export async function tryRefreshToken(): Promise<string | null> {
-  // Deduplicate concurrent refresh calls
-  if (refreshPromise) return refreshPromise;
-
-  refreshPromise = (async () => {
-    try {
-      const res = await fetch(`${currentBaseUrl}/auth/refresh`, {
-        method: "POST",
-        credentials: "include",
-      });
-
-      if (!res.ok) {
-        if (currentToken) {
-          currentToken = null;
-          tokenListeners.forEach((fn) => fn(null));
-        }
-        return null;
-      }
-
-      const data = await res.json();
-      currentToken = data.access_token ?? null;
-      tokenListeners.forEach((fn) => fn(currentToken));
-      // Sync to Zustand store
-      useAuthStore.getState().setAccessToken(currentToken);
-      return currentToken;
-    } catch {
-      if (currentToken) {
-        currentToken = null;
-        tokenListeners.forEach((fn) => fn(null));
-      }
+  try {
+    const session = await authClient.getSession();
+    if (!session?.user) {
+      clearToken();
       return null;
-    } finally {
-      refreshPromise = null;
     }
-  })();
-
-  return refreshPromise;
+    const token = authClient.bearer.getTokens()?.accessToken ?? getToken();
+    if (token) setToken(token);
+    return token;
+  } catch {
+    clearToken();
+    return null;
+  }
 }
 
-/**
- * Decode basic user info from a JWT access token.
- * Safe to do client-side (JWT payload is base64-encoded, not encrypted).
- */
-export function decodeTokenUser(token: string): User | null {
-  try {
-    const parts = token.split(".")
-    if (parts.length !== 3) return null
-    const payload = JSON.parse(atob(parts[1]))
-    if (!payload.sub || !payload.email) return null
-    return {
-      id: payload.sub,
-      email: payload.email,
-      display_name: payload.display_name || payload.email.split("@")[0],
-      email_verified: !!payload.email_verified,
-    }
-  } catch {
-    return null
-  }
+export function userFromLimen(u: {
+  id: string;
+  email: string;
+  emailVerifiedAt?: string | null;
+  username?: string | null;
+  firstName?: string | null;
+  lastName?: string | null;
+}): User {
+  const display =
+    u.username ||
+    [u.firstName, u.lastName].filter(Boolean).join(" ") ||
+    u.email.split("@")[0];
+  return {
+    id: u.id,
+    email: u.email,
+    display_name: display,
+    email_verified: !!u.emailVerifiedAt,
+  };
+}
+
+/** @deprecated JWT decode no longer used with Limen opaque sessions */
+export function decodeTokenUser(_token: string): User | null {
+  return null;
 }

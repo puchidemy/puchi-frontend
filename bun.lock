@@ -25,6 +25,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "howler": "^2.2.4",
+        "limen-auth": "^0.0.4",
         "lucide-react": "^1.24.0",
         "motion": "^12.42.2",
         "n2words": "^5.1.1",
@@ -1263,6 +1264,8 @@
 
     "lightningcss-win32-x64-msvc": ["lightningcss-win32-x64-msvc@1.32.0", "", { "os": "win32", "cpu": "x64" }, "sha512-Amq9B/SoZYdDi1kFrojnoqPLxYhQ4Wo5XiL8EVJrVsB8ARoC1PWW6VGtT0WKCemjy8aC+louJnjS7U18x3b06Q=="],
 
+    "limen-auth": ["limen-auth@0.0.4", "", { "dependencies": { "nanostores": "^1.3.0" }, "peerDependencies": { "react": ">=18", "solid-js": ">=1", "svelte": ">=4", "vue": ">=3" }, "optionalPeers": ["react", "solid-js", "svelte", "vue"] }, "sha512-eY5U/yycUNPTff1CRagWW45q8gI9BlD/NJbxfQYlUGfFbBl9ed2rx9l3ieob9wtJqkGqxOCm7knYI3sCaiGudg=="],
+
     "lines-and-columns": ["lines-and-columns@1.2.4", "", {}, "sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg=="],
 
     "locate-path": ["locate-path@6.0.0", "", { "dependencies": { "p-locate": "^5.0.0" } }, "sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw=="],
@@ -1322,6 +1325,8 @@
     "n2words": ["n2words@5.1.1", "", {}, "sha512-rDrDTOyPOunsIZVqAD9L5qgZz9RgWVW5v/Z5NZXls8MZa7NpiC1H90pZk1VRH+QIhvmzh+j1MYWUWW+hX23P9g=="],
 
     "nanoid": ["nanoid@3.3.16", "", { "bin": { "nanoid": "bin/nanoid.cjs" } }, "sha512-bzlKTyNJ7+LdGIIwy8ijFpIqEQIvafahV7eYykJ8Cvh42EdJeODoJ6gUJXpQJvej1BddH8OqTXZNE/KfbWAu8Q=="],
+
+    "nanostores": ["nanostores@1.4.0", "", {}, "sha512-i0tloweeudshAEuddpDxcg9Ik6pkPfVsHIgKyf143JrgG7/MOh0+q7BypdLXZPoOP7fOYt1eTcwGkyiVmhJFkA=="],
 
     "napi-postinstall": ["napi-postinstall@0.3.4", "", { "bin": { "napi-postinstall": "lib/cli.js" } }, "sha512-PHI5f1O0EP5xJ9gQmFGMS6IZcrVvTjpXjz7Na41gTE7eE2hK11lg04CECCYEEjdc17EV4DO+fkGEtt7TpTaTiQ=="],
 

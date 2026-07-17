@@ -1,9 +1,8 @@
 "client-only";
 
-import { getToken } from "./token-manager";
+import { authClient, API_URL } from "./limen-auth";
 import { fetchWithAuthResult } from "./fetch-with-auth";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { getToken } from "./token-manager";
 
 interface ApiResult<T> {
   ok: boolean;
@@ -11,98 +10,111 @@ interface ApiResult<T> {
   error?: string;
 }
 
-async function request<T>(
-  path: string,
-  options: RequestInit = {},
-  useAuth = false,
-): Promise<ApiResult<T>> {
-  // Use fetchWithAuthResult for auth-required endpoints (logout)
-  // and for consistency across the client
-  if (useAuth || getToken()) {
-    return fetchWithAuthResult<T>(`${API_URL}${path}`, options);
-  }
-
-  // Fallback for public endpoints (register, forgot-password, reset-password)
+export async function login(email: string, password: string): Promise<ApiResult<unknown>> {
   try {
-    const res = await fetch(`${API_URL}${path}`, {
-      ...options,
-      credentials: "include",
+    const data = await authClient.signIn.credential({
+      credential: email,
+      password,
+      rememberMe: true,
     });
-    const data = await res.json().catch(() => null);
-    if (!res.ok) {
-      return { ok: false, error: data?.error || data?.message || "Request failed" };
-    }
     return { ok: true, data };
-  } catch {
-    return { ok: false, error: "Network error. Please check your connection." };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Login failed",
+    };
   }
 }
 
-export interface LoginResult {
-  access_token: string;
-  expires_in: number;
-  user: { id: string; email: string; display_name: string; email_verified: boolean };
+export async function register(
+  email: string,
+  password: string,
+  displayName?: string,
+): Promise<ApiResult<unknown>> {
+  try {
+    const data = await authClient.signUp.credential({
+      email,
+      password,
+      username: displayName || undefined,
+      firstname: displayName || undefined,
+    });
+    return { ok: true, data };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Registration failed",
+    };
+  }
 }
 
-export async function login(email: string, password: string) {
-  return request<LoginResult>("/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+export async function forgotPassword(email: string): Promise<ApiResult<unknown>> {
+  try {
+    const data = await authClient.password.requestReset({ email });
+    return { ok: true, data };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Request failed",
+    };
+  }
 }
 
-export interface RegisterResult {
-  user_id: string;
-  email: string;
-  message: string;
+export async function resetPassword(
+  token: string,
+  _unused: string,
+  password: string,
+): Promise<ApiResult<unknown>> {
+  try {
+    const data = await authClient.password.reset({
+      token,
+      newPassword: password,
+    });
+    return { ok: true, data };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Reset failed",
+    };
+  }
 }
 
-export async function register(email: string, password: string, displayName?: string) {
-  return request<RegisterResult>("/auth/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password, display_name: displayName }),
-  });
+export async function verifyEmail(token: string): Promise<ApiResult<unknown>> {
+  try {
+    const data = await authClient.verifyEmail({ token });
+    return { ok: true, data };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Verification failed",
+    };
+  }
 }
 
-export async function forgotPassword(email: string) {
-  return request("/auth/password/reset/request", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email }),
-  });
+export async function resendVerification(): Promise<ApiResult<unknown>> {
+  try {
+    const data = await authClient.requestEmailVerification();
+    return { ok: true, data };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Resend failed",
+    };
+  }
 }
 
-export async function resetPassword(userId: string, code: string, password: string) {
-  return request("/auth/password/reset", {
-    method: "PUT",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ userId, code, password }),
-  });
-}
-
-export async function verifyEmail(code: string) {
-  return request("/auth/email/verify", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ code }),
-  }, true);
-}
-
-export async function resendVerification() {
-  return request("/auth/email/verify/send", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  }, true);
-}
-
-export async function logout(accessToken?: string) {
-  const token = accessToken || getToken();
-  return request("/auth/logout", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}` },
-  }, !!token);
+export async function logout(): Promise<ApiResult<unknown>> {
+  try {
+    if (getToken()) {
+      await fetchWithAuthResult(`${API_URL}/auth/signout`, { method: "POST" });
+    }
+    await authClient.signout();
+    return { ok: true };
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : "Logout failed",
+    };
+  }
 }
 
 export { API_URL };

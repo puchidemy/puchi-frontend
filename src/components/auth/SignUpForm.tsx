@@ -52,15 +52,15 @@ export function SignUpForm() {
       <div className="space-y-4 text-center">
         <Alert>
           <AlertDescription>
-            Account created successfully! A 6-digit verification code has been
-            sent to your email.{" "}
+            Account created successfully! Check your email for a verification
+            link, then{" "}
             <Link
-              href="/auth/verify-email"
+              href="/auth/sign-in"
               className="text-primary font-medium hover:underline"
             >
-              Verify your email
-            </Link>{" "}
-            to get started.
+              sign in
+            </Link>
+            .
           </AlertDescription>
         </Alert>
       </div>
