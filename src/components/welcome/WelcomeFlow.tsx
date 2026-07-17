@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { clientFetch } from "@/lib/client-api";
+import { getToken } from "@/lib/token-manager";
 import { useOnboardingStore } from "@/store/onboarding";
 import WelcomeIntro from "./WelcomeIntro";
 import BasicInfoStep from "./BasicInfoStep";
@@ -21,15 +22,8 @@ const WelcomeFlow = () => {
     isComplete ? "complete" : "intro"
   );
   const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => !!getToken());
   const [basicInfo, setBasicInfo] = useState<{ firstName: string; lastName: string; ageRange: string } | null>(null);
-
-  // Kiểm tra login state
-  useEffect(() => {
-    clientFetch<{ session: unknown }>("/auth/session")
-      .then(data => setIsLoggedIn(!!data.session))
-      .catch(() => setIsLoggedIn(false));
-  }, []);
 
   // Pre-fill từ social callback params
   const prefilledFirstName = searchParams.get("firstName") || "";

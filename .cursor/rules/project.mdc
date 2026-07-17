@@ -109,11 +109,42 @@ Check `session_active` cookie (puchi.io.vn domain) — không phải `refresh_to
 | POST | `/auth/logout` | Bearer | Logout (revoke session + clear cookie) |
 | GET | `/auth/sessions` | Bearer | List sessions |
 | DELETE | `/auth/sessions/{id}` | Bearer | Revoke session |
-| GET | `/auth/social/{provider}` | No | OAuth2 redirect |
+| GET | `/auth/social/{provider}` | No | OAuth2 redirect (PKCE S256) → redirect tới provider auth URL |
+| GET | `/auth/callback/{provider}?code=...&state=...` | No | OAuth2 callback → exchange code → set refresh_token cookie → redirect frontend `/auth/callback/{provider}?access_token=...` |
+| POST | `/auth/social/link` | Bearer | Link social account vào user hiện tại |
+| POST | `/auth/social/unlink` | Bearer | Unlink social connection |
+| GET | `/auth/social/connections` | Bearer | List social connections |
 | POST | `/auth/magic-link/send` | No | Magic link (NATS → email) |
 | PUT | `/auth/password/change` | Bearer | Change password |
 | POST | `/auth/password/reset/request` | No | Request password reset |
 | PUT | `/auth/password/reset` | No | Complete password reset |
+
+### Social OAuth2 Flow
+
+```
+1. User click "Google" → GET /auth/social/google
+   → Backend tạo state + PKCE code_verifier → lưu vào Valkey (10min TTL)
+   → Redirect: https://accounts.google.com/o/oauth2/v2/auth?state=...&code_challenge=...
+
+2. Google redirect → GET /auth/callback/google?code=xxx&state=yyy
+   → Backend verify state từ Valkey, lấy code_verifier
+   → Exchange code lấy id_token → verify signature (JWKS)
+   → Gọi LoginOrLink → set refresh_token cookie
+   → Redirect frontend: {frontendURL}/auth/callback/google?access_token=eyJ...
+
+3. Frontend callback page → lưu access_token in-memory
+   → syncTokenToCookie() → redirect /welcome hoặc /learn
+```
+
+### Email Verification Flow
+
+```
+1. Register → auth-service tạo user + gửi email (NATS outbox)
+2. User nhận 6-digit code qua email (hoặc log console nếu dev)
+3. User vào /auth/verify-email → nhập code
+4. POST /auth/email/verify (Bearer) → code hợp lệ → email_verified = true
+5. POST /auth/email/verify/send (Bearer) → gửi lại code mới
+```
 
 ## Docker Build
 
@@ -159,6 +190,8 @@ bun run lint         # ESLint
 ```
 src/
 ├── app/[locale]/         # Next.js App Router pages (i18n)
+│   └── auth/callback/[provider]/  # Social OAuth2 callback page
+│   └── auth/verify-email/        # Email verification page (6-digit code)
 ├── app/api/auth/         # Route Handlers: set-session, restore-session, clear-session
 ├── components/           # UI components (Shadcn + custom)
 │   └── auth/             # AuthCard, SignInForm, SignUpForm, SocialLoginButtons

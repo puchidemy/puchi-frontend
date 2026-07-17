@@ -17,6 +17,8 @@ interface AuthContextType {
   register: (email: string, password: string, displayName?: string) => Promise<void>
   logout: () => Promise<void>
   refreshSession: () => Promise<void>
+  verifyEmail: (code: string) => Promise<{ ok: boolean; error?: string }>
+  resendVerification: () => Promise<{ ok: boolean; error?: string }>
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -133,6 +135,43 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
     }
   }
 
+  const verifyEmail = async (code: string) => {
+    try {
+      const res = await fetch(`${baseUrl}/auth/email/verify`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${getToken()}` },
+        body: JSON.stringify({ code }),
+      })
+      const data = await res.json()
+      if (!res.ok) {
+        return { ok: false, error: data.error || 'Verification failed' }
+      }
+      // Update user's email_verified status
+      if (user) {
+        setUser({ ...user, email_verified: true })
+      }
+      return { ok: true }
+    } catch {
+      return { ok: false, error: 'Network error' }
+    }
+  }
+
+  const resendVerification = async () => {
+    try {
+      const res = await fetch(`${baseUrl}/auth/email/verify/send`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${getToken()}` },
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
+        return { ok: false, error: data.error || 'Failed to resend verification code' }
+      }
+      return { ok: true }
+    } catch {
+      return { ok: false, error: 'Network error' }
+    }
+  }
+
   const logout = async () => {
     const accessToken = getToken()
     try {
@@ -159,7 +198,7 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshSession }}>
+    <AuthContext.Provider value={{ user, loading, login, register, logout, refreshSession, verifyEmail, resendVerification }}>
       {children}
     </AuthContext.Provider>
   )

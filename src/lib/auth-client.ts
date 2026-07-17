@@ -82,6 +82,21 @@ export async function resetPassword(userId: string, code: string, password: stri
   });
 }
 
+export async function verifyEmail(code: string) {
+  return request("/auth/email/verify", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ code }),
+  }, true);
+}
+
+export async function resendVerification() {
+  return request("/auth/email/verify/send", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  }, true);
+}
+
 export async function logout(accessToken?: string) {
   const token = accessToken || getToken();
   return request("/auth/logout", {
