@@ -270,6 +270,9 @@
     }
   },
   "Profile": {
+    "editProfile": "Edit Profile",
+    "avatarUpdated": "Avatar updated!",
+    "avatarUpdateFailed": "Failed to update avatar",
     "tabs": {
       "overview": "Overview",
       "stats": "Stats",

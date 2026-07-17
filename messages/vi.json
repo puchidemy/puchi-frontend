@@ -1,5 +1,8 @@
 {
   "Profile": {
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "avatarUpdated": "Đã cập nhật ảnh đại diện!",
+    "avatarUpdateFailed": "Không thể cập nhật ảnh đại diện",
     "tabs": {
       "overview": "Tổng quan",
       "stats": "Thống kê",

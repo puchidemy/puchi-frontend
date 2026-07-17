@@ -147,6 +147,7 @@ const WelcomeFlow = () => {
       case "basic-info":
         return (
           <BasicInfoStep
+            key={`${prefilledFirstName}|${prefilledLastName}|${prefilledUsername}`}
             prefilledFirstName={prefilledFirstName}
             prefilledLastName={prefilledLastName}
             prefilledUsername={prefilledUsername}

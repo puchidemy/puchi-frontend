@@ -23,7 +23,10 @@ const tabs = [
 
 type TabId = (typeof tabs)[number]["id"];
 
-const tabComponents: Record<TabId, React.ComponentType<{ profile: FullProfile }>> = {
+const tabComponents: Record<
+  TabId,
+  React.ComponentType<{ profile: FullProfile }>
+> = {
   overview: OverviewTab,
   stats: StatsTab,
   achievements: AchievementsTab,
@@ -33,9 +36,15 @@ interface ProfilePageViewProps {
   profile: FullProfile;
   isLoading?: boolean;
   isOwnProfile?: boolean;
+  onAvatarChange?: (file: File) => void | Promise<void>;
 }
 
-export default function ProfilePageView({ profile, isLoading = false, isOwnProfile = false }: ProfilePageViewProps) {
+export default function ProfilePageView({
+  profile,
+  isLoading = false,
+  isOwnProfile = false,
+  onAvatarChange,
+}: ProfilePageViewProps) {
   const t = useTranslations("Profile");
   const [activeTab, setActiveTab] = useState<TabId>("overview");
 
@@ -57,13 +66,20 @@ export default function ProfilePageView({ profile, isLoading = false, isOwnProfi
             <div className="container mx-auto px-4 py-6 space-y-6">
               {isOwnProfile && (
                 <div className="flex justify-end">
-                  <Link href="/settings/profile" className="text-sm text-primary hover:underline">
+                  <Link
+                    href="/settings/profile"
+                    className="text-sm text-primary hover:underline"
+                  >
                     {t("editProfile")}
                   </Link>
                 </div>
               )}
 
-              <ProfileHero profile={profile} />
+              <ProfileHero
+                profile={profile}
+                isOwnProfile={isOwnProfile}
+                onAvatarChange={onAvatarChange}
+              />
 
               <ProfileTabs
                 tabs={tabs.map((tab) => ({
@@ -94,7 +110,14 @@ export default function ProfilePageView({ profile, isLoading = false, isOwnProfi
             style={{ right: "calc((100vw - 1276px) / 2)" }}
           >
             <Suspense fallback={<RightBarFallback />}>
-              <ProfileRightBar />
+              <ProfileRightBar
+                following={profile.friends}
+                followers={profile.followers}
+                streak={profile.gamification.streak}
+                crowns={profile.gamification.crowns}
+                gems={profile.gamification.gems}
+                showSettings={isOwnProfile}
+              />
             </Suspense>
           </div>
         </div>

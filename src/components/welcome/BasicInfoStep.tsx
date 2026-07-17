@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,21 +45,7 @@ const BasicInfoStep = ({
   const [ageRange, setAgeRange] = useState("");
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (prefilledFirstName) setFirstName(prefilledFirstName);
-  }, [prefilledFirstName]);
-
-  useEffect(() => {
-    if (prefilledLastName) setLastName(prefilledLastName);
-  }, [prefilledLastName]);
-
-  useEffect(() => {
-    if (prefilledUsername) setUsername(prefilledUsername);
-  }, [prefilledUsername]);
-
-  useEffect(() => {
-    if (externalError) setError(externalError);
-  }, [externalError]);
+  const displayError = error || externalError;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -100,8 +86,8 @@ const BasicInfoStep = ({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <p className="text-sm text-destructive text-center">{error}</p>
+        {displayError && (
+          <p className="text-sm text-destructive text-center">{displayError}</p>
         )}
 
         <div className="space-y-2">

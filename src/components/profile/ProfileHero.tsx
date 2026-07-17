@@ -1,49 +1,80 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { FullProfile } from "@/types/profile";
 import LevelRing from "./shared/LevelRing";
 import StreakFlame from "./shared/StreakFlame";
 import XpProgressBar from "./shared/XpProgressBar";
-import { Crown, Gem, Camera } from "lucide-react";
+import { Crown, Gem, Camera, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 interface ProfileHeroProps {
   profile: FullProfile;
-  onAvatarChange?: (file: File) => void;
+  isOwnProfile?: boolean;
+  onAvatarChange?: (file: File) => void | Promise<void>;
 }
 
-export default function ProfileHero({ profile, onAvatarChange }: ProfileHeroProps) {
+export default function ProfileHero({
+  profile,
+  isOwnProfile = false,
+  onAvatarChange,
+}: ProfileHeroProps) {
   const t = useTranslations("Profile");
   const { user, gamification } = profile;
-  const xpProgress = (gamification.currentXP / gamification.xpToNextLevel) * 100;
-  const initials = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+  const xpProgress =
+    gamification.xpToNextLevel > 0
+      ? (gamification.currentXP / gamification.xpToNextLevel) * 100
+      : 0;
+  const initials =
+    `${user.firstName?.charAt(0) || ""}${user.lastName?.charAt(0) || ""}`.toUpperCase() ||
+    user.username?.charAt(0)?.toUpperCase() ||
+    "?";
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [avatarSrc, setAvatarSrc] = useState(user.imageUrl);
+  const [uploading, setUploading] = useState(false);
+
+  useEffect(() => {
+    setAvatarSrc(user.imageUrl);
+  }, [user.imageUrl]);
 
   const handleAvatarClick = () => {
+    if (!isOwnProfile || uploading) return;
     fileInputRef.current?.click();
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    e.target.value = "";
+    if (!file || !isOwnProfile) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      setAvatarSrc(event.target?.result as string);
-      toast.success("Avatar updated!");
-    };
-    reader.readAsDataURL(file);
-    onAvatarChange?.(file);
+    const previous = avatarSrc;
+    const previewUrl = URL.createObjectURL(file);
+    setAvatarSrc(previewUrl);
+    setUploading(true);
+
+    try {
+      await onAvatarChange?.(file);
+      toast.success(t("avatarUpdated"));
+    } catch (err) {
+      setAvatarSrc(previous);
+      toast.error(
+        err instanceof Error ? err.message : t("avatarUpdateFailed"),
+      );
+    } finally {
+      URL.revokeObjectURL(previewUrl);
+      setUploading(false);
+    }
   };
 
   return (
     <div className="rounded-3xl bg-card border border-border p-6 space-y-5">
       <div className="flex flex-col sm:flex-row items-center gap-5">
-        <div className="relative group cursor-pointer" onClick={handleAvatarClick}>
+        <div
+          className={`relative group ${isOwnProfile ? "cursor-pointer" : ""}`}
+          onClick={handleAvatarClick}
+        >
           <LevelRing level={gamification.level} progress={xpProgress} size={120}>
             <Avatar className="h-[104px] w-[104px] border-4 border-background">
               <AvatarImage src={avatarSrc} alt={user.username} />
@@ -52,16 +83,24 @@ export default function ProfileHero({ profile, onAvatarChange }: ProfileHeroProp
               </AvatarFallback>
             </Avatar>
           </LevelRing>
-          <div className="absolute inset-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/40">
-            <Camera className="text-white" size={28} />
-          </div>
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileChange}
-          />
+          {isOwnProfile && (
+            <>
+              <div className="absolute inset-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/40">
+                {uploading ? (
+                  <Loader2 className="text-white animate-spin" size={28} />
+                ) : (
+                  <Camera className="text-white" size={28} />
+                )}
+              </div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleFileChange}
+              />
+            </>
+          )}
         </div>
 
         <div className="flex-1 text-center sm:text-left space-y-1">
@@ -69,9 +108,9 @@ export default function ProfileHero({ profile, onAvatarChange }: ProfileHeroProp
             {user.firstName} {user.lastName}
           </h1>
           <p className="text-muted-foreground">@{user.username}</p>
-          {(user.bio || (user as any).bio) && (
+          {user.bio && (
             <p className="text-sm text-muted-foreground/80 mt-1 max-w-md">
-              {(user as any).bio}
+              {user.bio}
             </p>
           )}
         </div>

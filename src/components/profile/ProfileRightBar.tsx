@@ -8,7 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "@/i18n/routing";
 import FooterLink from "@/components/FooterLink";
 import InviteFriendsDialog from "./InviteFriendsDialog";
-import { mockFullProfile } from "@/data/mockProfile";
+import type { Friend } from "@/types/profile";
 import {
   Settings,
   UserCheck,
@@ -19,34 +19,47 @@ import {
 
 type SocialTab = "following" | "followers";
 
-const ProfileRightBar = () => {
+interface ProfileRightBarProps {
+  following?: Friend[];
+  followers?: Friend[];
+  streak?: number;
+  crowns?: number;
+  gems?: number;
+  showSettings?: boolean;
+}
+
+const ProfileRightBar = ({
+  following = [],
+  followers = [],
+  streak = 0,
+  crowns = 0,
+  gems = 0,
+  showSettings = false,
+}: ProfileRightBarProps) => {
   const t = useTranslations("Profile");
   const [socialTab, setSocialTab] = useState<SocialTab>("following");
   const [inviteOpen, setInviteOpen] = useState(false);
 
-  const { friends, followers } = mockFullProfile;
-  const currentList = socialTab === "following" ? friends : followers;
+  const currentList = socialTab === "following" ? following : followers;
 
   return (
     <>
-      {/* Top icons */}
       <div className="flex items-center justify-between w-full">
         <div className="flex items-center px-4 py-2 rounded-lg hover:bg-foreground/10 cursor-pointer transition-colors">
           <Image src="/icons/heart.svg" alt="heart" width={30} height={30} />
-          <span className="ml-2 text-xl font-bold text-red-500">5</span>
+          <span className="ml-2 text-xl font-bold text-red-500">{crowns}</span>
         </div>
         <div className="flex items-center px-4 py-2 rounded-lg hover:bg-foreground/10 cursor-pointer transition-colors">
           <Image src="/icons/gem.svg" alt="gem" width={24} height={30} />
-          <span className="ml-2 text-xl font-bold text-blue-400">10</span>
+          <span className="ml-2 text-xl font-bold text-blue-400">{gems}</span>
         </div>
         <div className="flex items-center px-4 py-2 rounded-lg hover:bg-foreground/10 cursor-pointer transition-colors">
           <Image src="/icons/fire.svg" alt="streak" width={25} height={30} />
-          <span className="ml-2 text-xl font-bold">3</span>
+          <span className="ml-2 text-xl font-bold">{streak}</span>
         </div>
       </div>
 
       <div className="space-y-6 mt-6 overflow-y-auto max-h-[calc(100vh-88px)] scrollbar-hide">
-        {/* Following / Followers */}
         <Card>
           <CardContent className="p-0">
             <div className="flex border-b border-border">
@@ -80,33 +93,47 @@ const ProfileRightBar = () => {
 
             <div className="divide-y divide-border max-h-[240px] overflow-y-auto scrollbar-thin">
               {currentList.length === 0 ? (
-                <p className="p-4 text-sm text-muted-foreground text-center">No one yet</p>
+                <p className="p-4 text-sm text-muted-foreground text-center">
+                  No one yet
+                </p>
               ) : (
                 currentList.map((person) => (
-                  <div
+                  <Link
                     key={person.id}
-                    className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-muted/30 transition-colors cursor-pointer"
+                    href={`/in/${person.username}`}
+                    className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-muted/30 transition-colors"
                   >
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--unit-1)] to-[var(--unit-5)] text-white flex items-center justify-center text-xs font-bold shrink-0">
-                      {person.firstName.charAt(0)}
-                      {person.lastName.charAt(0)}
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[var(--unit-1)] to-[var(--unit-5)] text-white flex items-center justify-center text-xs font-bold shrink-0 overflow-hidden">
+                      {person.imageUrl ? (
+                        <Image
+                          src={person.imageUrl}
+                          alt={person.username}
+                          width={32}
+                          height={32}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <>
+                          {person.firstName?.charAt(0) || ""}
+                          {person.lastName?.charAt(0) || ""}
+                        </>
+                      )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium truncate">
                         {person.firstName} {person.lastName}
                       </p>
                       <p className="text-xs text-muted-foreground">
-                        Lv.{person.level} · 🔥{person.streak}
+                        Lv.{person.level} · {person.streak}
                       </p>
                     </div>
-                  </div>
+                  </Link>
                 ))
               )}
             </div>
           </CardContent>
         </Card>
 
-        {/* Find & Invite friends */}
         <Card>
           <CardContent className="p-0 divide-y divide-border">
             <Link
@@ -115,12 +142,18 @@ const ProfileRightBar = () => {
             >
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                style={{ backgroundColor: "color-mix(in srgb, var(--unit-3) 20%, transparent)", color: "var(--unit-3)" }}
+                style={{
+                  backgroundColor:
+                    "color-mix(in srgb, var(--unit-3) 20%, transparent)",
+                  color: "var(--unit-3)",
+                }}
               >
                 <ExternalLink size={18} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium group-hover:text-[var(--unit-3)] transition-colors">{t("inviteFriends.findFriends")}</p>
+                <p className="text-sm font-medium group-hover:text-[var(--unit-3)] transition-colors">
+                  {t("inviteFriends.findFriends")}
+                </p>
                 <p className="text-xs text-muted-foreground truncate">
                   {t("inviteFriends.findFriendsDescription")}
                 </p>
@@ -133,12 +166,18 @@ const ProfileRightBar = () => {
             >
               <div
                 className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
-                style={{ backgroundColor: "color-mix(in srgb, var(--unit-4) 20%, transparent)", color: "var(--unit-4)" }}
+                style={{
+                  backgroundColor:
+                    "color-mix(in srgb, var(--unit-4) 20%, transparent)",
+                  color: "var(--unit-4)",
+                }}
               >
                 <Share2 size={18} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium group-hover:text-[var(--unit-4)] transition-colors">{t("inviteFriends.invite")}</p>
+                <p className="text-sm font-medium group-hover:text-[var(--unit-4)] transition-colors">
+                  {t("inviteFriends.invite")}
+                </p>
                 <p className="text-xs text-muted-foreground truncate">
                   {t("inviteFriends.inviteDescription")}
                 </p>
@@ -147,20 +186,23 @@ const ProfileRightBar = () => {
           </CardContent>
         </Card>
 
-        {/* Settings link */}
-        <Card>
-          <CardContent className="p-0">
-            <Link
-              href="/settings"
-              className="flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors rounded-xl group"
-            >
-              <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--unit-2)] to-[var(--unit-6)] text-white">
-                <Settings size={18} />
-              </div>
-              <span className="text-sm font-medium group-hover:text-[var(--unit-2)] transition-colors">Account settings</span>
-            </Link>
-          </CardContent>
-        </Card>
+        {showSettings && (
+          <Card>
+            <CardContent className="p-0">
+              <Link
+                href="/settings"
+                className="flex items-center gap-3 p-4 hover:bg-muted/50 transition-colors rounded-xl group"
+              >
+                <div className="w-9 h-9 rounded-xl flex items-center justify-center bg-gradient-to-br from-[var(--unit-2)] to-[var(--unit-6)] text-white">
+                  <Settings size={18} />
+                </div>
+                <span className="text-sm font-medium group-hover:text-[var(--unit-2)] transition-colors">
+                  Account settings
+                </span>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
 
         <FooterLink />
       </div>
