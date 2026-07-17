@@ -146,6 +146,36 @@ Check `session_active` cookie (puchi.io.vn domain) — không phải `refresh_to
 5. POST /auth/email/verify/send (Bearer) → gửi lại code mới
 ```
 
+### Auth → Core → User Architecture
+
+```
+auth-service (app/auth/)                   core-service (app/core/)
+├── auth.users                              ├── core.users
+│   ├── email, password_hash               │   ├── id, email
+│   ├── display_name                       │   ├── username (UNIQUE, auto-gen)
+│   └── email_verified                     │   ├── first_name, last_name
+├── auth.sessions                          │   ├── bio, avatar_url
+└── NATS: "auth.user.created" ──✗──→      │   └── onboarding_completed, age_range
+     (outbox, chưa có subscriber)          ├── GET /v1/profile → lazy create + return
+                                           └── POST /v1/onboarding/complete
+
+user-service (app/user/) — social features: follow, leaderboard (không liên quan profile)
+```
+
+**Lazy creation flow**:
+1. User login → auth-service tạo user + `auth.user.created` event
+2. Core-service chưa subscribe NATS → user chưa có trong `core.users`
+3. Lần đầu gọi `GET /v1/profile` → **auto-create** từ JWT (userID + email)
+4. Username được auto-generate từ email local part + check UNIQUE (append -2, -3... nếu trùng)
+5. User có thể đổi username sau trong Settings
+
+**Guest mode concept** (chưa implement):
+```
+Guest → học thử local → lưu progress (Zustand persist)
+     ↓ Muốn sync
+  Sign up / Login → merge guest data → tiếp tục
+```
+
 ## Docker Build
 
 Multi-stage build với Bun + Node.js:

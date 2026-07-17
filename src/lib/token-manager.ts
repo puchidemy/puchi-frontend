@@ -23,6 +23,19 @@ export function setToken(token: string | null): void {
   tokenListeners.forEach((fn) => fn(token));
   // Sync to Zustand store (sessionStorage persist)
   useAuthStore.getState().setAccessToken(token);
+
+  // Set session_active cookie synchronously for middleware/proxy
+  // This is the client-side fallback — server-side Set-Cookie from
+  // /api/auth/set-session is more reliable but async.
+  if (token) {
+    document.cookie =
+      "session_active=1; path=/; max-age=900; SameSite=Lax; " +
+      (location.protocol === "https:" ? "secure;" : "");
+  } else {
+    document.cookie =
+      "session_active=; path=/; max-age=0; SameSite=Lax; " +
+      (location.protocol === "https:" ? "secure;" : "");
+  }
 }
 
 export function clearToken(): void {
