@@ -64,8 +64,18 @@ function AuthContinueContent() {
         const token =
           (session as { token?: string }).token ??
           authClient.bearer.getTokens()?.accessToken;
-        if (token) setToken(token);
+        if (token) {
+          setToken(token);
+        } else {
+          // Ensure bearer plugin is populated before hitting /v1/*
+          const again = await authClient.getSession();
+          const t2 =
+            (again as { token?: string } | null)?.token ??
+            authClient.bearer.getTokens()?.accessToken;
+          if (t2) setToken(t2);
+        }
 
+        // Token must be in memory before /v1 calls (cookie alone may race).
         const { claimGuestIfNeeded } = await import("@/hooks/use-claim-guest");
         const { useGuestStore } = await import("@/store/guest");
         await Promise.all([

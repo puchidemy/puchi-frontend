@@ -43,11 +43,18 @@ export async function claimGuestIfNeeded(): Promise<boolean> {
     await hydrateTrialProgressFromUnit();
     return true;
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "";
+    // Missing guest trial / already claimed are expected after normal login.
+    const msg = err instanceof Error ? err.message.toLowerCase() : "";
+    const status =
+      err && typeof err === "object" && "status" in err
+        ? Number((err as { status: number }).status)
+        : 0;
     if (
+      status === 400 ||
+      status === 404 ||
       msg.includes("guest cookie") ||
       msg.includes("already claimed") ||
-      msg.includes("404")
+      msg.includes("not found")
     ) {
       return false;
     }
