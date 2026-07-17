@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useEffect, useCallback, ReactNode } from 'react'
+import { createContext, useContext, useEffect, useCallback, useRef, ReactNode } from 'react'
 import { getToken, setToken, clearToken, tryRefreshToken, syncTokenToCookie, setBaseUrl, restoreTokenFromStore, decodeTokenUser } from '@/lib/token-manager'
 import { useAuthStore } from '@/store/auth'
 import type { User } from '@/store/auth'
@@ -101,9 +101,14 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
     } finally {
       setLoading(false)
     }
-  }, [baseUrl, user, setUser, setLoading, clear])
+  }, [baseUrl, setUser, setLoading, clear])
+
+  // Prevent duplicate session checks (React Strict Mode mounts twice)
+  const sessionChecked = useRef(false)
 
   useEffect(() => {
+    if (sessionChecked.current) return
+    sessionChecked.current = true
     refreshSession()
   }, [refreshSession])
 
