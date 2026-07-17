@@ -134,8 +134,8 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
     }
 
     // Merge guest progress from localStorage into the authenticated account
-    const { mergeIfNeeded } = await import('@/store/guest')
-    mergeIfNeeded()
+    const { useGuestStore } = await import('@/store/guest')
+    useGuestStore.getState().mergeIfNeeded()
   }
 
   const register = async (email: string, password: string, displayName?: string) => {
