@@ -1,5 +1,9 @@
 # Auth Refactor Implementation Plan
 
+> **⚠️ LEGACY DOC — Auth đã migrated từ Supertokens → auth-service tự xây dựng (Go/Kratos).**
+> Xem `.cursor/rules/project.mdc` và `.cursor/rules/nextjs.mdc` cho auth flow hiện tại.
+> Token model hiện tại: in-memory access_token + HttpOnly refresh_token cookie (không localStorage).
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Hoàn thiện luồng auth: phát hiện user mới → WelcomeFlow (basic info + onboarding answers) → sync backend, public profile `/in/[username]`, account linking Google/FB/TikTok.

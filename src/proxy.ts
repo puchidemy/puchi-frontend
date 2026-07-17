@@ -18,9 +18,11 @@ export async function proxy(req: NextRequest) {
   });
 
   if (isProtected) {
-    // Check for refresh_token cookie set by auth-service
-    const refreshToken = req.cookies.get("refresh_token");
-    if (!refreshToken) {
+    // Check the session_active indicator cookie set by the Route Handler.
+    // This is on the same domain (puchi.io.vn), unlike the refresh_token cookie
+    // which lives on api.puchi.io.vn (set by auth-service).
+    const sessionActive = req.cookies.get("session_active");
+    if (!sessionActive) {
       const signInUrl = new URL("/auth/sign-in", req.url);
       return NextResponse.redirect(signInUrl);
     }

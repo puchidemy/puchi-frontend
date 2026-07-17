@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { login } from "@/lib/auth-client";
+import { useAuth } from "@/providers/AuthProvider";
 
 export function SignInForm() {
   const router = useRouter();
+  const { login: authLogin } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -21,19 +22,13 @@ export function SignInForm() {
     setError("");
     setLoading(true);
 
-    const result = await login(email, password);
-
-    if (!result.ok) {
-      setError(result.error || "Invalid email or password. Please try again.");
+    try {
+      await authLogin(email, password);
+      router.replace("/learn");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Invalid email or password. Please try again.");
       setLoading(false);
-      return;
     }
-
-    if (result.data?.access_token) {
-      localStorage.setItem("access_token", result.data.access_token);
-    }
-
-    router.replace("/learn");
   }
 
   return (

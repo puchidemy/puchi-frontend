@@ -1,3 +1,8 @@
+"client-only";
+
+import { getToken } from "./token-manager";
+import { fetchWithAuthResult } from "./fetch-with-auth";
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 interface ApiResult<T> {
@@ -8,8 +13,16 @@ interface ApiResult<T> {
 
 async function request<T>(
   path: string,
-  options: RequestInit = {}
+  options: RequestInit = {},
+  useAuth = false,
 ): Promise<ApiResult<T>> {
+  // Use fetchWithAuthResult for auth-required endpoints (logout)
+  // and for consistency across the client
+  if (useAuth || getToken()) {
+    return fetchWithAuthResult<T>(`${API_URL}${path}`, options);
+  }
+
+  // Fallback for public endpoints (register, forgot-password, reset-password)
   try {
     const res = await fetch(`${API_URL}${path}`, {
       ...options,
@@ -69,11 +82,12 @@ export async function resetPassword(userId: string, code: string, password: stri
   });
 }
 
-export async function logout(accessToken: string) {
+export async function logout(accessToken?: string) {
+  const token = accessToken || getToken();
   return request("/auth/logout", {
     method: "POST",
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
+    headers: { Authorization: `Bearer ${token}` },
+  }, !!token);
 }
 
 export { API_URL };

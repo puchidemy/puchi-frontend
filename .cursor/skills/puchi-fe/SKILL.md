@@ -15,7 +15,7 @@ description: Design and interaction patterns for Puchi Frontend. Use when buildi
 | Animation | `motion` (framer-motion v12) |
 | Icons | Lucide React |
 | i18n | `next-intl`, 9 locales (messages/*.json) |
-| Auth | Zitadel (`@zitadel/next-auth`) |
+| Auth | Auth-service (self-hosted, Go/Kratos) |
 | State | Zustand v5 |
 | Package mgmt | Bun (install) → Node.js 22 (build & run) |
 
@@ -240,14 +240,25 @@ Every section card uses: `rounded-2xl bg-card border border-border p-5` (or `p-4
 </Link>
 ```
 
-### Sign Out
+### Sign Out (Client-side)
 
 ```tsx
-import { signOut } from "@/config/supertokens";
+import { useAuth } from "@/providers/AuthProvider";
 
-<button onClick={() => signOut().then(() => window.location.reload())}>
+const { logout } = useAuth();
+<button onClick={() => logout().then(() => window.location.reload())}>
   Sign Out
 </button>
+```
+
+### Sign Out (Server Action — Sidebar)
+
+```tsx
+import { logoutAction } from "@/actions/auth";
+
+<form action={logoutAction}>
+  <button type="submit">Sign Out</button>
+</form>
 ```
 
 ---
@@ -306,4 +317,4 @@ Add new keys to `messages/en.json` and `messages/vi.json` under correct namespac
 
 - For design tokens reference with all OKLCH values, see [reference/design-tokens.md](reference/design-tokens.md)
 - For animation recipe gallery with complete code, see [reference/animation.md](reference/animation.md)
-- For existing project rules, see `.cursor/rules/project.mdc` (auth, docker, CI/CD, env vars) and `.cursor/rules/nextjs.mdc` (App Router, Supertokens integration, API layer)
+- For existing project rules, see `.cursor/rules/project.mdc` (auth, docker, CI/CD, env vars) and `.cursor/rules/nextjs.mdc` (App Router, auth integration, API layer)

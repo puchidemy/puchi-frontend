@@ -14,44 +14,106 @@ Puchi là nền tảng web học tiếng Việt. Frontend dùng **Next.js 16 (Ap
 | Framework | Next.js 16 (App Router, output: standalone) |
 | UI | Tailwind CSS v4 + Shadcn UI (New York) |
 | State | Zustand v5 |
-| Auth | Auth-service (self-hosted) — custom AuthProvider + fetch trực tiếp |
+| Auth | Auth-service (self-hosted) — custom AuthProvider + in-memory token + HttpOnly cookie SSR |
 | i18n | next-intl (9 ngôn ngữ) |
 | Animation | Motion + Rive |
 | Runtime | Bun (install) + Node.js 22 (build & run) |
 
 ## Auth — Auth-service (self-hosted, xoá Zitadel)
 
-**Đã migrate từ Zitadel → Auth-service tự xây dựng (Go/Kratos).** Flow:
+**Đã migrate từ Zitadel → Auth-service tự xây dựng (Go/Kratos).** Token model:
+
+| Token | Lưu ở đâu | TTL | Mục đích |
+|-------|-----------|-----|----------|
+| access_token (JWT RS256) | **In-memory** (React state) + HttpOnly cookie (SSR) | 15 phút | Auth header cho backend API |
+| refresh_token (opaque) | **HttpOnly cookie** (domain api.puchi.io.vn, Path=/auth) | 30 ngày | Refresh access token |
+
+### Auth flow tổng thể
+
+```
+1. LOGIN:
+   Browser → POST api.puchi.io.vn/auth/login
+   ← Response body: { access_token, expires_in, user }
+   ← Set-Cookie: refresh_token (HttpOnly, Secure, SameSite=None, Path=/auth)
+   → Lưu access_token in-memory (React state, token-manager.ts)
+   → POST /api/auth/set-session → set HttpOnly access_token cookie (puchi.io.vn)
+
+2. CLIENT API CALL:
+   fetchWithAuth("/v1/profile")
+   → Đọc access_token in-memory
+   → Gắn Authorization: Bearer <token>
+   → Gọi api.puchi.io.vn/v1/profile
+   401 → POST /auth/refresh (refresh_token cookie tự gửi) → retry
+
+3. PAGE RELOAD:
+   Browser → proxy.ts (check session_active cookie, puchi.io.vn)
+   → AuthProvider mount → GET /api/auth/restore-session → restore in-memory token
+   → GET /api/auth/sessions (Bearer) → verify session
+
+4. SERVER-SIDE (Server Components / Server Actions):
+   backendFetch() → đọc access_token từ HttpOnly cookie (set bởi set-session)
+   → Gắn Authorization: Bearer <token> → gọi backend service
+```
 
 ### Custom AuthProvider
+
 ```typescript
 // src/providers/AuthProvider.tsx
 const auth = useAuth()
-auth.login(email, password)    // POST /api/auth/login → set cookie + localStorage
+auth.login(email, password)    // POST /api/auth/login → in-memory token + sync SSR cookie
 auth.register(email, password) // POST /api/auth/register
-auth.logout()                  // POST /api/auth/logout → clear state
+auth.logout()                  // POST /api/auth/logout → clear in-memory + clear SSR cookie
 ```
 
-### Auth flow tổng thể
+### Token Manager (in-memory singleton)
+
+```typescript
+// src/lib/token-manager.ts
+getToken()          // Đọc in-memory token
+setToken(token)     // Lưu in-memory
+clearToken()        // Xoá in-memory
+tryRefreshToken()   // POST /auth/refresh (dùng HttpOnly refresh_token cookie)
+syncTokenToCookie() // POST /api/auth/set-session → đồng bộ lên HttpOnly cookie SSR
 ```
-Browser → custom form → api.puchi.io.vn/auth → auth-service:8080
-       → Set-Cookie: refresh_token (HttpOnly, SameSite=None)
-       → Response body: { access_token, expires_in, user }
+
+### Fetch wrapper (tự động Bearer + auto-refresh)
+
+```typescript
+// src/lib/fetch-with-auth.ts
+fetchWithAuth<T>(url, options)     // Throw on error
+fetchWithAuthResult<T>(url, options) // { ok, data } | { ok, error }
+
+// src/lib/client-api.ts — dùng fetchWithAuth bên trong
+clientFetch<T>(path, options)
 ```
+
+### SSR Cookie Route Handlers
+
+| Route | Mô tả |
+|-------|-------|
+| `POST /api/auth/set-session` | Set HttpOnly `access_token` + `session_active` cookies (puchi.io.vn) |
+| `GET /api/auth/restore-session` | Đọc `access_token` từ HttpOnly cookie → trả về client |
+| `POST /api/auth/clear-session` | Clear cả 2 cookies |
+
+### Proxy (middleware.ts)
+
+Check `session_active` cookie (puchi.io.vn domain) — không phải `refresh_token` (api.puchi.io.vn, không đọc được từ puchi.io.vn).
 
 ### Endpoints (frontend gọi tới api.puchi.io.vn/auth/)
 
-| Method | Path | Mô tả |
-|--------|------|-------|
-| POST | `/api/auth/login` | Login |
-| POST | `/api/auth/register` | Register |
-| POST | `/api/auth/refresh` | Refresh token (cookie) |
-| POST | `/api/auth/logout` | Logout (cookie) |
-| GET | `/api/auth/social/{provider}` | OAuth2 redirect |
-| POST | `/api/auth/magic-link/send` | Magic link (NATS → email) |
-| PUT | `/api/auth/password/change` | Change password |
-| GET | `/api/auth/sessions` | List sessions |
-| DELETE | `/api/auth/sessions/{id}` | Revoke session |
+| Method | Path | Auth required | Mô tả |
+|--------|------|:---:|-------|
+| POST | `/auth/login` | No | Login → trả về access_token + set refresh_token cookie |
+| POST | `/auth/register` | No | Register |
+| POST | `/auth/refresh` | Cookie | Refresh token (dùng HttpOnly refresh_token cookie) |
+| POST | `/auth/logout` | Bearer | Logout (revoke session + clear cookie) |
+| GET | `/auth/sessions` | Bearer | List sessions |
+| DELETE | `/auth/sessions/{id}` | Bearer | Revoke session |
+| GET | `/auth/social/{provider}` | No | OAuth2 redirect |
+| POST | `/auth/magic-link/send` | No | Magic link (NATS → email) |
+| PUT | `/auth/password/change` | Bearer | Change password |
+| POST | `/auth/password/reset/request` | No | Request password reset |
+| PUT | `/auth/password/reset` | No | Complete password reset |
 
 ## Docker Build
 
@@ -86,7 +148,7 @@ GitHub Actions (`ci-cd.yml`):
 
 ```bash
 bun install          # Cài dependencies (dùng bun.lock)
-bun run dev          # Dev server (webpack mode)
+bun run dev          # Dev server
 bun run build        # Build production (chạy bằng Node.js)
 bun run start        # Start production
 bun run lint         # ESLint
@@ -97,11 +159,16 @@ bun run lint         # ESLint
 ```
 src/
 ├── app/[locale]/         # Next.js App Router pages (i18n)
-├── app/api/              # API routes (debug only — auth gọi thẳng api.puchi.io.vn)
+├── app/api/auth/         # Route Handlers: set-session, restore-session, clear-session
 ├── components/           # UI components (Shadcn + custom)
 │   └── auth/             # AuthCard, SignInForm, SignUpForm, SocialLoginButtons
-├── actions/              # Server Actions (logout, etc.)
-├── lib/                  # api-contracts.ts, backend.ts, client-api.ts
+├── actions/              # Server Actions (logoutAction, profiles, social)
+├── lib/                  # Core utilities
+│   ├── token-manager.ts  # In-memory token + auto-refresh
+│   ├── fetch-with-auth.ts# Bearer wrapper + 401 interceptor
+│   ├── client-api.ts     # Client-side fetch (useAuth-optional)
+│   ├── api-contracts.ts  # API type contracts
+│   └── backend.ts        # Server-side fetch (SSR)
 ├── providers/            # AuthProvider (useAuth hook)
 ├── store/                # Zustand stores
 ├── hooks/                # Custom hooks
@@ -109,7 +176,7 @@ src/
 ├── styles/               # Global styles
 ├── constants/            # Constants
 ├── config/               # env.ts (Zod-validated env config)
-├── proxy.ts              # Middleware (xác thực bằng refresh_token cookie)
+├── proxy.ts              # Middleware (xác thực bằng session_active cookie)
 └── types/                # TypeScript types
 ```
 
@@ -117,5 +184,5 @@ src/
 
 - API: `api.puchi.io.vn` qua Envoy Gateway (dùng `NEXT_PUBLIC_API_URL`)
 - Auth: gọi thẳng `api.puchi.io.vn/auth/*` (auth-service)
-- Server-side fetch: đọc access_token từ cookie, gắn `Authorization: Bearer`
-- Client-side fetch: `credentials: include` (cookie tự gửi theo domain)
+- Server-side fetch: đọc `access_token` từ HttpOnly cookie (set bởi `/api/auth/set-session`), gắn `Authorization: Bearer`
+- Client-side fetch: `fetchWithAuth()` — Bearer từ in-memory token + auto-refresh khi 401

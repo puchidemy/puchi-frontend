@@ -17,7 +17,8 @@ export class BackendError extends Error {
 
 /**
  * Reads the access_token from the cookie header.
- * The auth-service sets an HTTP-only access_token cookie.
+ * The access_token cookie is set by the /api/auth/set-session Route Handler
+ * on the puchi.io.vn domain (not by auth-service, which only sets refresh_token).
  */
 function getAccessTokenFromCookies(cookieHeader: string | null): string | null {
   if (!cookieHeader) return null;

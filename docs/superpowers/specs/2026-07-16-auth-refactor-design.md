@@ -1,5 +1,9 @@
 # Auth Refactor — WelcomeFlow Onboarding + Public Profile + Account Linking
 
+> **⚠️ LEGACY DOC — Auth đã migrated từ Supertokens → auth-service tự xây dựng (Go/Kratos).**
+> Xem `.cursor/rules/project.mdc` và `.cursor/rules/nextjs.mdc` cho auth flow hiện tại.
+> Token model hiện tại: in-memory access_token + HttpOnly refresh_token cookie (không localStorage).
+
 > **Design Doc**
 
 **Goal:** Hoàn thiện luồng auth: user mới (social hoặc email/password) được redirect tới WelcomeFlow để nhập thông tin cơ bản (first name, last name, age range), đồng bộ onboarding answers và profile xuống backend. Thêm public profile theo username. Hỗ trợ account linking (nhiều provider chung 1 tài khoản).

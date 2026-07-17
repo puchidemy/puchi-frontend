@@ -14,13 +14,32 @@ alwaysApply: false
 
 ## Auth
 
+### Token Management (in-memory, không localStorage)
+
+Access token được lưu **in-memory** (module singleton) qua `token-manager.ts` — an toàn trước XSS.
+
+```typescript
+// src/lib/token-manager.ts
+getToken()          // Đọc in-memory token
+setToken(token)     // Lưu in-memory token
+clearToken()        // Xoá in-memory token
+tryRefreshToken()   // Gọi POST /auth/refresh (dùng HttpOnly refresh_token cookie tự gửi)
+syncTokenToCookie() // Đồng bộ lên HttpOnly cookie (cho SSR) qua POST /api/auth/set-session
+```
+
+**Không dùng localStorage cho access_token** (rủi ro XSS).
+
 ### AuthProvider pattern
+
 ```typescript
 // src/providers/AuthProvider.tsx
 export function AuthProvider({ children, baseUrl }) {
-  // state: user, loading
-  // methods: login(), register(), logout()
-  // fetch trực tiếp tới auth-service với credentials: include
+  // state: user, loading (in-memory, không localStorage)
+  // methods:
+  //   login()    → POST /auth/login → setToken() in-memory + syncTokenToCookie()
+  //   register() → POST /auth/register
+  //   logout()   → POST /auth/logout → clearToken() + clear SSR cookie
+  //   refreshSession() → restore in-memory từ SSR cookie (page reload) + verify /auth/sessions
 }
 
 export function useAuth() {
@@ -28,26 +47,61 @@ export function useAuth() {
 }
 ```
 
-### Middleware (`src/proxy.ts`)
-```
-- Kiểm tra refresh_token cookie thay vì Auth.js session
-- Nếu không có cookie → redirect /auth/sign-in
-- Nếu có cookie → cho phép
-```
+### SSR Cookie-based Session (Route Handlers)
+
+3 Route Handlers quản lý session cookie trên domain puchi.io.vn (cho Server Components, Server Actions, Proxy):
+
+| Route | Method | Mô tả |
+|-------|--------|-------|
+| `/api/auth/set-session` | POST | Set HttpOnly `access_token` cookie + `session_active` cookie |
+| `/api/auth/restore-session` | GET | Đọc `access_token` từ cookie → trả về client (restore in-memory sau reload) |
+| `/api/auth/clear-session` | POST | Clear cả 2 cookie |
 
 ### Client-side fetch
+
 ```typescript
-// access_token lưu trong localStorage
-// Gửi Authorization: Bearer cho backend API
-// credentials: include cho auth-service (cookie tự gửi)
+// src/lib/fetch-with-auth.ts
+fetchWithAuth<T>(url, options)  // Tự gắn Authorization: Bearer từ in-memory
+
+// src/lib/client-api.ts
+clientFetch<T>(path, options)   // Dùng fetchWithAuth bên trong
+
+// Flow:
+// 1. Đọc token từ in-memory (getToken())
+// 2. Gắn Authorization: Bearer <token>
+// 3. Nếu 401 → tự động gọi /auth/refresh (cookie tự gửi) → retry
+```
+
+### Proxy (middleware.ts)
+
+```typescript
+// src/proxy.ts
+// Kiểm tra session_active cookie (domain puchi.io.vn) — không phải refresh_token
+// (refresh_token cookie ở domain api.puchi.io.vn, JS/cookie không đọc được)
+// Không có cookie → redirect /auth/sign-in
 ```
 
 ### API Contracts
+
 ```typescript
 // src/lib/api-contracts.ts
 APILogin: { url: '/api/auth/login', method: 'POST', data: { email, password }, result: { access_token, expires_in, user } }
 APIRegister: { url: '/api/auth/register', method: 'POST', data: { email, password }, result: { user_id, email } }
 ```
+
+### Key Files
+
+| File | Vai trò |
+|------|---------|
+| `src/lib/token-manager.ts` | Quản lý in-memory token + auto-refresh |
+| `src/lib/fetch-with-auth.ts` | fetch wrapper: Bearer + 401 interceptor |
+| `src/lib/client-api.ts` | Client-side fetch (useAuth-optional) |
+| `src/providers/AuthProvider.tsx` | Auth context + login/register/logout |
+| `src/proxy.ts` | Middleware: check session_active cookie |
+| `src/actions/auth.ts` | Server Action: logout (clear cookie) |
+| `src/app/api/auth/set-session/route.ts` | Set SSR cookies |
+| `src/app/api/auth/restore-session/route.ts` | Restore in-memory token |
+| `src/app/api/auth/clear-session/route.ts` | Clear SSR cookies |
 
 ## Components
 
@@ -63,9 +117,9 @@ APIRegister: { url: '/api/auth/register', method: 'POST', data: { email, passwor
 
 ## API Calls
 
-- Client auth → gọi trực tiếp `${API_URL}/api/auth/*` với `credentials: include`
-- Client backend → gọi `${API_URL}/api/{service}/*` với `Authorization: Bearer` từ localStorage
-- Server → `backendFetch()` với access_token từ cookie
+- Client auth → `AuthProvider.login()` (gọi `${baseUrl}/auth/login` với `credentials: include`)
+- Client backend → `fetchWithAuth()` hoặc `clientFetch()` — tự động `Authorization: Bearer` từ in-memory token + auto-refresh khi 401
+- Server → `backendFetch()` với access_token từ HttpOnly cookie (set bởi `/api/auth/set-session`)
 - API base URL: `process.env.NEXT_PUBLIC_API_URL` (https://api.puchi.io.vn)
 
 ## i18n
