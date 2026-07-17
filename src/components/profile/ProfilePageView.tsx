@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { Suspense } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Link } from "@/i18n/routing";
 import { FullProfile } from "@/types/profile";
 import ProfileHero from "@/components/profile/ProfileHero";
 import ProfileTabs from "@/components/profile/ProfileTabs";
@@ -64,17 +63,6 @@ export default function ProfilePageView({
         <div className="h-full flex xl:w-[1024px] w-full relative">
           <main className="min-w-[300px] absolute left-0 right-0 xl:right-[350px]">
             <div className="container mx-auto px-4 py-6 space-y-6">
-              {isOwnProfile && (
-                <div className="flex justify-end">
-                  <Link
-                    href="/settings/profile"
-                    className="text-sm text-primary hover:underline"
-                  >
-                    {t("editProfile")}
-                  </Link>
-                </div>
-              )}
-
               <ProfileHero
                 profile={profile}
                 isOwnProfile={isOwnProfile}

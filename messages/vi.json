@@ -1,8 +1,8 @@
 {
   "Profile": {
     "editProfile": "Chỉnh sửa hồ sơ",
-    "avatarUpdated": "Đã cập nhật ảnh đại diện!",
-    "avatarUpdateFailed": "Không thể cập nhật ảnh đại diện",
+    "avatarUpdated": "Đã cập nhật ảnh!",
+    "avatarUpdateFailed": "Không cập nhật được ảnh",
     "tabs": {
       "overview": "Tổng quan",
       "stats": "Thống kê",
@@ -50,7 +50,7 @@
     "inviteFriends": {
       "title": "Mời bạn bè",
       "description": "Hãy nói với bạn bè rằng học tiếng Việt trên Puchi vừa miễn phí vừa vui!",
-      "linkCopied": "Đã sao chép liên kết!",
+      "linkCopied": "Đã sao chép!",
       "orShareOn": "Hoặc chia sẻ qua",
       "findFriends": "Tìm bạn bè",
       "findFriendsDescription": "Kết nối với danh bạ của bạn và xem ai đang học trên Puchi",
@@ -59,6 +59,35 @@
       "following": "Đang theo dõi",
       "followers": "Người theo dõi"
     }
+  },
+  "Settings": {
+    "editProfile": "Chỉnh sửa hồ sơ",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "username": "Tên người dùng",
+    "bio": "Giới thiệu",
+    "bioPlaceholder": "Giới thiệu đôi chút về bạn...",
+    "ageRange": "Độ tuổi",
+    "selectAgeRange": "Chọn độ tuổi",
+    "save": "Lưu",
+    "saving": "Đang lưu...",
+    "saved": "Đã lưu!",
+    "profileSaved": "Đã lưu hồ sơ!",
+    "saveFailed": "Không thể lưu hồ sơ",
+    "networkError": "Lỗi mạng. Vui lòng thử lại.",
+    "connectedAccounts": "Tài khoản liên kết",
+    "notConnected": "Chưa liên kết",
+    "unlink": "Hủy liên kết",
+    "link": "Liên kết",
+    "linking": "Đang liên kết...",
+    "unlinking": "Đang hủy...",
+    "linked": "Đã kết nối",
+    "linkedAs": "Đã kết nối ({id})",
+    "accountUnlinked": "Đã hủy liên kết",
+    "accountLinked": "Đã liên kết",
+    "unlinkFailed": "Không thể hủy liên kết",
+    "linkFailed": "Không thể liên kết tài khoản",
+    "linkConflict": "Tài khoản mạng xã hội này đã được liên kết với người dùng khác"
   },
   "errors": {
     "profile": { "notFound": "Không tìm thấy hồ sơ" },
@@ -72,6 +101,15 @@
       "connectionError": "Không thể kết nối. Vui lòng kiểm tra mạng"
     },
     "server": { "internalError": "Có lỗi xảy ra. Vui lòng thử lại sau" }
+  },
+  "Start": {
+    "title": "Bạn muốn bắt đầu thế nào?",
+    "subtitle": "Học thử miễn phí với guest, hoặc đăng nhập để lưu tiến độ trên mọi thiết bị.",
+    "tryAsGuest": "Học thử 1 unit (guest)",
+    "createAccount": "Tạo tài khoản miễn phí",
+    "haveAccount": "Tôi đã có tài khoản",
+    "guestHint": "Tiến độ guest lưu trên máy này và được gộp khi bạn đăng ký.",
+    "guestError": "Không tạo được phiên guest. Vui lòng thử lại."
   },
   "TrialLearn": {
     "loadError": "Không tải được unit dùng thử. Vui lòng thử lại.",

@@ -2,7 +2,11 @@ import { AuthProvider } from "@/providers/AuthProvider";
 import Header from "@/components/landing/Header";
 import Footer from "@/components/landing/Footer";
 
-const AUTH_API_URL = process.env.AUTH_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const AUTH_API_URL =
+  process.env.NEXT_PUBLIC_AUTH_API_URL ||
+  process.env.AUTH_API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:3000";
 
 export default function AuthLayout({
   children,

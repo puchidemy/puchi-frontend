@@ -2,7 +2,7 @@
 
 import { fetchWithAuth } from "./fetch-with-auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 /** Must match learn-service `trial_unit_id` in config / seed migration. */
 export const TRIAL_UNIT_ID =

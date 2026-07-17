@@ -7,8 +7,7 @@ import { FullProfile } from "@/types/profile";
 import LevelRing from "./shared/LevelRing";
 import StreakFlame from "./shared/StreakFlame";
 import XpProgressBar from "./shared/XpProgressBar";
-import { Crown, Gem, Camera, Loader2 } from "lucide-react";
-import { toast } from "sonner";
+import { Crown, Gem, Camera, Loader2, Check } from "lucide-react";
 
 interface ProfileHeroProps {
   profile: FullProfile;
@@ -34,6 +33,8 @@ export default function ProfileHero({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [avatarSrc, setAvatarSrc] = useState(user.imageUrl);
   const [uploading, setUploading] = useState(false);
+  const [avatarOk, setAvatarOk] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
 
   useEffect(() => {
     setAvatarSrc(user.imageUrl);
@@ -53,13 +54,16 @@ export default function ProfileHero({
     const previewUrl = URL.createObjectURL(file);
     setAvatarSrc(previewUrl);
     setUploading(true);
+    setAvatarOk(false);
+    setAvatarError(null);
 
     try {
       await onAvatarChange?.(file);
-      toast.success(t("avatarUpdated"));
+      setAvatarOk(true);
+      window.setTimeout(() => setAvatarOk(false), 2000);
     } catch (err) {
       setAvatarSrc(previous);
-      toast.error(
+      setAvatarError(
         err instanceof Error ? err.message : t("avatarUpdateFailed"),
       );
     } finally {
@@ -85,9 +89,17 @@ export default function ProfileHero({
           </LevelRing>
           {isOwnProfile && (
             <>
-              <div className="absolute inset-0 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black/40">
+              <div
+                className={`absolute inset-0 flex items-center justify-center rounded-full transition-opacity duration-200 ${
+                  uploading || avatarOk
+                    ? "opacity-100 bg-black/40"
+                    : "opacity-0 group-hover:opacity-100 bg-black/40"
+                }`}
+              >
                 {uploading ? (
                   <Loader2 className="text-white animate-spin" size={28} />
+                ) : avatarOk ? (
+                  <Check className="text-emerald-400" size={32} strokeWidth={3} />
                 ) : (
                   <Camera className="text-white" size={28} />
                 )}
@@ -111,6 +123,16 @@ export default function ProfileHero({
           {user.bio && (
             <p className="text-sm text-muted-foreground/80 mt-1 max-w-md">
               {user.bio}
+            </p>
+          )}
+          {avatarOk && (
+            <p className="text-sm text-emerald-600 dark:text-emerald-400">
+              {t("avatarUpdated")}
+            </p>
+          )}
+          {avatarError && (
+            <p role="alert" className="text-sm text-destructive">
+              {avatarError}
             </p>
           )}
         </div>

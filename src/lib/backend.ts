@@ -2,7 +2,7 @@
 
 import { headers } from "next/headers";
 
-const BACKEND_URL = process.env.API_INTERNAL_URL || "http://localhost:8000";
+const BACKEND_URL = process.env.API_INTERNAL_URL || "http://localhost:3000";
 
 export class BackendError extends Error {
   constructor(
@@ -34,6 +34,8 @@ export async function backendFetch<T>(
 ): Promise<T> {
   const reqHeaders = await headers();
   const accessToken = getBearerFromRequest(reqHeaders);
+  // Forward browser cookies (e.g. limen_session via local Next gateway).
+  const cookie = reqHeaders.get("cookie");
   const timeout = options.timeout ?? 15000;
 
   const controller = new AbortController();
@@ -45,6 +47,7 @@ export async function backendFetch<T>(
       headers: {
         "Content-Type": "application/json",
         ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+        ...(cookie ? { Cookie: cookie } : {}),
         ...options.headers,
       },
       signal: controller.signal,

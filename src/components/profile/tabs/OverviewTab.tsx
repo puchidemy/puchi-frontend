@@ -43,10 +43,19 @@ function WeeklyStrip({ dayIndex }: { dayIndex: number }) {
   );
 }
 
+function safePercent(value: number): number {
+  return Number.isFinite(value) ? Math.max(0, Math.min(100, value)) : 0;
+}
+
 export default function OverviewTab({ profile }: OverviewTabProps) {
   const t = useTranslations("Profile");
   const { gamification, stats } = profile;
-  const completionRate = (stats.completedLessons / stats.totalLessons) * 100;
+  const completionRate = safePercent(
+    stats.totalLessons > 0
+      ? (stats.completedLessons / stats.totalLessons) * 100
+      : 0,
+  );
+  const accuracy = safePercent(stats.accuracy);
   const dayIndex = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
 
   const streakMessage =
@@ -58,7 +67,7 @@ export default function OverviewTab({ profile }: OverviewTabProps) {
 
   const cards = [
     { icon: BookOpen, value: `${stats.completedLessons}/${stats.totalLessons}`, label: t("stats.lessonsCompleted"), color: "var(--unit-1)" },
-    { icon: Target, value: `${stats.accuracy}%`, label: t("stats.accuracy"), color: "var(--unit-5)" },
+    { icon: Target, value: `${accuracy}%`, label: t("stats.accuracy"), color: "var(--unit-5)" },
     { icon: Clock, value: `${(stats.totalMinutes / 60).toFixed(1)}h`, label: t("stats.totalHours"), color: "var(--unit-6)" },
     { icon: BookText, value: stats.wordsLearned.toLocaleString("en-US"), label: t("stats.wordsLearned"), color: "var(--unit-2)" },
   ];

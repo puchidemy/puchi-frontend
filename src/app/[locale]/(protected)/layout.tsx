@@ -1,7 +1,11 @@
 import { OnboardingBypassGuard } from "@/components/auth/OnboardingBypassGuard";
 import { AuthProvider } from "@/providers/AuthProvider";
 
-const AUTH_API_URL = process.env.AUTH_API_URL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const AUTH_API_URL =
+  process.env.NEXT_PUBLIC_AUTH_API_URL ||
+  process.env.AUTH_API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:8080";
 
 type ProtectedLayoutProps = {
   children: React.ReactNode;

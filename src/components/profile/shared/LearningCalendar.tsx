@@ -25,7 +25,14 @@ function getIntensity(xpEarned: number): number {
 
 export default function LearningCalendar({ data }: LearningCalendarProps) {
   const { weeks, monthLabels } = useMemo(() => {
-    const days = [...data].sort((a, b) => a.date.localeCompare(b.date));
+    const days = [...(data ?? [])]
+      .filter((d): d is DailyActivity => Boolean(d?.date))
+      .sort((a, b) => a.date.localeCompare(b.date));
+
+    if (days.length === 0) {
+      return { weeks: [] as (DailyActivity | null)[][], monthLabels: [] as { label: string; col: number }[] };
+    }
+
     const firstDate = new Date(days[0].date);
     const startDay = firstDate.getDay() || 7;
     const padded = [...Array(startDay - 1).fill(null), ...days];
@@ -49,6 +56,12 @@ export default function LearningCalendar({ data }: LearningCalendarProps) {
 
     return { weeks, monthLabels };
   }, [data]);
+
+  if (weeks.length === 0) {
+    return (
+      <p className="text-sm text-muted-foreground">No activity yet</p>
+    );
+  }
 
   return (
     <div className="overflow-x-auto">

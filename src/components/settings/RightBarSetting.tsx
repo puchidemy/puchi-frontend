@@ -1,11 +1,14 @@
-import { Link } from "@/i18n/routing";
+"use client";
+
+import { Link, usePathname } from "@/i18n/routing";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 const settingAccount = {
   title: "Account",
   items: [
-    { label: "Preferences", href: "/settings" },
     { label: "Profile", href: "/settings/profile" },
+    { label: "Preferences", href: "/settings/preferences" },
     { label: "Notifications", href: "/settings/notifications" },
     { label: "Privacy settings", href: "/settings/privacy" },
     { label: "Language", href: "/settings/language" },
@@ -22,65 +25,85 @@ const settingSupport = {
   items: [{ label: "Help Center", href: "/help" }],
 };
 
+function pathMatches(pathname: string, href: string): boolean {
+  return pathname === href || pathname.startsWith(`${href}/`);
+}
+
+function SettingNavLink({
+  href,
+  label,
+  pathname,
+}: {
+  href: string;
+  label: string;
+  pathname: string;
+}) {
+  const active = pathMatches(pathname, href);
+
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={cn(
+        "text-xl py-2 px-4 rounded-xl border-2 border-transparent transition-colors",
+        "hover:bg-sky-100 dark:hover:bg-sky-900/40",
+        active &&
+          "text-sky-500 border-sky-400 bg-sky-100 dark:bg-sky-900/40 dark:text-sky-300",
+      )}
+    >
+      {label}
+    </Link>
+  );
+}
+
+function SettingNavGroup({
+  title,
+  items,
+  pathname,
+}: {
+  title: string;
+  items: { label: string; href: string }[];
+  pathname: string;
+}) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="px-4">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="flex flex-col gap-1 font-medium">
+        {items.map((item) => (
+          <SettingNavLink
+            key={item.href}
+            href={item.href}
+            label={item.label}
+            pathname={pathname}
+          />
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
 const RightBarSetting = () => {
+  const pathname = usePathname();
+
   return (
     <div className="space-y-4">
-      <Card>
-        <CardHeader>
-          <CardTitle className="px-4">{settingAccount.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col font-medium">
-          {settingAccount.items.map((item) => {
-            return (
-              <Link
-                href={item.href}
-                key={item.label}
-                className="text-xl py-2 px-4 rounded-lg hover:bg-border/50 dark:hover:bg-border/70"
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="px-4">{settingSubscription.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col font-medium">
-          {settingSubscription.items.map((item) => {
-            return (
-              <Link
-                href={item.href}
-                key={item.label}
-                className="text-xl py-2 px-4 rounded-lg hover:bg-border/50 dark:hover:bg-border/70"
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="px-4">{settingSupport.title}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col font-medium">
-          {settingSupport.items.map((item) => {
-            return (
-              <Link
-                href={item.href}
-                key={item.label}
-                className="text-xl py-2 px-4 rounded-lg hover:bg-border/50 dark:hover:bg-border/70"
-              >
-                {item.label}
-              </Link>
-            );
-          })}
-        </CardContent>
-      </Card>
+      <SettingNavGroup
+        title={settingAccount.title}
+        items={settingAccount.items}
+        pathname={pathname}
+      />
+      <SettingNavGroup
+        title={settingSubscription.title}
+        items={settingSubscription.items}
+        pathname={pathname}
+      />
+      <SettingNavGroup
+        title={settingSupport.title}
+        items={settingSupport.items}
+        pathname={pathname}
+      />
     </div>
   );
 };

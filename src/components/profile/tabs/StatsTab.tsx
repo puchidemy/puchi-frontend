@@ -15,13 +15,19 @@ function WeeklyXPChart({ data }: { data: WeeklyXP[] }) {
   const padding = { top: 20, right: 20, bottom: 30, left: 50 };
   const chartW = width - padding.left - padding.right;
   const chartH = height - padding.top - padding.bottom;
+  const series = data ?? [];
 
-  const maxXP = Math.max(...data.map((d) => d.xp), 100);
+  if (series.length === 0) {
+    return <p className="text-sm text-muted-foreground">No XP data yet</p>;
+  }
+
+  const maxXP = Math.max(...series.map((d) => d.xp), 100);
   const minXP = 0;
+  const denom = Math.max(series.length - 1, 1);
 
-  const points = data
+  const points = series
     .map((d, i) => {
-      const x = padding.left + (i / (data.length - 1)) * chartW;
+      const x = padding.left + (i / denom) * chartW;
       const y = padding.top + chartH - ((d.xp - minXP) / (maxXP - minXP)) * chartH;
       return `${x},${y}`;
     })
@@ -51,66 +57,62 @@ function WeeklyXPChart({ data }: { data: WeeklyXP[] }) {
           </g>
         );
       })}
-      {data.filter((_, i) => i % 3 === 0 || i === data.length - 1).map((d) => {
-        const origIndex = data.findIndex((item) => item.weekLabel === d.weekLabel);
-        const x = padding.left + (origIndex / (data.length - 1)) * chartW;
+      {series.filter((_, i) => i % 3 === 0 || i === series.length - 1).map((d) => {
+        const origIndex = series.findIndex((item) => item.weekLabel === d.weekLabel);
+        const x = padding.left + (origIndex / denom) * chartW;
         return (
           <text key={origIndex} x={x} y={height - 4} textAnchor="middle" className="text-[10px]" fill="var(--muted-foreground)">
             {d.weekLabel.split(" ")[0]}
           </text>
         );
       })}
-      {data.length > 0 && (
-        <>
-          {/* Area fill */}
-          <motion.polygon
-            points={areaPoints}
-            fill="var(--primary)"
-            opacity={0.1}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          />
-          {/* Line path */}
-          <motion.polyline
-            points={points}
-            fill="none"
-            stroke="var(--primary)"
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
-          />
-          {/* Dots */}
-          {data.map((d, i) => {
-            const x = padding.left + (i / (data.length - 1)) * chartW;
-            const y = padding.top + chartH - ((d.xp - minXP) / (maxXP - minXP)) * chartH;
-            return (
-              <motion.circle
-                key={i}
-                cx={x}
-                cy={y}
-                r={3}
-                fill="var(--primary)"
-                stroke="var(--background)"
-                strokeWidth={1.5}
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.6 + i * 0.04, type: "spring", stiffness: 300, damping: 15 }}
-              />
-            );
-          })}
-        </>
-      )}
+      <>
+        <motion.polygon
+          points={areaPoints}
+          fill="var(--primary)"
+          opacity={0.1}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        />
+        <motion.polyline
+          points={points}
+          fill="none"
+          stroke="var(--primary)"
+          strokeWidth={2.5}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
+        />
+        {series.map((d, i) => {
+          const x = padding.left + (i / denom) * chartW;
+          const y = padding.top + chartH - ((d.xp - minXP) / (maxXP - minXP)) * chartH;
+          return (
+            <motion.circle
+              key={i}
+              cx={x}
+              cy={y}
+              r={3}
+              fill="var(--primary)"
+              stroke="var(--background)"
+              strokeWidth={1.5}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.6 + i * 0.04, type: "spring", stiffness: 300, damping: 15 }}
+            />
+          );
+        })}
+      </>
     </motion.svg>
   );
 }
 
 function AccuracyWaffle({ accuracy }: { accuracy: number }) {
   const total = 100;
-  const filled = Math.round(accuracy);
+  const pct = Number.isFinite(accuracy) ? Math.max(0, Math.min(100, accuracy)) : 0;
+  const filled = Math.round(pct);
 
   return (
     <div className="flex items-center gap-4">
@@ -134,7 +136,7 @@ function AccuracyWaffle({ accuracy }: { accuracy: number }) {
         transition={{ delay: 0.6, type: "spring", stiffness: 200, damping: 12 }}
         className="text-3xl font-din font-bold tabular-nums"
       >
-        {accuracy}%
+        {pct}%
       </motion.span>
     </div>
   );

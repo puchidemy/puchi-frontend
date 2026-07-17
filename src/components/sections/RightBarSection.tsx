@@ -1,15 +1,11 @@
-import { cookies } from "next/headers";
 import Image from "next/image";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import ItemsInfo from "../ItemsInfo";
 import { Link } from "@/i18n/routing";
-import { Button } from "../ui/button";
 import FooterLink from "../FooterLink";
+import { GuestProfileCta } from "./GuestProfileCta";
 
-const RightBarSection = async () => {
-  const cookieStore = await cookies();
-  const isLoggedIn = !!cookieStore.get("session_active")?.value;
-
+const RightBarSection = () => {
   return (
     <div className="w-full h-full">
       <ItemsInfo />
@@ -57,25 +53,7 @@ const RightBarSection = async () => {
           </CardContent>
         </Card>
 
-        {!isLoggedIn && (
-          <Card>
-            <CardHeader className="text-xl font-bold">
-              Create a profile to save your progress!
-            </CardHeader>
-            <CardContent className="w-full flex flex-col gap-4">
-              <Link href="/auth/sign-up">
-                <Button variant="primary" className="w-full text-gray-200">
-                  CREATE A PROFILE
-                </Button>
-              </Link>
-              <Link href="/auth/sign-in">
-                <Button variant="secondary" className="w-full text-gray-200">
-                  SIGN IN
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        )}
+        <GuestProfileCta />
 
         <FooterLink />
       </div>

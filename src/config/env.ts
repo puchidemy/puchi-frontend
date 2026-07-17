@@ -2,16 +2,19 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   // Public envs (available at build time)
-  NEXT_PUBLIC_API_URL: z.string().url().default('http://localhost:8000'),
+  // Local: http://localhost:3000 (Next rewrites → core/learn/media)
+  // Prod: https://api.puchi.io.vn
+  NEXT_PUBLIC_API_URL: z.string().url().default('http://localhost:3000'),
   NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
+  // Local: same origin as FE (Next rewrites → auth :8080). Prod: api gateway.
+  NEXT_PUBLIC_AUTH_API_URL: z.string().url().default('http://localhost:3000'),
 
-  // Auth API URL — points to the auth-service directly
-  // Dev: http://localhost:8080, Prod: https://api.puchi.io.vn
-  AUTH_API_URL: z.string().url().default('http://localhost:8080'),
+  // Server-side alias (layouts); prefer NEXT_PUBLIC_AUTH_API_URL
+  AUTH_API_URL: z.string().url().default('http://localhost:3000'),
 
   // Runtime-only configs
   AUTH_URL: z.string().url().default('http://localhost:3000'),
-  API_INTERNAL_URL: z.string().url().default('http://localhost:8000'),
+  API_INTERNAL_URL: z.string().url().default('http://localhost:3000'),
 });
 
 const isServer = typeof window === 'undefined';

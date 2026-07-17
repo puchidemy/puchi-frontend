@@ -1,13 +1,13 @@
 "use client";
 
-import { Suspense, useState, useEffect, useCallback } from "react";
+import { Suspense, useState, useEffect, useCallback, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { clientFetch } from "@/lib/client-api";
+import { getMyProfile } from "@/lib/profile-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { toast } from "sonner";
 import {
   Select,
   SelectContent,
@@ -16,27 +16,39 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getProfile } from "@/actions/profile/get-profile";
 import { Separator } from "@/components/ui/separator";
 import { LimenError } from "limen-auth";
 import { authClient } from "@/lib/limen-auth";
-import { normalizeLinkedAccounts } from "@/lib/oauth-accounts";
+import {
+  enrichLinkedAccounts,
+  normalizeLinkedAccounts,
+  type LinkedAccount,
+} from "@/lib/oauth-accounts";
+import { ConnectedAccountRow } from "@/components/settings/ConnectedAccountRow";
+import {
+  StampButton,
+  type StampButtonStatus,
+} from "@/components/ui/stamp-button";
+import { useAuthStore } from "@/store/auth";
 
 const ageRanges = ["13-17", "18-24", "25-34", "35-44", "45-54", "55+"];
-
-type LinkedAccount = {
-  provider: string;
-  providerAccountId?: string;
-};
+const SAVED_FLASH_MS = 2000;
 
 function SettingsProfileContent() {
   const t = useTranslations("Settings");
   const searchParams = useSearchParams();
-  const [loading, setLoading] = useState(false);
+  const savedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const [saveStatus, setSaveStatus] = useState<StampButtonStatus>("idle");
+  const [formError, setFormError] = useState<string | null>(null);
+  const [accountsError, setAccountsError] = useState<string | null>(null);
+  const [oauthBanner, setOauthBanner] = useState<string | null>(null);
+
   const [linkingProvider, setLinkingProvider] = useState<string | null>(null);
   const [unlinkingProvider, setUnlinkingProvider] = useState<string | null>(
     null,
   );
+  const [justUnlinked, setJustUnlinked] = useState<string | null>(null);
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
@@ -45,13 +57,30 @@ function SettingsProfileContent() {
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [ageRange, setAgeRange] = useState("");
+  const [email, setEmail] = useState("");
+  const authUser = useAuthStore((s) => s.user);
 
   const [linkedAccounts, setLinkedAccounts] = useState<LinkedAccount[]>([]);
+
+  const clearSavedTimer = useCallback(() => {
+    if (savedTimerRef.current) {
+      clearTimeout(savedTimerRef.current);
+      savedTimerRef.current = null;
+    }
+  }, []);
+
+  useEffect(() => () => clearSavedTimer(), [clearSavedTimer]);
 
   const refreshLinkedAccounts = useCallback(async () => {
     try {
       const raw = await authClient.social.listAccounts();
-      setLinkedAccounts(normalizeLinkedAccounts(raw));
+      const base = normalizeLinkedAccounts(raw);
+      setLinkedAccounts(base);
+      const enriched = await enrichLinkedAccounts(base, async (provider) => {
+        const tokens = await authClient.social.tokens({ provider });
+        return { accessToken: tokens.accessToken };
+      });
+      setLinkedAccounts(enriched);
     } catch (error) {
       console.error("Failed to load linked accounts:", error);
     }
@@ -60,25 +89,21 @@ function SettingsProfileContent() {
   useEffect(() => {
     const error = searchParams.get("error");
     if (error) {
-      toast.error(decodeURIComponent(error));
+      setOauthBanner(decodeURIComponent(error));
     }
   }, [searchParams]);
 
   useEffect(() => {
     async function load() {
       try {
-        const result = await getProfile();
-        if (result.success) {
-          setFirstName(result.data.firstName);
-          setLastName(result.data.lastName);
-          setUsername(result.data.username);
-          setBio(result.data.bio || "");
-          setAgeRange(result.data.ageRange || "");
-          setProfileLoaded(true);
-        } else {
-          setLoadError(result.error || t("saveFailed"));
-          setProfileLoaded(true);
-        }
+        const data = await getMyProfile();
+        setFirstName(data.firstName ?? "");
+        setLastName(data.lastName ?? "");
+        setUsername(data.username ?? "");
+        setBio(data.bio ?? "");
+        setAgeRange(data.ageRange ?? "");
+        setEmail(data.email ?? "");
+        setProfileLoaded(true);
       } catch (error) {
         console.error("Failed to load profile:", error);
         setLoadError(t("networkError"));
@@ -91,9 +116,16 @@ function SettingsProfileContent() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const markDirty = () => {
+    setFormError(null);
+    if (saveStatus === "success") setSaveStatus("idle");
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setFormError(null);
+    setSaveStatus("loading");
+    clearSavedTimer();
 
     try {
       await clientFetch("/v1/profile", {
@@ -107,16 +139,20 @@ function SettingsProfileContent() {
         }),
       });
 
-      toast.success(t("profileSaved"));
+      setSaveStatus("success");
+      savedTimerRef.current = setTimeout(() => {
+        setSaveStatus("idle");
+        savedTimerRef.current = null;
+      }, SAVED_FLASH_MS);
     } catch (err) {
       console.error("Failed to save profile:", err);
-      toast.error(t("saveFailed"));
-    } finally {
-      setLoading(false);
+      setSaveStatus("idle");
+      setFormError(t("saveFailed"));
     }
   };
 
   const handleLinkAccount = async (provider: string) => {
+    setAccountsError(null);
     setLinkingProvider(provider);
     try {
       const returnTo = `${window.location.origin}${window.location.pathname}`;
@@ -130,9 +166,9 @@ function SettingsProfileContent() {
     } catch (err) {
       console.error("Failed to link account:", err);
       if (err instanceof LimenError && err.status === 409) {
-        toast.error(t("linkConflict"));
+        setAccountsError(t("linkConflict"));
       } else {
-        toast.error(
+        setAccountsError(
           err instanceof Error ? err.message : t("linkFailed"),
         );
       }
@@ -141,14 +177,16 @@ function SettingsProfileContent() {
   };
 
   const handleUnlinkAccount = async (provider: string) => {
+    setAccountsError(null);
     setUnlinkingProvider(provider);
     try {
       await authClient.social.unlink({ provider });
-      toast.success(t("accountUnlinked"));
       await refreshLinkedAccounts();
+      setJustUnlinked(provider);
+      setTimeout(() => setJustUnlinked(null), SAVED_FLASH_MS);
     } catch (err) {
       console.error("Failed to unlink account:", err);
-      toast.error(
+      setAccountsError(
         err instanceof Error ? err.message : t("unlinkFailed"),
       );
     } finally {
@@ -180,7 +218,16 @@ function SettingsProfileContent() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
+    <div className="space-y-6">
+      {oauthBanner && (
+        <div
+          role="alert"
+          className="rounded-xl border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm text-destructive"
+        >
+          {oauthBanner}
+        </div>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>{t("editProfile")}</CardTitle>
@@ -192,16 +239,22 @@ function SettingsProfileContent() {
                 <Label htmlFor="firstName">{t("firstName")}</Label>
                 <Input
                   id="firstName"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={firstName ?? ""}
+                  onChange={(e) => {
+                    markDirty();
+                    setFirstName(e.target.value);
+                  }}
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="lastName">{t("lastName")}</Label>
                 <Input
                   id="lastName"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={lastName ?? ""}
+                  onChange={(e) => {
+                    markDirty();
+                    setLastName(e.target.value);
+                  }}
                 />
               </div>
             </div>
@@ -210,8 +263,11 @@ function SettingsProfileContent() {
               <Label htmlFor="username">{t("username")}</Label>
               <Input
                 id="username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={username ?? ""}
+                onChange={(e) => {
+                  markDirty();
+                  setUsername(e.target.value);
+                }}
               />
             </div>
 
@@ -219,15 +275,24 @@ function SettingsProfileContent() {
               <Label htmlFor="bio">{t("bio")}</Label>
               <Input
                 id="bio"
-                value={bio}
-                onChange={(e) => setBio(e.target.value)}
+                value={bio ?? ""}
+                onChange={(e) => {
+                  markDirty();
+                  setBio(e.target.value);
+                }}
                 placeholder={t("bioPlaceholder")}
               />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="ageRange">{t("ageRange")}</Label>
-              <Select value={ageRange} onValueChange={setAgeRange}>
+              <Select
+                value={ageRange || undefined}
+                onValueChange={(v) => {
+                  markDirty();
+                  setAgeRange(v);
+                }}
+              >
                 <SelectTrigger id="ageRange">
                   <SelectValue placeholder={t("selectAgeRange")} />
                 </SelectTrigger>
@@ -241,9 +306,20 @@ function SettingsProfileContent() {
               </Select>
             </div>
 
-            <Button type="submit" variant="default" disabled={loading}>
-              {loading ? t("saving") : t("save")}
-            </Button>
+            {formError && (
+              <p role="alert" className="text-sm text-destructive">
+                {formError}
+              </p>
+            )}
+
+            <StampButton
+              type="submit"
+              variant="secondary"
+              status={saveStatus}
+              idleLabel={t("save")}
+              loadingLabel={t("saving")}
+              successLabel={t("saved")}
+            />
           </form>
         </CardContent>
       </Card>
@@ -255,47 +331,49 @@ function SettingsProfileContent() {
           <CardTitle>{t("connectedAccounts")}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
+          {accountsError && (
+            <p role="alert" className="text-sm text-destructive">
+              {accountsError}
+            </p>
+          )}
           {["google", "facebook", "tiktok"].map((provider) => {
             const account = linkedAccounts.find(
               (a) => a.provider === provider,
             );
+            const fallbackName =
+              [firstName, lastName].filter(Boolean).join(" ") ||
+              email ||
+              authUser?.email ||
+              authUser?.display_name ||
+              undefined;
+            const busy =
+              linkingProvider === provider
+                ? ("link" as const)
+                : unlinkingProvider === provider
+                  ? ("unlink" as const)
+                  : null;
+
             return (
-              <div
+              <ConnectedAccountRow
                 key={provider}
-                className="flex items-center justify-between py-2"
-              >
-                <div>
-                  <span className="font-medium capitalize">{provider}</span>
-                  {account && (
-                    <p className="text-sm text-muted-foreground">
-                      {account.providerAccountId
-                        ? t("linkedAs", { id: account.providerAccountId })
-                        : t("linked")}
-                    </p>
-                  )}
-                </div>
-                {account ? (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={unlinkingProvider === provider}
-                    onClick={() => handleUnlinkAccount(provider)}
-                  >
-                    {unlinkingProvider === provider
-                      ? t("unlinking")
-                      : t("unlink")}
-                  </Button>
-                ) : (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    disabled={linkingProvider === provider}
-                    onClick={() => handleLinkAccount(provider)}
-                  >
-                    {linkingProvider === provider ? t("linking") : t("link")}
-                  </Button>
-                )}
-              </div>
+                provider={provider}
+                account={account}
+                fallbackName={fallbackName}
+                linkedLabel={t("linked")}
+                notConnectedLabel={t("notConnected")}
+                unlinkLabel={t("unlink")}
+                unlinkingLabel={t("unlinking")}
+                linkLabel={t("link")}
+                linkingLabel={t("linking")}
+                unlinkedFlash={
+                  justUnlinked === provider && !account
+                    ? t("accountUnlinked")
+                    : undefined
+                }
+                busy={busy}
+                onLink={() => handleLinkAccount(provider)}
+                onUnlink={() => handleUnlinkAccount(provider)}
+              />
             );
           })}
         </CardContent>

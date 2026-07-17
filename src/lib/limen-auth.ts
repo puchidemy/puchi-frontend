@@ -7,7 +7,11 @@ import {
   oauthClientPlugin,
 } from "limen-auth/plugins";
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+// Local: same origin as FE (Next rewrite → auth). Prod: api gateway.
+const baseURL =
+  process.env.NEXT_PUBLIC_AUTH_API_URL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:3000";
 
 type UserFields = {
   username?: string | null;

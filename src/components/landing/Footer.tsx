@@ -111,7 +111,7 @@ const Footer = () => {
         </div>
 
         <div className="absolute right-1/4 top-1/3 md:right-1/3 md:top-[30%]">
-          <Link href="/welcome" className="rounded-full">
+          <Link href="/start" className="rounded-full">
             <span className="sr-only">Start Learning</span>
             <StartCTA label={t("start")} />
           </Link>

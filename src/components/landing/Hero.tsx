@@ -56,7 +56,7 @@ const Hero = () => {
           transition={{ delay: 0.5 }}
         >
           <Button variant="primary" size="lg" className="w-full" asChild>
-            <Link href="/welcome" prefetch={false} className="truncate">
+            <Link href="/start" prefetch={false} className="truncate">
               {t("continueLearning")}
             </Link>
           </Button>

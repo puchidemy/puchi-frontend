@@ -65,6 +65,14 @@ export async function syncTokenToCookie(): Promise<void> {
   // Limen session cookie lives on API domain; no SSR JWT cookie bridge needed.
 }
 
+function tokenFromSession(session: unknown): string | null {
+  const s = session as { token?: string } | null | undefined;
+  const fromBody = typeof s?.token === "string" ? s.token.trim() : "";
+  if (fromBody) return fromBody;
+  const fromBearer = authClient.bearer.getTokens()?.accessToken?.trim();
+  return fromBearer || null;
+}
+
 /** Re-validate session via Limen GET /auth/me; sync bearer token if present. */
 export async function tryRefreshToken(): Promise<string | null> {
   try {
@@ -73,7 +81,7 @@ export async function tryRefreshToken(): Promise<string | null> {
       clearToken();
       return null;
     }
-    const token = authClient.bearer.getTokens()?.accessToken ?? getToken();
+    const token = tokenFromSession(session) ?? getToken();
     if (token) setToken(token);
     return token;
   } catch {

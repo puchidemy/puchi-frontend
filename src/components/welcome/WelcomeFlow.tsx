@@ -1,12 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { clientFetch } from "@/lib/client-api";
 import { getToken } from "@/lib/token-manager";
+import { useAuthStore } from "@/store/auth";
+import { useAuthHydrated } from "@/hooks/use-auth-hydrated";
 import { useOnboardingStore } from "@/store/onboarding";
 import WelcomeIntro from "./WelcomeIntro";
 import BasicInfoStep, { type BasicInfoData } from "./BasicInfoStep";
@@ -42,9 +44,12 @@ const WelcomeFlow = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const t = useTranslations("Welcome");
-  const { isComplete } = useOnboardingStore();
+  const authLoading = useAuthStore((s) => s.loading);
+  const user = useAuthStore((s) => s.user);
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const hydrated = useAuthHydrated();
 
-  const [bootstrapping, setBootstrapping] = useState(() => !!getToken());
+  const [bootstrapping, setBootstrapping] = useState(true);
   const [currentStage, setCurrentStage] = useState<WelcomeStage>("intro");
   const [answers, setAnswers] = useState<Record<number, string>>({});
   const [basicInfo, setBasicInfo] = useState<BasicInfoData | null>(null);
@@ -59,14 +64,31 @@ const WelcomeFlow = () => {
   const [syncError, setSyncError] = useState("");
   const [starting, setStarting] = useState(false);
 
-  // Logged-in first-time users always land on basic-info (skip intro / local guest isComplete).
-  useEffect(() => {
-    const token = getToken();
+  /** Prevent profile bootstrap from re-running and wiping in-progress stages. */
+  const bootstrapDoneRef = useRef(false);
 
-    if (!token) {
+  // Route once after auth is ready. Do NOT depend on onboarding isComplete —
+  // Finish sets that flag and would otherwise bounce back to basic-info.
+  useEffect(() => {
+    if (!hydrated || authLoading) {
+      setBootstrapping(true);
+      return;
+    }
+
+    if (bootstrapDoneRef.current) {
       setBootstrapping(false);
-      // Guest: restore local progress if they already finished question flow
-      if (isComplete) setCurrentStage("complete");
+      return;
+    }
+
+    const token = getToken() || accessToken;
+    const loggedIn = Boolean(user || token);
+
+    if (!loggedIn) {
+      bootstrapDoneRef.current = true;
+      setBootstrapping(false);
+      setCurrentStage(
+        useOnboardingStore.getState().isComplete ? "complete" : "intro",
+      );
       return;
     }
 
@@ -77,24 +99,35 @@ const WelcomeFlow = () => {
       .then((profile) => {
         if (cancelled) return;
         if (isOnboardingDone(profile)) {
+          bootstrapDoneRef.current = true;
           router.replace("/learn");
           return;
         }
 
         const first =
-          profile.first_name || profile.firstName || searchParams.get("firstName") || "";
+          profile.first_name ||
+          profile.firstName ||
+          searchParams.get("firstName") ||
+          "";
         const last =
-          profile.last_name || profile.lastName || searchParams.get("lastName") || "";
+          profile.last_name ||
+          profile.lastName ||
+          searchParams.get("lastName") ||
+          "";
         const username = profile.username || "";
         if (first) setPrefilledFirstName(first);
         if (last) setPrefilledLastName(last);
         if (username) setPrefilledUsername(username);
 
-        // Server is source of truth — do not skip basic-info because of guest localStorage
+        // Logged-in first visit: Basic Info first. Keep local survey answers until
+        // Start Learning syncs to server (then reset). Do not wipe LS on entry.
         setCurrentStage("basic-info");
+        bootstrapDoneRef.current = true;
       })
       .catch(() => {
-        if (!cancelled) setCurrentStage("basic-info");
+        if (cancelled) return;
+        setCurrentStage("basic-info");
+        bootstrapDoneRef.current = true;
       })
       .finally(() => {
         if (!cancelled) setBootstrapping(false);
@@ -103,10 +136,10 @@ const WelcomeFlow = () => {
     return () => {
       cancelled = true;
     };
-  }, [router, searchParams, isComplete]);
+  }, [hydrated, authLoading, user, accessToken, router, searchParams]);
 
   const handleStartOnboarding = () => {
-    if (getToken()) {
+    if (getToken() || accessToken || user) {
       setCurrentStage("basic-info");
     } else {
       setCurrentStage("onboarding");
@@ -117,12 +150,8 @@ const WelcomeFlow = () => {
     setBasicInfoError("");
     setSyncError("");
     setBasicInfo(data);
-    // Prefer finishing survey questions if not done yet; otherwise go to complete.
-    if (!useOnboardingStore.getState().isComplete) {
-      setCurrentStage("onboarding");
-    } else {
-      setCurrentStage("complete");
-    }
+    // After basic info → survey questions (reset earlier cleared guest isComplete)
+    setCurrentStage("onboarding");
   };
 
   const handleOnboardingComplete = (onboardingAnswers: Record<number, string>) => {
@@ -133,8 +162,7 @@ const WelcomeFlow = () => {
   const handleStartLearning = async () => {
     setSyncError("");
 
-    // Authenticated users must complete BasicInfo + server onboarding before /learn
-    if (getToken()) {
+    if (getToken() || accessToken || user) {
       if (!basicInfo) {
         setCurrentStage("basic-info");
         return;
@@ -178,11 +206,10 @@ const WelcomeFlow = () => {
       return;
     }
 
-    // Guest trial path
     router.push("/learn");
   };
 
-  if (bootstrapping) {
+  if (!hydrated || bootstrapping || authLoading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -190,43 +217,38 @@ const WelcomeFlow = () => {
     );
   }
 
-  const renderCurrentStage = () => {
-    switch (currentStage) {
-      case "intro":
-        // Only guests see marketing intro; logged-in users are routed to basic-info above
-        return <WelcomeIntro onStartOnboarding={handleStartOnboarding} />;
-      case "basic-info":
-        return (
-          <BasicInfoStep
-            key={`${prefilledFirstName}|${prefilledLastName}|${prefilledUsername}`}
-            prefilledFirstName={prefilledFirstName}
-            prefilledLastName={prefilledLastName}
-            prefilledUsername={prefilledUsername}
-            externalError={basicInfoError}
-            onComplete={handleBasicInfoComplete}
+  switch (currentStage) {
+    case "intro":
+      return <WelcomeIntro onStartOnboarding={handleStartOnboarding} />;
+    case "basic-info":
+      return (
+        <BasicInfoStep
+          key={`${prefilledFirstName}|${prefilledLastName}|${prefilledUsername}`}
+          prefilledFirstName={prefilledFirstName}
+          prefilledLastName={prefilledLastName}
+          prefilledUsername={prefilledUsername}
+          externalError={basicInfoError}
+          onComplete={handleBasicInfoComplete}
+        />
+      );
+    case "onboarding":
+      return <OnboardingFlow onComplete={handleOnboardingComplete} />;
+    case "complete":
+      return (
+        <div className="space-y-4">
+          {syncError && (
+            <p className="text-center text-sm text-destructive pt-6">{syncError}</p>
+          )}
+          <OnboardingComplete
+            answers={answers}
+            onStartLearning={handleStartLearning}
+            starting={starting}
           />
-        );
-      case "onboarding":
-        return <OnboardingFlow onComplete={handleOnboardingComplete} />;
-      case "complete":
-        return (
-          <div className="space-y-4">
-            {syncError && (
-              <p className="text-center text-sm text-destructive pt-6">{syncError}</p>
-            )}
-            <OnboardingComplete
-              answers={answers}
-              onStartLearning={handleStartLearning}
-              starting={starting}
-            />
-          </div>
-        );
-      default:
-        return <WelcomeIntro onStartOnboarding={handleStartOnboarding} />;
-    }
-  };
-
-  return renderCurrentStage();
+        </div>
+      );
+    default:
+      return <WelcomeIntro onStartOnboarding={handleStartOnboarding} />;
+  }
 };
 
 export default WelcomeFlow;
