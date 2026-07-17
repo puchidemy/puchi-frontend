@@ -47,13 +47,17 @@ export default function SocialCallbackPage() {
     // Store access_token in-memory
     setToken(access_token);
 
-    // Sync to SSR cookie
-    syncTokenToCookie();
+    // Clean access_token from URL immediately
+    window.history.replaceState(null, "", window.location.pathname);
 
-    // Include provider in redirect so WelcomeFlow can display the right greeting
-    const p = new URLSearchParams({ provider });
-    // Hard redirect to ensure SSR cookies are picked up by middleware
-    window.location.href = `/welcome?${p.toString()}`;
+    // Sync to SSR cookie, then redirect.
+    // Use Promise.race to ensure redirect happens even if sync fails/hangs.
+    const sync = syncTokenToCookie();
+    const timeout = new Promise<void>((resolve) => setTimeout(resolve, 2000));
+    Promise.race([sync, timeout]).finally(() => {
+      const p = new URLSearchParams({ provider });
+      window.location.href = `/welcome?${p.toString()}`;
+    });
   }, [searchParams, provider, initialErrorMsg]);
 
   if (status === "error") {
