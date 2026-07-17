@@ -1,12 +1,11 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import Image from "next/image";
 import { useAuth } from "@/providers/AuthProvider";
-import { logoutAction } from "@/actions/auth";
 
 import LogoSVG from "@public/images/logo/logo.svg";
-import { Link, usePathname } from "@/i18n/routing";
+import { Link, usePathname, useRouter } from "@/i18n/routing";
 import { navigationList } from "@/constants/navigation";
 import { Separator } from "./ui/separator";
 
@@ -46,11 +45,25 @@ const NavItem = memo(function NavItem({ icon, label, slug, pathname }: NavItemPr
 
 const SidebarLeft = () => {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const router = useRouter();
+  const { user, loading, logout } = useAuth();
+  const [loggingOut, setLoggingOut] = useState(false);
   const isSignedIn = !!user;
 
   // Don't render menu items while auth is loading to prevent flash of wrong state
   const authReady = !loading;
+
+  const handleLogout = async () => {
+    if (loggingOut) return;
+    setLoggingOut(true);
+    try {
+      await logout();
+      router.push("/");
+      router.refresh();
+    } finally {
+      setLoggingOut(false);
+    }
+  };
 
   const navItems = useMemo(() => (
     navigationList.map((item) => (
@@ -131,13 +144,14 @@ const SidebarLeft = () => {
                   Loading...
                 </div>
               ) : isSignedIn ? (
-                <form action={logoutAction}>
-                  <button type="submit"
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                  >
-                    Logout
-                  </button>
-                </form>
+                <button
+                  type="button"
+                  disabled={loggingOut}
+                  onClick={handleLogout}
+                  className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer disabled:opacity-50"
+                >
+                  {loggingOut ? "Logging out..." : "Logout"}
+                </button>
               ) : (
                 <Link
                   href="/auth/sign-in"

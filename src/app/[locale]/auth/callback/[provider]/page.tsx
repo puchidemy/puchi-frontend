@@ -32,7 +32,7 @@ export default function SocialCallbackPage() {
           claimGuestIfNeeded(),
           useGuestStore.getState().mergeIfNeeded(),
         ]);
-        window.location.href = "/learn";
+        window.location.href = "/auth/continue";
       }
     })();
     return () => {

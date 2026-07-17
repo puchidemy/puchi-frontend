@@ -110,8 +110,8 @@ For any questions or support, please contact us at:
 ## Architecture
 
 ```
-User → Next.js PWA (CDN) → Envoy Gateway → Go Services → PostgreSQL/NATS/Garage
-         (puchi.io.vn)        (API GW)      (Kratos v3)    (K3s cluster)
+User → Next.js PWA (CDN) → Envoy Gateway → Go Services → PostgreSQL/NATS/R2
+         (puchi.io.vn)        (API GW)      (Kratos v3)    (K3s + Cloudflare)
 ```
 
 ### Tech Stack
@@ -131,7 +131,7 @@ User → Next.js PWA (CDN) → Envoy Gateway → Go Services → PostgreSQL/NATS
 | Repo | Description |
 |------|-------------|
 | [puchi-frontend](https://github.com/puchidemy/puchi-frontend) | Next.js PWA (this repo) |
-| [puchi-backend](https://github.com/puchidemy/puchi-backend) | Go microservices monorepo (Kratos v3, 8 services) |
+| [puchi-backend](https://github.com/puchidemy/puchi-backend) | Go microservices monorepo (Kratos v3, 5 services) |
 | [puchi-infra](https://github.com/puchidemy/puchi-infra) | ArgoCD GitOps on K3s |
 
 ---

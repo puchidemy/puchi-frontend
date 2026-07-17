@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect, useCallback } from "react";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 import { clientFetch } from "@/lib/client-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,27 +18,51 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getProfile } from "@/actions/profile/get-profile";
 import { Separator } from "@/components/ui/separator";
+import { LimenError } from "limen-auth";
+import { authClient } from "@/lib/limen-auth";
+import { normalizeLinkedAccounts } from "@/lib/oauth-accounts";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 const ageRanges = ["13-17", "18-24", "25-34", "35-44", "45-54", "55+"];
 
-export default function SettingsProfilePage() {
+type LinkedAccount = {
+  provider: string;
+  providerAccountId?: string;
+};
+
+function SettingsProfileContent() {
   const t = useTranslations("Settings");
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
+  const [linkingProvider, setLinkingProvider] = useState<string | null>(null);
+  const [unlinkingProvider, setUnlinkingProvider] = useState<string | null>(
+    null,
+  );
   const [profileLoaded, setProfileLoaded] = useState(false);
   const [loadError, setLoadError] = useState<string | null>(null);
 
-  // Form state
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
   const [ageRange, setAgeRange] = useState("");
 
-  // Linked accounts
-  const [linkedAccounts, setLinkedAccounts] = useState<
-    Array<{ provider: string; email: string; providerUserId?: string }>
-  >([]);
+  const [linkedAccounts, setLinkedAccounts] = useState<LinkedAccount[]>([]);
+
+  const refreshLinkedAccounts = useCallback(async () => {
+    try {
+      const raw = await authClient.social.listAccounts();
+      setLinkedAccounts(normalizeLinkedAccounts(raw));
+    } catch (error) {
+      console.error("Failed to load linked accounts:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error) {
+      toast.error(decodeURIComponent(error));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     async function load() {
@@ -60,15 +85,9 @@ export default function SettingsProfilePage() {
         setProfileLoaded(true);
       }
 
-      // Fetch linked accounts
-      try {
-        const data = await clientFetch<{ accounts: Array<{ provider: string; email: string; providerUserId?: string }> }>("/v1/profile/linked-accounts");
-        setLinkedAccounts(data.accounts || []);
-      } catch (error) {
-        console.error("Failed to load linked accounts:", error);
-      }
+      await refreshLinkedAccounts();
     }
-    load();
+    void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -97,14 +116,44 @@ export default function SettingsProfilePage() {
     }
   };
 
-  const handleLinkAccount = (provider: string) => {
-    // Redirect to auth-service social link endpoint
-    window.location.href = `${API_URL}/auth/social/${provider}?action=link&redirect=${encodeURIComponent(window.location.href)}`;
+  const handleLinkAccount = async (provider: string) => {
+    setLinkingProvider(provider);
+    try {
+      const returnTo = `${window.location.origin}${window.location.pathname}`;
+      const errorReturn = new URL(returnTo);
+      errorReturn.searchParams.set("error", t("linkConflict"));
+      await authClient.social.link({
+        provider,
+        redirectUri: returnTo,
+        errorRedirectUri: errorReturn.toString(),
+      });
+    } catch (err) {
+      console.error("Failed to link account:", err);
+      if (err instanceof LimenError && err.status === 409) {
+        toast.error(t("linkConflict"));
+      } else {
+        toast.error(
+          err instanceof Error ? err.message : t("linkFailed"),
+        );
+      }
+      setLinkingProvider(null);
+    }
   };
 
-  const handleUnlinkAccount = (provider: string) => {
-    // Redirect to auth-service social unlink endpoint
-    window.location.href = `${API_URL}/auth/social/${provider}?action=unlink&redirect=${encodeURIComponent(window.location.href)}`;
+  const handleUnlinkAccount = async (provider: string) => {
+    setUnlinkingProvider(provider);
+    try {
+      await authClient.social.unlink({ provider });
+      toast.success(t("accountUnlinked"));
+      await refreshLinkedAccounts();
+    } catch (err) {
+      console.error("Failed to unlink account:", err);
+      toast.error(
+        err instanceof Error ? err.message : t("unlinkFailed"),
+      );
+    } finally {
+      setUnlinkingProvider(null);
+    }
   };
 
   if (!profileLoaded) {
@@ -219,7 +268,9 @@ export default function SettingsProfilePage() {
                   <span className="font-medium capitalize">{provider}</span>
                   {account && (
                     <p className="text-sm text-muted-foreground">
-                      {account.email}
+                      {account.providerAccountId
+                        ? t("linkedAs", { id: account.providerAccountId })
+                        : t("linked")}
                     </p>
                   )}
                 </div>
@@ -227,17 +278,21 @@ export default function SettingsProfilePage() {
                   <Button
                     variant="outline"
                     size="sm"
+                    disabled={unlinkingProvider === provider}
                     onClick={() => handleUnlinkAccount(provider)}
                   >
-                    {t("unlink")}
+                    {unlinkingProvider === provider
+                      ? t("unlinking")
+                      : t("unlink")}
                   </Button>
                 ) : (
                   <Button
                     variant="outline"
                     size="sm"
+                    disabled={linkingProvider === provider}
                     onClick={() => handleLinkAccount(provider)}
                   >
-                    {t("link")}
+                    {linkingProvider === provider ? t("linking") : t("link")}
                   </Button>
                 )}
               </div>
@@ -246,5 +301,19 @@ export default function SettingsProfilePage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function SettingsProfilePage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="py-24 text-center">
+          <div className="w-8 h-8 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin mx-auto" />
+        </div>
+      }
+    >
+      <SettingsProfileContent />
+    </Suspense>
   );
 }

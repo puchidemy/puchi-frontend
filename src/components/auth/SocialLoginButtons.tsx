@@ -4,6 +4,11 @@ import { useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { authClient } from "@/lib/limen-auth";
+import { absoluteAppPath } from "@/lib/oauth-accounts";
+import {
+  setPendingOAuthProvider,
+  type OAuthProviderId,
+} from "@/lib/pending-oauth";
 
 function GoogleIcon() {
   return (
@@ -53,14 +58,16 @@ const providers = [
 export function SocialLoginButtons() {
   const [error, setError] = useState("");
 
-  const handleSocialLogin = useCallback(async (provider: (typeof providers)[number]["id"]) => {
+  const handleSocialLogin = useCallback(async (provider: OAuthProviderId) => {
     setError("");
     try {
-      const appOrigin = window.location.origin;
+      setPendingOAuthProvider(provider);
       await authClient.signIn.social({
         provider,
-        redirectUri: `${appOrigin}/learn`,
-        errorRedirectUri: `${appOrigin}/auth/sign-in`,
+        redirectUri: absoluteAppPath("/auth/continue"),
+        errorRedirectUri: absoluteAppPath(
+          `/auth/link-conflict?provider=${encodeURIComponent(provider)}`,
+        ),
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Social login failed");

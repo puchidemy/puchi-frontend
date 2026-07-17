@@ -3,58 +3,93 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "@/i18n/routing";
 import { useSearchParams } from "next/navigation";
+import { useTranslations } from "next-intl";
 import { clientFetch } from "@/lib/client-api";
 import { getToken } from "@/lib/token-manager";
 import { useOnboardingStore } from "@/store/onboarding";
 import WelcomeIntro from "./WelcomeIntro";
-import BasicInfoStep from "./BasicInfoStep";
+import BasicInfoStep, { type BasicInfoData } from "./BasicInfoStep";
 import OnboardingFlow from "./OnboardingFlow";
 import OnboardingComplete from "./OnboardingComplete";
 
 type WelcomeStage = "intro" | "basic-info" | "onboarding" | "complete";
 
+type ProfileFields = {
+  onboarding_completed?: boolean;
+  onboardingCompleted?: boolean;
+  username?: string;
+  first_name?: string;
+  firstName?: string;
+  last_name?: string;
+  lastName?: string;
+};
+
+function isOnboardingDone(profile: ProfileFields): boolean {
+  return Boolean(profile.onboarding_completed ?? profile.onboardingCompleted);
+}
+
+function isUsernameTakenError(err: unknown): boolean {
+  const msg = err instanceof Error ? err.message.toLowerCase() : String(err).toLowerCase();
+  return (
+    msg.includes("username already taken") ||
+    msg.includes("already exists") ||
+    msg.includes("username_taken")
+  );
+}
+
 const WelcomeFlow = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("Welcome");
   const { isComplete } = useOnboardingStore();
-  // Lazy init: skip to complete stage if onboarding already done in localStorage
   const [currentStage, setCurrentStage] = useState<WelcomeStage>(() =>
     isComplete ? "complete" : "intro"
   );
   const [answers, setAnswers] = useState<Record<number, string>>({});
-  const [isLoggedIn, setIsLoggedIn] = useState(() => !!getToken());
-  const [basicInfo, setBasicInfo] = useState<{ firstName: string; lastName: string; ageRange: string } | null>(null);
+  const [isLoggedIn] = useState(() => !!getToken());
+  const [basicInfo, setBasicInfo] = useState<BasicInfoData | null>(null);
+  const [prefilledFirstName, setPrefilledFirstName] = useState(
+    () => searchParams.get("firstName") || "",
+  );
+  const [prefilledLastName, setPrefilledLastName] = useState(
+    () => searchParams.get("lastName") || "",
+  );
+  const [prefilledUsername, setPrefilledUsername] = useState("");
+  const [basicInfoError, setBasicInfoError] = useState("");
 
-  // Pre-fill từ social callback params
-  const prefilledFirstName = searchParams.get("firstName") || "";
-  const prefilledLastName = searchParams.get("lastName") || "";
-
-  // When logged in, check onboarding status from backend
+  // When logged in, load profile: redirect if onboarded, else prefill basic info
   useEffect(() => {
     if (!isLoggedIn) return;
 
-    clientFetch<{ onboarding_completed?: boolean }>("/v1/profile")
+    clientFetch<ProfileFields>("/v1/profile")
       .then((profile) => {
-        if (profile.onboarding_completed) {
-          router.push("/learn");
-        } else {
-          setCurrentStage("basic-info");
+        if (isOnboardingDone(profile)) {
+          router.replace("/learn");
+          return;
         }
+        const first =
+          profile.first_name || profile.firstName || searchParams.get("firstName") || "";
+        const last =
+          profile.last_name || profile.lastName || searchParams.get("lastName") || "";
+        const username = profile.username || "";
+        if (first) setPrefilledFirstName(first);
+        if (last) setPrefilledLastName(last);
+        if (username) setPrefilledUsername(username);
+        setCurrentStage("basic-info");
       })
       .catch(() => setCurrentStage("basic-info"));
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn, router, searchParams]);
 
   const handleStartOnboarding = () => {
     if (isLoggedIn) {
-      // User vừa login → cần nhập basic info trước
       setCurrentStage("basic-info");
     } else {
-      // User chưa login → vào onboarding luôn
       setCurrentStage("onboarding");
     }
   };
 
-  const handleBasicInfoComplete = (data: { firstName: string; lastName: string; ageRange: string }) => {
+  const handleBasicInfoComplete = (data: BasicInfoData) => {
+    setBasicInfoError("");
     setBasicInfo(data);
     if (!isComplete) {
       setCurrentStage("onboarding");
@@ -82,6 +117,7 @@ const WelcomeFlow = () => {
             first_name: basicInfo.firstName,
             last_name: basicInfo.lastName,
             age_range: basicInfo.ageRange,
+            username: basicInfo.username,
             how_heard: howHeard,
             why_learn: whyLearn,
             level: level,
@@ -89,9 +125,16 @@ const WelcomeFlow = () => {
         });
       } catch (err) {
         console.error("Failed to sync onboarding:", err);
+        if (isUsernameTakenError(err)) {
+          setBasicInfoError(t("usernameTaken"));
+          setPrefilledUsername(basicInfo.username);
+          setPrefilledFirstName(basicInfo.firstName);
+          setPrefilledLastName(basicInfo.lastName);
+          setCurrentStage("basic-info");
+          return;
+        }
       }
 
-      // Clear onboarding store
       useOnboardingStore.getState().reset();
     }
     router.push("/learn");
@@ -106,6 +149,8 @@ const WelcomeFlow = () => {
           <BasicInfoStep
             prefilledFirstName={prefilledFirstName}
             prefilledLastName={prefilledLastName}
+            prefilledUsername={prefilledUsername}
+            externalError={basicInfoError}
             onComplete={handleBasicInfoComplete}
           />
         );

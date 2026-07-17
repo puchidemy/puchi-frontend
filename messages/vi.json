@@ -92,5 +92,22 @@
       "tryAgain": "Chưa đúng — thử lại",
       "matchPrompt": "Xác nhận các cặp đã ghép đúng:"
     }
+  },
+  "Welcome": {
+    "tellUsAboutYou": "Hãy cho chúng mình biết về bạn",
+    "basicInfoDescription": "Chỉ cần vài thông tin để cá nhân hóa trải nghiệm của bạn",
+    "firstName": "Tên",
+    "firstNamePlaceholder": "Nhập tên của bạn",
+    "lastName": "Họ",
+    "lastNamePlaceholder": "Nhập họ của bạn",
+    "username": "Tên người dùng",
+    "usernamePlaceholder": "Chọn tên người dùng",
+    "usernameRequired": "Tên người dùng là bắt buộc",
+    "usernameTaken": "Tên người dùng này đã được sử dụng",
+    "ageRange": "Độ tuổi",
+    "selectAgeRange": "Chọn độ tuổi của bạn",
+    "continue": "Tiếp tục",
+    "nameRequired": "Vui lòng nhập họ tên",
+    "ageRequired": "Vui lòng chọn độ tuổi"
   }
 }

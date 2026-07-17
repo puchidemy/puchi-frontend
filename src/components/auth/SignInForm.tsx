@@ -24,7 +24,8 @@ export function SignInForm() {
 
     try {
       await authLogin(email, password);
-      router.replace("/learn");
+      // Post-auth gate: pending social.link + onboarding handoff
+      router.replace("/auth/continue");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Invalid email or password. Please try again.");
       setLoading(false);

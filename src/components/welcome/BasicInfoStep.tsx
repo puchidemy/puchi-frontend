@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,20 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+export type BasicInfoData = {
+  firstName: string;
+  lastName: string;
+  username: string;
+  ageRange: string;
+};
+
 interface BasicInfoStepProps {
   prefilledFirstName?: string;
   prefilledLastName?: string;
-  onComplete: (data: { firstName: string; lastName: string; ageRange: string }) => void;
+  prefilledUsername?: string;
+  /** Server/API error to show (e.g. username taken) */
+  externalError?: string;
+  onComplete: (data: BasicInfoData) => void;
 }
 
 const ageRanges = ["13-17", "18-24", "25-34", "35-44", "45-54", "55+"];
@@ -24,13 +34,32 @@ const ageRanges = ["13-17", "18-24", "25-34", "35-44", "45-54", "55+"];
 const BasicInfoStep = ({
   prefilledFirstName = "",
   prefilledLastName = "",
+  prefilledUsername = "",
+  externalError = "",
   onComplete,
 }: BasicInfoStepProps) => {
   const t = useTranslations("Welcome");
   const [firstName, setFirstName] = useState(prefilledFirstName);
   const [lastName, setLastName] = useState(prefilledLastName);
+  const [username, setUsername] = useState(prefilledUsername);
   const [ageRange, setAgeRange] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (prefilledFirstName) setFirstName(prefilledFirstName);
+  }, [prefilledFirstName]);
+
+  useEffect(() => {
+    if (prefilledLastName) setLastName(prefilledLastName);
+  }, [prefilledLastName]);
+
+  useEffect(() => {
+    if (prefilledUsername) setUsername(prefilledUsername);
+  }, [prefilledUsername]);
+
+  useEffect(() => {
+    if (externalError) setError(externalError);
+  }, [externalError]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,12 +73,21 @@ const BasicInfoStep = ({
       setError(t("nameRequired"));
       return;
     }
+    if (!username.trim()) {
+      setError(t("usernameRequired"));
+      return;
+    }
     if (!ageRange) {
       setError(t("ageRequired"));
       return;
     }
 
-    onComplete({ firstName: firstName.trim(), lastName: lastName.trim(), ageRange });
+    onComplete({
+      firstName: firstName.trim(),
+      lastName: lastName.trim(),
+      username: username.trim(),
+      ageRange,
+    });
   };
 
   return (
@@ -87,6 +125,19 @@ const BasicInfoStep = ({
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required
+          />
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="username">{t("username")}</Label>
+          <Input
+            id="username"
+            name="username"
+            placeholder={t("usernamePlaceholder")}
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+            autoComplete="username"
           />
         </div>
 

@@ -144,6 +144,10 @@
     "firstNamePlaceholder": "Enter your first name",
     "lastName": "Last Name",
     "lastNamePlaceholder": "Enter your last name",
+    "username": "Username",
+    "usernamePlaceholder": "Choose a username",
+    "usernameRequired": "Username is required",
+    "usernameTaken": "This username is already taken",
     "ageRange": "Age Range",
     "selectAgeRange": "Select your age range",
     "continue": "Continue",
@@ -167,8 +171,15 @@
     "connectedAccounts": "Connected Accounts",
     "unlink": "Unlink",
     "link": "Link",
+    "linking": "Linking...",
+    "unlinking": "Unlinking...",
+    "linked": "Connected",
+    "linkedAs": "Connected ({id})",
     "accountUnlinked": "Account unlinked successfully",
-    "unlinkFailed": "Failed to unlink account"
+    "accountLinked": "Account linked successfully",
+    "unlinkFailed": "Failed to unlink account",
+    "linkFailed": "Failed to link account",
+    "linkConflict": "This social account is already linked to another user"
   },
   "ProfileActions": {
     "actions": {
