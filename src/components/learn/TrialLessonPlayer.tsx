@@ -28,6 +28,15 @@ interface MatchPrompt {
   pairs?: [string, string][];
 }
 
+function parsePromptJson<T>(raw: string | undefined | null): T {
+  if (!raw) return {} as T;
+  try {
+    return JSON.parse(raw) as T;
+  } catch {
+    return {} as T;
+  }
+}
+
 interface TrialLessonPlayerProps {
   lessonId: string;
 }
@@ -63,7 +72,7 @@ export function TrialLessonPlayer({ lessonId }: TrialLessonPlayerProps) {
       ]);
       setLesson(l);
       setExercises(exs);
-      setAttemptId(start.attemptId);
+      setAttemptId(start.attempt_id);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("loadError"));
     } finally {
@@ -121,7 +130,7 @@ export function TrialLessonPlayer({ lessonId }: TrialLessonPlayerProps) {
     try {
       const result = await completeLesson(lesson.id);
       markLessonCompleted(lesson.id);
-      if (result.unitCompleted) {
+      if (result.unit_completed) {
         setUnitCompleted(true);
       }
       router.push("/learn");
@@ -141,7 +150,7 @@ export function TrialLessonPlayer({ lessonId }: TrialLessonPlayerProps) {
       setStep((s) => s + 1);
       const next = exercises[step + 1];
       if (next?.type === "match") {
-        const prompt = JSON.parse(next.promptJson) as MatchPrompt;
+        const prompt = parsePromptJson<MatchPrompt>(next.prompt_json);
         setMatchPairs(prompt.pairs ?? []);
       }
     }
@@ -149,7 +158,7 @@ export function TrialLessonPlayer({ lessonId }: TrialLessonPlayerProps) {
 
   useEffect(() => {
     if (current?.type === "match") {
-      const prompt = JSON.parse(current.promptJson) as MatchPrompt;
+      const prompt = parsePromptJson<MatchPrompt>(current.prompt_json);
       setMatchPairs(prompt.pairs ?? []);
     }
   }, [current]);
@@ -177,7 +186,7 @@ export function TrialLessonPlayer({ lessonId }: TrialLessonPlayerProps) {
 
   if (!current || !lesson) return null;
 
-  const selectPrompt = JSON.parse(current.promptJson) as SelectPrompt;
+  const selectPrompt = parsePromptJson<SelectPrompt>(current.prompt_json);
 
   return (
     <div className="max-w-lg mx-auto p-6 space-y-6">
