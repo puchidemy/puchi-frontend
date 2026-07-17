@@ -58,12 +58,12 @@ const RightBarSection = async () => {
             Create a profile to save your progress!
           </CardHeader>
           <CardContent className="w-full flex flex-col gap-4">
-            <Link href="/sign-up">
+            <Link href="/auth/sign-up">
               <Button variant="primary" className="w-full text-gray-200">
                 CREATE A PROFILE
               </Button>
             </Link>
-            <Link href="/sign-in">
+            <Link href="/auth/sign-in">
               <Button variant="secondary" className="w-full text-gray-200">
                 SIGN IN
               </Button>

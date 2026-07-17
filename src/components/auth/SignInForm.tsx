@@ -7,8 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { login } from "@/lib/auth-client";
 
 export function SignInForm() {
   const router = useRouter();
@@ -22,77 +21,63 @@ export function SignInForm() {
     setError("");
     setLoading(true);
 
-    try {
-      const res = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
-      });
+    const result = await login(email, password);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Invalid email or password. Please try again.");
-        return;
-      }
-
-      if (data.access_token) {
-        localStorage.setItem("access_token", data.access_token);
-      }
-
-      router.replace("/learn");
-    } catch (err) {
-      setError("Network error. Please check your connection.");
-    } finally {
+    if (!result.ok) {
+      setError(result.error || "Invalid email or password. Please try again.");
       setLoading(false);
+      return;
     }
+
+    if (result.data?.access_token) {
+      localStorage.setItem("access_token", result.data.access_token);
+    }
+
+    router.replace("/learn");
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-          />
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="name@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          disabled={loading}
+        />
+      </div>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label htmlFor="password">Password</Label>
+          <Link
+            href="/auth/forgot-password"
+            className="text-sm text-muted-foreground hover:text-primary"
+          >
+            Forgot password?
+          </Link>
         </div>
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link
-              href="/auth/forgot-password"
-              className="text-sm text-muted-foreground hover:text-primary"
-            >
-              Forgot password?
-            </Link>
-          </div>
-          <Input
-            id="password"
-            type="password"
-            placeholder="••••••••"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <Button type="submit" variant="primary" className="w-full" disabled={loading}>
-          {loading ? "Signing in..." : "Sign In"}
-        </Button>
-      </form>
-    </>
+        <Input
+          id="password"
+          type="password"
+          placeholder="••••••••"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          disabled={loading}
+        />
+      </div>
+      <Button type="submit" variant="primary" className="w-full" disabled={loading}>
+        {loading ? "Signing in..." : "Sign In"}
+      </Button>
+    </form>
   );
 }

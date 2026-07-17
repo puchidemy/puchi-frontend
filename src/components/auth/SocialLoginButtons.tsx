@@ -2,9 +2,8 @@
 
 import { useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { API_URL } from "@/lib/auth-client";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 function GoogleIcon() {
   return (

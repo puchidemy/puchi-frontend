@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { resetPassword } from "@/lib/auth-client";
 
 export function ResetPasswordForm() {
   const router = useRouter();
@@ -36,7 +35,6 @@ export function ResetPasswordForm() {
       setError("Passwords do not match");
       return;
     }
-
     if (password.length < 8) {
       setError("Password must be at least 8 characters");
       return;
@@ -44,26 +42,15 @@ export function ResetPasswordForm() {
 
     setLoading(true);
 
-    try {
-      const res = await fetch(`${API_URL}/auth/reset-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, code, password }),
-      });
+    const result = await resetPassword(userId!, code!, password);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        setError(data.error || "Failed to reset password. Please try again.");
-        return;
-      }
-
-      router.push("/auth/sign-in?reset=success");
-    } catch (err) {
-      setError("Network error. Please try again.");
-    } finally {
+    if (!result.ok) {
+      setError(result.error || "Failed to reset password. Please try again.");
       setLoading(false);
+      return;
     }
+
+    router.push("/auth/sign-in?reset=success");
   }
 
   return (

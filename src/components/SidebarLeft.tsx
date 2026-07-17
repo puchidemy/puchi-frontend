@@ -105,7 +105,7 @@ const SidebarLeft = () => {
               <Separator className="my-2 bg-gray-300" />
               {!isSignedIn && (
                 <Link
-                  href="/sign-up"
+                  href="/auth/sign-up"
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                 >
                   Create profile
@@ -133,7 +133,7 @@ const SidebarLeft = () => {
                 </form>
               ) : (
                 <Link
-                  href="/sign-up"
+                  href="/auth/sign-in"
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
                 >
                   Sign in

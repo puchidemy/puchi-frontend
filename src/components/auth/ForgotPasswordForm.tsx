@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { forgotPassword } from "@/lib/auth-client";
 
 export function ForgotPasswordForm() {
   const [email, setEmail] = useState("");
@@ -20,25 +19,15 @@ export function ForgotPasswordForm() {
     setError("");
     setLoading(true);
 
-    try {
-      const res = await fetch(`${API_URL}/auth/forgot-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+    const result = await forgotPassword(email);
 
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || "Failed to send reset email.");
-        return;
-      }
-
-      setSuccess(true);
-    } catch (err) {
-      setError("Network error. Please try again later.");
-    } finally {
+    if (!result.ok) {
+      setError(result.error || "Failed to send reset email.");
       setLoading(false);
+      return;
     }
+
+    setSuccess(true);
   }
 
   if (success) {

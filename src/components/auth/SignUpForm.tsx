@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { register } from "@/lib/auth-client";
 
 export function SignUpForm() {
   const [email, setEmail] = useState("");
@@ -26,7 +25,6 @@ export function SignUpForm() {
       setError("Passwords do not match");
       return;
     }
-
     if (password.length < 8) {
       setError("Password must be at least 8 characters");
       return;
@@ -34,34 +32,19 @@ export function SignUpForm() {
 
     setLoading(true);
 
-    try {
-      const res = await fetch(`${API_URL}/auth/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-          display_name: displayName || undefined,
-        }),
-      });
+    const result = await register(email, password, displayName || undefined);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        if (res.status === 409) {
-          setError("An account with this email already exists");
-        } else {
-          setError(data.error || "Registration failed. Please try again.");
-        }
-        return;
+    if (!result.ok) {
+      if (result.error?.toLowerCase().includes("exists")) {
+        setError("An account with this email already exists");
+      } else {
+        setError(result.error || "Registration failed. Please try again.");
       }
-
-      setSuccess(true);
-    } catch (err) {
-      setError("Network error. Please check your connection.");
-    } finally {
       setLoading(false);
+      return;
     }
+
+    setSuccess(true);
   }
 
   if (success) {
@@ -70,7 +53,7 @@ export function SignUpForm() {
         <Alert>
           <AlertDescription>
             Account created successfully! Please check your email to verify your
-            account,             then{" "}
+            account, then{" "}
             <Link
               href="/auth/sign-in"
               className="text-primary font-medium hover:underline"
@@ -85,65 +68,63 @@ export function SignUpForm() {
   }
 
   return (
-    <>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        )}
-        <div className="space-y-2">
-          <Label htmlFor="displayName">Display Name</Label>
-          <Input
-            id="displayName"
-            type="text"
-            placeholder="Your display name"
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="email">Email</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder="name@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="At least 8 characters"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            minLength={8}
-            disabled={loading}
-          />
-        </div>
-        <div className="space-y-2">
-          <Label htmlFor="confirm-password">Confirm Password</Label>
-          <Input
-            id="confirm-password"
-            type="password"
-            placeholder="Re-enter your password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
-        <Button type="submit" variant="primary" className="w-full" disabled={loading}>
-          {loading ? "Creating account..." : "Create Account"}
-        </Button>
-      </form>
-    </>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {error && (
+        <Alert variant="destructive">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      <div className="space-y-2">
+        <Label htmlFor="displayName">Display Name</Label>
+        <Input
+          id="displayName"
+          type="text"
+          placeholder="Your display name"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+          disabled={loading}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          placeholder="name@example.com"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          disabled={loading}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <Input
+          id="password"
+          type="password"
+          placeholder="At least 8 characters"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          minLength={8}
+          disabled={loading}
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="confirm-password">Confirm Password</Label>
+        <Input
+          id="confirm-password"
+          type="password"
+          placeholder="Re-enter your password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
+          disabled={loading}
+        />
+      </div>
+      <Button type="submit" variant="primary" className="w-full" disabled={loading}>
+        {loading ? "Creating account..." : "Create Account"}
+      </Button>
+    </form>
   );
 }
