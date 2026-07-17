@@ -46,8 +46,8 @@ export function OnboardingBypassGuard({ children }: { children: ReactNode }) {
         }
         setReady(true);
       } catch {
-        // Profile unavailable — do not block the app (guest trial / transient errors)
-        if (!cancelled) setReady(true);
+        // Authenticated but profile/onboarding unknown — force welcome, don't open the app
+        if (!cancelled) router.replace("/welcome");
       }
     }
 

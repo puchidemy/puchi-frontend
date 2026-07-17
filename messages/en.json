@@ -152,7 +152,8 @@
     "selectAgeRange": "Select your age range",
     "continue": "Continue",
     "nameRequired": "Name is required",
-    "ageRequired": "Please select your age range"
+    "ageRequired": "Please select your age range",
+    "syncFailed": "Could not save your profile. Please try again."
   },
   "Settings": {
     "editProfile": "Edit Profile",

@@ -29,14 +29,12 @@ export async function login(email: string, password: string): Promise<ApiResult<
 export async function register(
   email: string,
   password: string,
-  displayName?: string,
 ): Promise<ApiResult<unknown>> {
   try {
+    // Name/username collected later on /welcome BasicInfoStep
     const data = await authClient.signUp.credential({
       email,
       password,
-      username: displayName || undefined,
-      firstname: displayName || undefined,
     });
     return { ok: true, data };
   } catch (err) {

@@ -111,6 +111,7 @@
     "selectAgeRange": "Chọn độ tuổi của bạn",
     "continue": "Tiếp tục",
     "nameRequired": "Vui lòng nhập họ tên",
-    "ageRequired": "Vui lòng chọn độ tuổi"
+    "ageRequired": "Vui lòng chọn độ tuổi",
+    "syncFailed": "Không lưu được hồ sơ. Vui lòng thử lại."
   }
 }

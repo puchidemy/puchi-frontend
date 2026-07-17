@@ -8,11 +8,13 @@ import { useOnboardingStore } from "@/store/onboarding";
 interface OnboardingCompleteProps {
   answers: Record<number, string>;
   onStartLearning: () => void;
+  starting?: boolean;
 }
 
 const OnboardingComplete = ({
   answers,
   onStartLearning,
+  starting = false,
 }: OnboardingCompleteProps) => {
   const { setIsComplete } = useOnboardingStore();
 
@@ -69,8 +71,9 @@ const OnboardingComplete = ({
           onClick={onStartLearning}
           size="lg"
           className="px-8"
+          disabled={starting}
         >
-          Start Learning Vietnamese
+          {starting ? "Saving..." : "Start Learning Vietnamese"}
         </Button>
       </div>
     </div>

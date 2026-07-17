@@ -2,19 +2,23 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { register } from "@/lib/auth-client";
+import { authClient } from "@/lib/limen-auth";
+import { setToken, userFromLimen } from "@/lib/token-manager";
+import { useAuthStore } from "@/store/auth";
 
 export function SignUpForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [displayName, setDisplayName] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [needsVerify, setNeedsVerify] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -32,7 +36,7 @@ export function SignUpForm() {
 
     setLoading(true);
 
-    const result = await register(email, password, displayName || undefined);
+    const result = await register(email, password);
 
     if (!result.ok) {
       if (result.error?.toLowerCase().includes("exists")) {
@@ -44,23 +48,39 @@ export function SignUpForm() {
       return;
     }
 
-    setSuccess(true);
+    // If signup created a session, go through post-auth gate → /welcome → basic info
+    try {
+      const session = await authClient.getSession();
+      if (session?.user) {
+        useAuthStore.getState().setUser(userFromLimen(session.user));
+        const token =
+          (session as { token?: string }).token ??
+          authClient.bearer.getTokens()?.accessToken;
+        if (token) setToken(token);
+        router.replace("/auth/continue");
+        return;
+      }
+    } catch {
+      // fall through to verify message
+    }
+
+    setNeedsVerify(true);
+    setLoading(false);
   }
 
-  if (success) {
+  if (needsVerify) {
     return (
       <div className="space-y-4 text-center">
         <Alert>
           <AlertDescription>
-            Account created successfully! Check your email for a verification
-            link, then{" "}
+            Account created! Check your email for a verification link, then{" "}
             <Link
               href="/auth/sign-in"
               className="text-primary font-medium hover:underline"
             >
               sign in
-            </Link>
-            .
+            </Link>{" "}
+            to finish setting up your profile.
           </AlertDescription>
         </Alert>
       </div>
@@ -75,56 +95,53 @@ export function SignUpForm() {
         </Alert>
       )}
       <div className="space-y-2">
-        <Label htmlFor="displayName">Display Name</Label>
-        <Input
-          id="displayName"
-          type="text"
-          placeholder="Your display name"
-          value={displayName}
-          onChange={(e) => setDisplayName(e.target.value)}
-          disabled={loading}
-        />
-      </div>
-      <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input
           id="email"
+          name="email"
           type="email"
-          placeholder="name@example.com"
+          placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          disabled={loading}
+          autoComplete="email"
         />
       </div>
       <div className="space-y-2">
         <Label htmlFor="password">Password</Label>
         <Input
           id="password"
+          name="password"
           type="password"
           placeholder="At least 8 characters"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength={8}
-          disabled={loading}
+          autoComplete="new-password"
         />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="confirm-password">Confirm Password</Label>
+        <Label htmlFor="confirmPassword">Confirm Password</Label>
         <Input
-          id="confirm-password"
+          id="confirmPassword"
+          name="confirmPassword"
           type="password"
-          placeholder="Re-enter your password"
+          placeholder="Confirm password"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
-          disabled={loading}
+          autoComplete="new-password"
         />
       </div>
       <Button type="submit" variant="primary" className="w-full" disabled={loading}>
-        {loading ? "Creating account..." : "Create Account"}
+        {loading ? "Creating account..." : "Sign up"}
       </Button>
+      <p className="text-center text-sm text-muted-foreground">
+        Already have an account?{" "}
+        <Link href="/auth/sign-in" className="text-primary hover:underline">
+          Sign in
+        </Link>
+      </p>
     </form>
   );
 }
