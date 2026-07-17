@@ -26,6 +26,12 @@ export default function SocialCallbackPage() {
         useAuthStore.getState().setUser(userFromLimen(session.user));
         const token = authClient.bearer.getTokens()?.accessToken;
         if (token) setToken(token);
+        const { claimGuestIfNeeded } = await import("@/hooks/use-claim-guest");
+        const { useGuestStore } = await import("@/store/guest");
+        await Promise.all([
+          claimGuestIfNeeded(),
+          useGuestStore.getState().mergeIfNeeded(),
+        ]);
         window.location.href = "/learn";
       }
     })();

@@ -69,5 +69,28 @@
       "connectionError": "Không thể kết nối. Vui lòng kiểm tra mạng"
     },
     "server": { "internalError": "Có lỗi xảy ra. Vui lòng thử lại sau" }
+  },
+  "TrialLearn": {
+    "loadError": "Không tải được unit dùng thử. Vui lòng thử lại.",
+    "retry": "Thử lại",
+    "saveProgress": "Lưu tiến độ",
+    "softGate": {
+      "title": "Tuyệt vời! Lưu tiến độ của bạn",
+      "description": "Bạn đã hoàn thành unit dùng thử miễn phí. Đăng ký hoặc đăng nhập để giữ tiến độ và mở thêm bài học.",
+      "signUp": "Tạo tài khoản miễn phí",
+      "signIn": "Tôi đã có tài khoản"
+    },
+    "lesson": {
+      "loadError": "Không tải được bài học.",
+      "submitError": "Không gửi được câu trả lời.",
+      "completeError": "Không hoàn thành được bài học.",
+      "backToLearn": "Về Learn",
+      "step": "Câu {current}/{total}",
+      "check": "Kiểm tra",
+      "checking": "Đang kiểm tra…",
+      "correct": "Đúng rồi!",
+      "tryAgain": "Chưa đúng — thử lại",
+      "matchPrompt": "Xác nhận các cặp đã ghép đúng:"
+    }
   }
 }

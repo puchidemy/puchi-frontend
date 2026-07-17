@@ -78,7 +78,11 @@ export function AuthProvider({
     const token = authClient.bearer.getTokens()?.accessToken;
     if (token) setToken(token);
     const { useGuestStore } = await import("@/store/guest");
-    useGuestStore.getState().mergeIfNeeded();
+    const { claimGuestIfNeeded } = await import("@/hooks/use-claim-guest");
+    await Promise.all([
+      useGuestStore.getState().mergeIfNeeded(),
+      claimGuestIfNeeded(),
+    ]);
   };
 
   const register = async (

@@ -335,5 +335,28 @@
       "connectionError": "Unable to connect. Please check your internet"
     },
     "server": { "internalError": "Something went wrong. Please try again later" }
+  },
+  "TrialLearn": {
+    "loadError": "Could not load the trial unit. Please try again.",
+    "retry": "Try again",
+    "saveProgress": "Save your progress",
+    "softGate": {
+      "title": "Great job! Save your progress",
+      "description": "You completed the free trial unit. Sign up or sign in to keep your progress and unlock more lessons.",
+      "signUp": "Create free account",
+      "signIn": "I already have an account"
+    },
+    "lesson": {
+      "loadError": "Could not load this lesson.",
+      "submitError": "Could not submit your answer.",
+      "completeError": "Could not complete the lesson.",
+      "backToLearn": "Back to Learn",
+      "step": "Question {current} of {total}",
+      "check": "Check",
+      "checking": "Checking…",
+      "correct": "Correct!",
+      "tryAgain": "Not quite — try again",
+      "matchPrompt": "Confirm these pairs are matched correctly:"
+    }
   }
 }
