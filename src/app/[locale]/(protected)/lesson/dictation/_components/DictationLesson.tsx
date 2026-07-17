@@ -14,6 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { dictationService } from "@/services/dictation.service";
 import { useDrawerStore } from "@/store/drawer";
+import { useGuestStore } from "@/store/guest";
+import { useAuthStore } from "@/store/auth";
 import { shuffleArray } from "@/lib/shuffle-array";
 
 interface DictationLessonProps {
@@ -67,6 +69,14 @@ const DictationLessonComponent = ({
     try {
       const answers: DictationAnswer[] = []; // TODO: Collect user answers history
       await dictationService.completeLesson(lessonId, answers);
+
+      // Guest mode: track progress locally if not logged in
+      const isLoggedIn = !!useAuthStore.getState().accessToken;
+      if (!isLoggedIn) {
+        const correctCount = answers.filter((a) => a.isCorrect).length;
+        useGuestStore.getState().addCompletedLesson(lessonId, correctCount, correctCount * 10);
+      }
+
       router.push("/dictation");
     } catch (error) {
       console.error("Failed to complete lesson:", error);

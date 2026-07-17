@@ -12,21 +12,10 @@ export async function proxy(req: NextRequest) {
     return NextResponse.next();
   }
 
-  const isProtected = localizedProtectedRoute.some((route) => {
-    const pattern = route.replace("/:locale", "");
-    return url.pathname.includes(pattern);
-  });
-
-  if (isProtected) {
-    // Check the session_active indicator cookie set by the Route Handler.
-    // This is on the same domain (puchi.io.vn), unlike the refresh_token cookie
-    // which lives on api.puchi.io.vn (set by auth-service).
-    const sessionActive = req.cookies.get("session_active");
-    if (!sessionActive) {
-      const signInUrl = new URL("/auth/sign-in", req.url);
-      return NextResponse.redirect(signInUrl);
-    }
-  }
+  // Guest mode: protected routes are allowed for all users.
+  // The UI will show sign-in prompts for guest users when they try to save progress.
+  // The session_active cookie check is removed to enable guest access.
+  // This redirect is now only used as a fallback — most auth gating is client-side.
 
   return intlMiddleware(req);
 }
