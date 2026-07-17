@@ -4,28 +4,28 @@ export type TResponse<T extends Default> = T['result'];
 
 // Auth contracts
 export interface APILogin extends Default {
-  url: '/api/auth/login';
+  url: '/auth/login';
   method: 'post';
   data: { email: string; password: string };
   result: { success: boolean; access_token?: string; user?: { id: string; email: string; display_name: string; email_verified: boolean } } | { error: string };
 }
 
 export interface APIRegister extends Default {
-  url: '/api/auth/register';
+  url: '/auth/register';
   method: 'post';
   data: { email: string; password: string; display_name?: string };
   result: { success: boolean; userId?: string } | { error: string };
 }
 
 export interface APIForgotPassword extends Default {
-  url: '/api/auth/forgot-password';
+  url: '/auth/forgot-password';
   method: 'post';
   data: { email: string };
   result: { success: boolean } | { error: string };
 }
 
 export interface APIResetPassword extends Default {
-  url: '/api/auth/reset-password';
+  url: '/auth/reset-password';
   method: 'post';
   data: { userId: string; code: string; password: string };
   result: { success: boolean } | { error: string };

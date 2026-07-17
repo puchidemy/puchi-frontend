@@ -16,7 +16,7 @@ export async function logoutAction() {
 
   // Call auth-service to revoke the session
   try {
-    await fetch(`${AUTH_API_URL}/api/auth/logout`, {
+    await fetch(`${AUTH_API_URL}/auth/logout`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${accessToken}`,

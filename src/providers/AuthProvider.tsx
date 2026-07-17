@@ -26,7 +26,7 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
 
   const refreshSession = useCallback(async () => {
     try {
-      const res = await fetch(`${baseUrl}/api/auth/sessions`, {
+      const res = await fetch(`${baseUrl}/auth/sessions`, {
         credentials: 'include',
       })
       if (res.ok) {
@@ -49,7 +49,7 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
   }, [refreshSession])
 
   const login = async (email: string, password: string) => {
-    const res = await fetch(`${baseUrl}/api/auth/login`, {
+    const res = await fetch(`${baseUrl}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -67,7 +67,7 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
   }
 
   const register = async (email: string, password: string, displayName?: string) => {
-    const res = await fetch(`${baseUrl}/api/auth/register`, {
+    const res = await fetch(`${baseUrl}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, display_name: displayName }),
@@ -81,7 +81,7 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
   const logout = async () => {
     const accessToken = localStorage.getItem('access_token')
     try {
-      await fetch(`${baseUrl}/api/auth/logout`, {
+      await fetch(`${baseUrl}/auth/logout`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${accessToken}` },
         credentials: 'include',

@@ -99,12 +99,12 @@ export default function SettingsProfilePage() {
 
   const handleLinkAccount = (provider: string) => {
     // Redirect to auth-service social link endpoint
-    window.location.href = `${API_URL}/api/auth/social/${provider}?action=link&redirect=${encodeURIComponent(window.location.href)}`;
+    window.location.href = `${API_URL}/auth/social/${provider}?action=link&redirect=${encodeURIComponent(window.location.href)}`;
   };
 
   const handleUnlinkAccount = (provider: string) => {
     // Redirect to auth-service social unlink endpoint
-    window.location.href = `${API_URL}/api/auth/social/${provider}?action=unlink&redirect=${encodeURIComponent(window.location.href)}`;
+    window.location.href = `${API_URL}/auth/social/${provider}?action=unlink&redirect=${encodeURIComponent(window.location.href)}`;
   };
 
   if (!profileLoaded) {

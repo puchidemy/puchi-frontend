@@ -55,7 +55,7 @@ export function SocialLoginButtons() {
   const [error, setError] = useState("");
 
   const handleSocialLogin = useCallback((provider: string) => {
-    window.location.assign(`${API_URL}/api/auth/social/${provider}`);
+    window.location.assign(`${API_URL}/auth/social/${provider}`);
   }, []);
 
   return (

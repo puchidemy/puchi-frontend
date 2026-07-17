@@ -26,7 +26,7 @@ const WelcomeFlow = () => {
 
   // Kiểm tra login state
   useEffect(() => {
-    clientFetch<{ session: unknown }>("/api/auth/session")
+    clientFetch<{ session: unknown }>("/auth/session")
       .then(data => setIsLoggedIn(!!data.session))
       .catch(() => setIsLoggedIn(false));
   }, []);
