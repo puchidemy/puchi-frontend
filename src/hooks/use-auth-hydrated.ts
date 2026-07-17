@@ -1,30 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useAuthStore } from "@/store/auth";
 import { restoreTokenFromStore } from "@/lib/token-manager";
 
-/** Wait for zustand persist rehydration (SSR-safe: persist may be undefined on server). */
+function subscribe(onStoreChange: () => void) {
+  const persistApi = useAuthStore.persist;
+  if (!persistApi) return () => {};
+  return persistApi.onFinishHydration(onStoreChange);
+}
+
+function getClientSnapshot() {
+  return useAuthStore.persist?.hasHydrated() ?? true;
+}
+
+function getServerSnapshot() {
+  return false;
+}
+
+/** Wait for zustand persist rehydration (SSR-safe). */
 export function useAuthHydrated(): boolean {
-  const [hydrated, setHydrated] = useState(false);
+  const hydrated = useSyncExternalStore(
+    subscribe,
+    getClientSnapshot,
+    getServerSnapshot,
+  );
 
   useEffect(() => {
-    const persistApi = useAuthStore.persist;
-    if (!persistApi) {
-      restoreTokenFromStore();
-      setHydrated(true);
-      return;
-    }
-
-    const finish = () => {
-      restoreTokenFromStore();
-      setHydrated(true);
-    };
-
-    const unsub = persistApi.onFinishHydration(finish);
-    if (persistApi.hasHydrated()) finish();
-    return unsub;
-  }, []);
+    if (!hydrated) return;
+    restoreTokenFromStore();
+  }, [hydrated]);
 
   return hydrated;
 }
