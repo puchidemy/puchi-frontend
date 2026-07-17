@@ -87,7 +87,8 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "chore: update ${{ env.IMAGE_NAME }} image to ${{ github.sha }}
-            
+
             Automated by CI/CD for commit ${{ github.sha }}"
+            git pull --rebase
             git push
           fi
