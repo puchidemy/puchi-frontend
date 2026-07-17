@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,13 +19,7 @@ export function ResetPasswordForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!userId || !code) {
-      setError(
-        "Invalid or missing reset parameters. Please request a new password reset."
-      );
-    }
-  }, [userId, code]);
+  const missingParams = !userId || !code;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -55,7 +49,14 @@ export function ResetPasswordForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      {error && (
+      {missingParams && (
+        <Alert variant="destructive">
+          <AlertDescription>
+            Invalid or missing reset parameters. Please request a new password reset.
+          </AlertDescription>
+        </Alert>
+      )}
+      {!missingParams && error && (
         <Alert variant="destructive">
           <AlertDescription>{error}</AlertDescription>
         </Alert>
