@@ -3,62 +3,78 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { setToken, syncTokenToCookie } from "@/lib/token-manager";
+import { setToken, syncTokenToCookie, setBaseUrl } from "@/lib/token-manager";
 import { Loader2 } from "lucide-react";
+
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
 export default function SocialCallbackPage() {
   const params = useParams();
   const searchParams = useSearchParams();
   const provider = params.provider as string;
 
-  // Derive error state directly from searchParams — avoid sync setState in effect
-  const initialErrorMsg = searchParams.get("error");
-  const [status, setStatus] = useState<"processing" | "error">(
-    initialErrorMsg ? "error" : "processing"
+  const errorParam = searchParams.get("error");
+  const [status, setStatus] = useState<"processing" | "error" | "success">(
+    errorParam ? "error" : "processing"
   );
-  const [error, setError] = useState(initialErrorMsg || "");
+  const [error, setError] = useState(errorParam || "");
 
   useEffect(() => {
-    // Already handled by initial state derivation
-    if (initialErrorMsg) return;
+    if (errorParam) return;
+    if (status !== "processing") return;
 
-    const accessToken = searchParams.get("access_token");
+    let cancelled = false;
 
-    if (!accessToken) {
-      // Try to restore from cookie (in case backend already set it via Set-Cookie)
-      fetch("/api/auth/restore-session")
-        .then((r) => r.json())
-        .then((data) => {
-          if (data.access_token) {
-            setToken(data.access_token);
-            window.location.href = "/learn";
-          } else {
-            setStatus("error");
-            setError("No authentication token received");
-          }
-        })
-        .catch(() => {
-          setStatus("error");
-          setError("Failed to complete authentication");
+    async function obtainToken() {
+      try {
+        // The auth-service callback already set refresh_token cookie.
+        // Use it to get an access_token via /auth/refresh.
+        const res = await fetch(`${API_URL}/auth/refresh`, {
+          method: "POST",
+          credentials: "include",
         });
-      return;
+
+        if (cancelled) return;
+
+        if (!res.ok) {
+          setStatus("error");
+          setError("Failed to complete authentication. Please try again.");
+          return;
+        }
+
+        const data = await res.json();
+        const accessToken = data.access_token;
+
+        if (!accessToken) {
+          setStatus("error");
+          setError("No authentication token received.");
+          return;
+        }
+
+        // Store in-memory and sync to SSR cookie
+        setBaseUrl(API_URL);
+        setToken(accessToken);
+        await syncTokenToCookie();
+
+        if (cancelled) return;
+
+        setStatus("success");
+        window.location.href = `/welcome?provider=${provider}`;
+      } catch {
+        if (!cancelled) {
+          setStatus("error");
+          setError("Network error. Please try again.");
+        }
+      }
     }
 
-    // Store access_token in-memory
-    setToken(access_token);
+    obtainToken();
 
-    // Clean access_token from URL immediately
-    window.history.replaceState(null, "", window.location.pathname);
-
-    // Sync to SSR cookie, then redirect.
-    // Use Promise.race to ensure redirect happens even if sync fails/hangs.
-    const sync = syncTokenToCookie();
-    const timeout = new Promise<void>((resolve) => setTimeout(resolve, 2000));
-    Promise.race([sync, timeout]).finally(() => {
-      const p = new URLSearchParams({ provider });
-      window.location.href = `/welcome?${p.toString()}`;
-    });
-  }, [searchParams, provider, initialErrorMsg]);
+    return () => {
+      cancelled = true;
+    };
+  }, [searchParams, provider, errorParam, status]);
 
   if (status === "error") {
     return (
