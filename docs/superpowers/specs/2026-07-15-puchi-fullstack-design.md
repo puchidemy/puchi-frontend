@@ -1,10 +1,9 @@
 # Puchi Fullstack Architecture — Profile, Social, Media, Notification
 
-> **⚠️ LEGACY DOC — Auth đã migrated từ Supertokens → auth-service tự xây dựng (Go/Kratos).**
-> Xem `.cursor/rules/project.mdc` và `.cursor/rules/nextjs.mdc` cho auth flow hiện tại.
-> Token model hiện tại: in-memory access_token + HttpOnly refresh_token cookie (không localStorage).
+> **⚠️ Auth stack updated (2026-07-17)** — Auth dùng **Limen** (opaque session + Bearer), không còn Supertokens/JWT custom.  
+> Spec: workspace `docs/superpowers/specs/2026-07-17-limen-auth-design.md`. Phần profile/social/media dưới đây vẫn tham khảo được.
 
-> **Status:** Design approved | **Date:** 2026-07-15
+> **Status:** Design (partially historical on auth) | **Date:** 2026-07-15
 > **Subsystems:** Auth Sync, User Profile, Gamification, Social, Achievements, Notification, Media
 
 ## 0. Architecture Decisions

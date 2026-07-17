@@ -74,7 +74,7 @@ To set up the development environment:
 - ⚡ **Powered by Bun** - Fast JavaScript runtime and package manager for optimal development experience.
 - 📱 **Responsive Design** for optimal experience on mobile and desktop devices.
 - 🌍 **Internationalization (i18n)** support for multiple languages via next-intl.
-- 🔒 **Secure Authentication** powered by self-hosted auth-service (JWT RS256 + opaque refresh token).
+- 🔒 **Secure Authentication** powered by [Limen](https://limenauth.dev/) (session cookie + opaque Bearer).
 - 📊 **Analytics Integration** to track user progress and optimize the learning experience.
 - 🚀 **Optimized Performance** with efficient resource handling and caching.
 
@@ -124,7 +124,7 @@ User → Next.js PWA (CDN) → Envoy Gateway → Go Services → PostgreSQL/NATS
 | Runtime | Bun (install) + Node.js (build) |
 | i18n | next-intl (9 languages) |
 | Animation | Motion + Rive |
-| Auth | Custom AuthProvider — gọi trực tiếp auth-service (JWT RS256 + opaque refresh) |
+| Auth | **Limen** — `limen-auth/react` + bearerPlugin |
 
 ### Repos
 

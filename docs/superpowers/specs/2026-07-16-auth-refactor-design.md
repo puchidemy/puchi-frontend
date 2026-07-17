@@ -1,8 +1,8 @@
 # Auth Refactor — WelcomeFlow Onboarding + Public Profile + Account Linking
 
-> **⚠️ LEGACY DOC — Auth đã migrated từ Supertokens → auth-service tự xây dựng (Go/Kratos).**
-> Xem `.cursor/rules/project.mdc` và `.cursor/rules/nextjs.mdc` cho auth flow hiện tại.
-> Token model hiện tại: in-memory access_token + HttpOnly refresh_token cookie (không localStorage).
+> **⚠️ SUPERSEDED auth stack** — Auth hiện dùng **Limen** (`limen-auth/react`), không còn Supertokens / custom JWT.  
+> Xem `docs/superpowers/specs/2026-07-17-limen-auth-design.md` (workspace root) và `.cursor/rules/project.mdc`.  
+> Phần onboarding / public profile dưới đây vẫn có thể tham khảo về product flow; bỏ qua Supertokens.
 
 > **Design Doc**
 

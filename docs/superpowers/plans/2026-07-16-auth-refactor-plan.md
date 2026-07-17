@@ -1,5 +1,8 @@
 # Auth Refactor Implementation Plan
 
+> **?? SUPERSEDED (2026-07-17)** ó Auth ? chuy?n sang **Limen**. Spec hi?n t?i: `docs/superpowers/specs/2026-07-17-limen-auth-design.md`. Plan d˝?i ‚y l‡ l?ch s? JWT custom ó **khÙng** follow ? implement.
+
+
 > **‚ö†Ô∏è LEGACY DOC ‚Äî Auth ƒë√£ migrated t·ª´ Supertokens ‚Üí auth-service t·ª± x√¢y d·ª±ng (Go/Kratos).**
 > Xem `.cursor/rules/project.mdc` v√† `.cursor/rules/nextjs.mdc` cho auth flow hi·ªán t·∫°i.
 > Token model hi·ªán t·∫°i: in-memory access_token + HttpOnly refresh_token cookie (kh√¥ng localStorage).

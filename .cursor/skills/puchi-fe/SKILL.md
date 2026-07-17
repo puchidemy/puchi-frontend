@@ -15,7 +15,7 @@ description: Design and interaction patterns for Puchi Frontend. Use when buildi
 | Animation | `motion` (framer-motion v12) |
 | Icons | Lucide React |
 | i18n | `next-intl`, 9 locales (messages/*.json) |
-| Auth | Auth-service (self-hosted, Go/Kratos) |
+| Auth | **Limen** (`limen-auth/react` + bearerPlugin) |
 | State | Zustand v5 |
 | Package mgmt | Bun (install) → Node.js 22 (build & run) |
 
@@ -245,21 +245,13 @@ Every section card uses: `rounded-2xl bg-card border border-border p-5` (or `p-4
 ```tsx
 import { useAuth } from "@/providers/AuthProvider";
 
-const { logout } = useAuth();
+const { logout } = useAuth(); // authClient.signOut + clear Bearer
 <button onClick={() => logout().then(() => window.location.reload())}>
   Sign Out
 </button>
 ```
 
-### Sign Out (Server Action — Sidebar)
-
-```tsx
-import { logoutAction } from "@/actions/auth";
-
-<form action={logoutAction}>
-  <button type="submit">Sign Out</button>
-</form>
-```
+Auth stack: **Limen** (`src/lib/limen-auth.ts` + bearerPlugin). Không còn JWT / Next set-session Route Handlers.
 
 ---
 
