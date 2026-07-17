@@ -9,6 +9,12 @@ let refreshPromise: Promise<string | null> | null = null;
 let tokenListeners: Array<(token: string | null) => void> = [];
 
 export function getToken(): string | null {
+  if (currentToken) return currentToken;
+  // Fallback to Zustand store (sessionStorage persists across hard redirects)
+  const stored = useAuthStore.getState().accessToken;
+  if (stored) {
+    currentToken = stored;
+  }
   return currentToken;
 }
 
