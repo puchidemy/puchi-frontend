@@ -14,35 +14,44 @@ Puchi là nền tảng web học tiếng Việt. Frontend dùng **Next.js 16 (Ap
 | Framework | Next.js 16 (App Router, output: standalone) |
 | UI | Tailwind CSS v4 + Shadcn UI (New York) |
 | State | Zustand v5 |
-| Auth | Zitadel (self-host) — `@zitadel/next-auth` + Auth.js OIDC + Custom Login UI |
+| Auth | Auth-service (self-hosted) — custom AuthProvider + fetch trực tiếp |
 | i18n | next-intl (9 ngôn ngữ) |
 | Animation | Motion + Rive |
 | Runtime | Bun (install) + Node.js 22 (build & run) |
 
-## Auth — Zitadel
+## Auth — Auth-service (self-hosted, xoá Zitadel)
 
-**Đã migrate từ SuperTokens → Zitadel.** Auth flow:
+**Đã migrate từ Zitadel → Auth-service tự xây dựng (Go/Kratos).** Flow:
 
-### Auth.js config
+### Custom AuthProvider
 ```typescript
-// src/lib/auth.ts
-NextAuth({
-  providers: [Zitadel({ clientId, issuer: "https://auth.puchi.io.vn" })],
-  session: { strategy: "jwt" },
-});
+// src/providers/AuthProvider.tsx
+const auth = useAuth()
+auth.login(email, password)    // POST /api/auth/login → set cookie + localStorage
+auth.register(email, password) // POST /api/auth/register
+auth.logout()                  // POST /api/auth/logout → clear state
 ```
-
-### Typed API Contracts Pattern
-- Define request/response contracts trong `src/lib/api-contracts.ts` (APILogin, APIRegister, APIForgotPassword, APIResetPassword)
-- API handler wrapper: `src/lib/api-handler.ts` — `defaultHandler<T>()` auto-parses body, validates với Zod schema, trả về typed response
-- Mỗi route dùng `defaultHandler` với typed contract để đảm bảo type safety
-- `src/config/env.ts` (Zod-validated env config) validate biến môi trường ở runtime
 
 ### Auth flow tổng thể
 ```
-Browser → custom form → Next.js API Route → Zitadel Session API
-       → redirect OIDC authorize → Auth.js callback → JWT session cookie
+Browser → custom form → api.puchi.io.vn/auth → auth-service:8080
+       → Set-Cookie: refresh_token (HttpOnly, SameSite=None)
+       → Response body: { access_token, expires_in, user }
 ```
+
+### Endpoints (frontend gọi tới api.puchi.io.vn/auth/)
+
+| Method | Path | Mô tả |
+|--------|------|-------|
+| POST | `/api/auth/login` | Login |
+| POST | `/api/auth/register` | Register |
+| POST | `/api/auth/refresh` | Refresh token (cookie) |
+| POST | `/api/auth/logout` | Logout (cookie) |
+| GET | `/api/auth/social/{provider}` | OAuth2 redirect |
+| POST | `/api/auth/magic-link/send` | Magic link (NATS → email) |
+| PUT | `/api/auth/password/change` | Change password |
+| GET | `/api/auth/sessions` | List sessions |
+| DELETE | `/api/auth/sessions/{id}` | Revoke session |
 
 ## Docker Build
 
@@ -71,23 +80,12 @@ GitHub Actions (`ci-cd.yml`):
 | Env | Production value | Notes |
 |-----|-----------------|-------|
 | `NEXT_PUBLIC_APP_URL` | `https://puchi.io.vn` | App domain |
-| `NEXT_PUBLIC_API_URL` | `https://api.puchi.io.vn` | API gateway (Envoy Gateway) |
-| `NEXT_PUBLIC_WEBSITE_DOMAIN` | `https://puchi.io.vn` | Website domain |
-| `ZITADEL_CLIENT_ID` | `382000685111116512` | OIDC client |
-| `ZITADEL_ISSUER` | `https://auth.puchi.io.vn` | Zitadel issuer |
-| `ZITADEL_INTERNAL_URL` | `http://zitadel.puchi-auth.svc:8080` | Internal cluster DNS |
-| `ZITADEL_SERVICE_TOKEN` | (secret) | Service user PAT |
-| `AUTH_SECRET` | (secret) | Auth.js secret |
-| `AUTH_URL` | `https://puchi.io.vn` | Auth.js URL |
-| `NEXTAUTH_URL` | `https://puchi.io.vn` | Auth.js URL |
-| `GOOGLE_CLIENT_ID/SECRET` | (secret) | Google OAuth |
-| `FACEBOOK_CLIENT_ID/SECRET` | (secret) | Facebook OAuth |
-| `TIKTOK_CLIENT_KEY/SECRET` | (secret) | TikTok OAuth |
+| `NEXT_PUBLIC_API_URL` | `https://api.puchi.io.vn` | API gateway (dùng chung cho auth + backend) |
 
 ## Scripts
 
 ```bash
-bun install          # Cài dependencies
+bun install          # Cài dependencies (dùng bun.lock)
 bun run dev          # Dev server (webpack mode)
 bun run build        # Build production (chạy bằng Node.js)
 bun run start        # Start production
@@ -98,22 +96,26 @@ bun run lint         # ESLint
 
 ```
 src/
-├── app/[locale]/     # Next.js App Router pages (i18n)
-├── app/api/auth/     # Auth.js + Custom login API routes + typed contracts
-├── components/       # UI components (Shadcn + custom)
-├── actions/          # Server Actions (logout, etc.)
-├── lib/              # Auth.js config, api-contracts.ts, api-handler.ts, Zitadel service client
-├── store/            # Zustand stores
-├── hooks/            # Custom hooks
-├── i18n/             # Translation config
-├── styles/           # Global styles
-├── constants/        # Constants
-├── config/           # env.ts (Zod-validated env config)
-├── middleware/       # proxy.ts (request proxy)
-└── types/            # TypeScript types
+├── app/[locale]/         # Next.js App Router pages (i18n)
+├── app/api/              # API routes (debug only — auth gọi thẳng api.puchi.io.vn)
+├── components/           # UI components (Shadcn + custom)
+│   └── auth/             # AuthCard, SignInForm, SignUpForm, SocialLoginButtons
+├── actions/              # Server Actions (logout, etc.)
+├── lib/                  # api-contracts.ts, backend.ts, client-api.ts
+├── providers/            # AuthProvider (useAuth hook)
+├── store/                # Zustand stores
+├── hooks/                # Custom hooks
+├── i18n/                 # Translation config
+├── styles/               # Global styles
+├── constants/            # Constants
+├── config/               # env.ts (Zod-validated env config)
+├── proxy.ts              # Middleware (xác thực bằng refresh_token cookie)
+└── types/                # TypeScript types
 ```
 
 ## Kết nối Backend
 
-- API qua Envoy Gateway tại `api.puchi.io.vn`
-- Auth: Zitadel (internal, không expose ra ngoài)
+- API: `api.puchi.io.vn` qua Envoy Gateway (dùng `NEXT_PUBLIC_API_URL`)
+- Auth: gọi thẳng `api.puchi.io.vn/auth/*` (auth-service)
+- Server-side fetch: đọc access_token từ cookie, gắn `Authorization: Bearer`
+- Client-side fetch: `credentials: include` (cookie tự gửi theo domain)

@@ -14,37 +14,40 @@ alwaysApply: false
 
 ## Auth
 
-### Auth.js config
+### AuthProvider pattern
 ```typescript
-// src/lib/auth.ts — Zitadel OIDC provider
-NextAuth({
-  providers: [Zitadel({ clientId, issuer })],
-  session: { strategy: "jwt" },
-  callbacks: { jwt, session, redirect },
-});
+// src/providers/AuthProvider.tsx
+export function AuthProvider({ children, baseUrl }) {
+  // state: user, loading
+  // methods: login(), register(), logout()
+  // fetch trực tiếp tới auth-service với credentials: include
+}
+
+export function useAuth() {
+  // Trả về { user, loading, login, register, logout, refreshSession }
+}
 ```
 
-### API Routes
-- `src/app/api/auth/[...nextauth]/route.ts` — Auth.js handler
-- `src/app/api/auth/login/route.ts` — Custom login (Zitadel Session API)
-- `src/app/api/auth/register/route.ts` — Custom register
-- `src/app/api/auth/forgot-password/route.ts` — Forgot password
-- `src/app/api/auth/reset-password/route.ts` — Reset password
-- `src/app/api/auth/social/route.ts` — Social login config
+### Middleware (`src/proxy.ts`)
+```
+- Kiểm tra refresh_token cookie thay vì Auth.js session
+- Nếu không có cookie → redirect /auth/sign-in
+- Nếu có cookie → cho phép
+```
 
-### Typed API Contracts
-- Define contracts in `src/lib/api-contracts.ts` (APILogin, APIRegister, etc.)
-- Wrapper pattern: `src/lib/api-handler.ts` — `defaultHandler<T>()` auto-parses, validates, and error-handles
-- Each route uses `defaultHandler` with typed contract for type safety
+### Client-side fetch
+```typescript
+// access_token lưu trong localStorage
+// Gửi Authorization: Bearer cho backend API
+// credentials: include cho auth-service (cookie tự gửi)
+```
 
-### Custom Login UI Flow
-1. Form submit tới `/api/auth/login` → `defaultHandler<APILogin>()` validates + gọi Zitadel Session API
-2. On success → redirect tới Zitadel OIDC authorize
-3. Auth.js handle callback → `/api/auth/callback/zitadel`
-4. JWT session cookie được set
-
-### Server Actions
-- `src/actions/auth.ts` — `logoutAction()` redirect tới Auth.js signout + Zitadel end_session
+### API Contracts
+```typescript
+// src/lib/api-contracts.ts
+APILogin: { url: '/api/auth/login', method: 'POST', data: { email, password }, result: { access_token, expires_in, user } }
+APIRegister: { url: '/api/auth/register', method: 'POST', data: { email, password }, result: { user_id, email } }
+```
 
 ## Components
 
@@ -55,15 +58,15 @@ NextAuth({
 ## State Management
 
 - **Zustand** cho global state
-- React Context chỉ cho theme/locale
+- React Context cho auth + theme/locale
 - Server State: React Server Components + fetch trực tiếp
 
 ## API Calls
 
-- Client → `credentials: "include"` (gửi cookie session)
-- Server → `backendFetch()` với `Authorization: Bearer <accessToken>` từ Auth.js session
+- Client auth → gọi trực tiếp `${API_URL}/api/auth/*` với `credentials: include`
+- Client backend → gọi `${API_URL}/api/{service}/*` với `Authorization: Bearer` từ localStorage
+- Server → `backendFetch()` với access_token từ cookie
 - API base URL: `process.env.NEXT_PUBLIC_API_URL` (https://api.puchi.io.vn)
-- Middleware file: `src/lib/proxy.ts` — proxy utility cho API requests
 
 ## i18n
 
