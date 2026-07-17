@@ -10,7 +10,7 @@ export interface UnitProgressSnapshot {
 /** Derive progress from GET /v1/learn/units/{id} when lesson/unit status fields are present. */
 export function progressFromUnit(data: {
   skills: LearnSkill[];
-  unitStatus?: string;
+  unit_status?: string;
 }): UnitProgressSnapshot {
   const completedLessonIds = data.skills
     .flatMap((skill) => skill.lessons)
@@ -19,6 +19,6 @@ export function progressFromUnit(data: {
 
   return {
     completedLessonIds,
-    unitCompleted: data.unitStatus === "completed",
+    unitCompleted: data.unit_status === "completed",
   };
 }

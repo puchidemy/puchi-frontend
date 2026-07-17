@@ -11,17 +11,17 @@ export const TRIAL_UNIT_ID =
 
 export interface LearnUnit {
   id: string;
-  courseId: string;
+  course_id: string;
   position: number;
   title: string;
 }
 
 export interface LearnLesson {
   id: string;
-  skillId: string;
+  skill_id: string;
   position: number;
   title: string;
-  xpReward: number;
+  xp_reward: number;
   required: boolean;
   /** Present when the API includes owner progress for this lesson. */
   status?: "not_started" | "in_progress" | "completed";
@@ -29,7 +29,7 @@ export interface LearnLesson {
 
 export interface LearnSkill {
   id: string;
-  unitId: string;
+  unit_id: string;
   position: number;
   title: string;
   lessons: LearnLesson[];
@@ -37,23 +37,23 @@ export interface LearnSkill {
 
 export interface LearnExercise {
   id: string;
-  lessonId: string;
+  lesson_id: string;
   position: number;
   type: string;
-  promptJson: string;
+  prompt_json: string;
 }
 
 export interface GuestSession {
-  guestId: string;
+  guest_id: string;
 }
 
 export interface ClaimGuestResponse {
-  lessonsMerged: number;
+  lessons_merged: number;
 }
 
 export interface CompleteLessonResponse {
   xp: number;
-  unitCompleted: boolean;
+  unit_completed: boolean;
 }
 
 async function learnRequest<T>(
@@ -99,7 +99,7 @@ export interface TrialUnitResponse {
   unit: LearnUnit;
   skills: LearnSkill[];
   /** Owner unit progress when returned by learn-service. */
-  unitStatus?: "not_started" | "in_progress" | "completed";
+  unit_status?: "not_started" | "in_progress" | "completed";
 }
 
 export async function getTrialUnit(
@@ -116,7 +116,7 @@ export async function getLesson(
 
 export async function startLesson(
   lessonId: string,
-): Promise<{ attemptId: string }> {
+): Promise<{ attempt_id: string }> {
   return learnRequest(`/v1/learn/lessons/${lessonId}/start`, {
     method: "POST",
     body: JSON.stringify({ id: lessonId }),
@@ -131,9 +131,9 @@ export async function submitAnswer(
   return learnRequest(`/v1/learn/attempts/${attemptId}/answer`, {
     method: "POST",
     body: JSON.stringify({
-      attemptId,
-      exerciseId,
-      payloadJson: JSON.stringify(payload),
+      attempt_id: attemptId,
+      exercise_id: exerciseId,
+      payload_json: JSON.stringify(payload),
     }),
   });
 }
