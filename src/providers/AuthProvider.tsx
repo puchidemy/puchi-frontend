@@ -1,7 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useCallback, ReactNode } from 'react'
-import { getToken, setToken, clearToken, tryRefreshToken, syncTokenToCookie, setBaseUrl, restoreTokenFromStore } from '@/lib/token-manager'
+import { getToken, setToken, clearToken, tryRefreshToken, syncTokenToCookie, setBaseUrl, restoreTokenFromStore, decodeTokenUser } from '@/lib/token-manager'
 import { useAuthStore } from '@/store/auth'
 import type { User } from '@/store/auth'
 
@@ -68,11 +68,12 @@ export function AuthProvider({ children, baseUrl }: { children: ReactNode; baseU
       })
 
       if (res.ok) {
-        const data = await res.json()
         // /auth/sessions returns { sessions: [...] } — no user info.
-        // If we already have user from store, keep it.
-        if (!user && data.user) {
-          setUser(data.user)
+        // Decode user info from JWT payload (safe client-side).
+        const token = accessToken as string
+        const decoded = decodeTokenUser(token)
+        if (decoded) {
+          setUser(decoded)
         }
         setLoading(false)
         return

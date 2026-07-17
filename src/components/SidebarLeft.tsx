@@ -46,8 +46,11 @@ const NavItem = memo(function NavItem({ icon, label, slug, pathname }: NavItemPr
 
 const SidebarLeft = () => {
   const pathname = usePathname();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const isSignedIn = !!user;
+
+  // Don't render menu items while auth is loading to prevent flash of wrong state
+  const authReady = !loading;
 
   const navItems = useMemo(() => (
     navigationList.map((item) => (
@@ -103,7 +106,7 @@ const SidebarLeft = () => {
               </a>
 
               <Separator className="my-2 bg-gray-300" />
-              {!isSignedIn && (
+              {authReady && !isSignedIn && (
                 <Link
                   href="/auth/sign-up"
                   className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
@@ -123,7 +126,11 @@ const SidebarLeft = () => {
               >
                 Help
               </Link>
-              {isSignedIn ? (
+              {!authReady ? (
+                <div className="px-4 py-2 text-muted-foreground text-xs">
+                  Loading...
+                </div>
+              ) : isSignedIn ? (
                 <form action={logoutAction}>
                   <button type="submit"
                     className="block w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"

@@ -1,6 +1,7 @@
 "client-only";
 
 import { useAuthStore } from "@/store/auth";
+import type { User } from "@/store/auth";
 
 let currentToken: string | null = null;
 let currentBaseUrl = "http://localhost:8080";
@@ -105,4 +106,25 @@ export async function tryRefreshToken(): Promise<string | null> {
   })();
 
   return refreshPromise;
+}
+
+/**
+ * Decode basic user info from a JWT access token.
+ * Safe to do client-side (JWT payload is base64-encoded, not encrypted).
+ */
+export function decodeTokenUser(token: string): User | null {
+  try {
+    const parts = token.split(".")
+    if (parts.length !== 3) return null
+    const payload = JSON.parse(atob(parts[1]))
+    if (!payload.sub || !payload.email) return null
+    return {
+      id: payload.sub,
+      email: payload.email,
+      display_name: payload.display_name || payload.email.split("@")[0],
+      email_verified: !!payload.email_verified,
+    }
+  } catch {
+    return null
+  }
 }
