@@ -85,39 +85,50 @@ export function TrialUnitPath({
                   className="w-[100px] h-[96px]"
                 >
                   <Button
+                    asChild
                     size="rounded"
                     variant="immersive"
                     className="w-[70px] h-[68px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
                     style={{ backgroundColor: unitColor }}
                   >
-                    <Icon
-                      className={cn(
-                        "h-10 w-10 text-gray-50 stroke-4",
-                        !isCompleted && "fill-gray-100",
-                        isCompleted && "fill-none",
-                      )}
-                    />
+                    <div>
+                      <Icon
+                        className={cn(
+                          "h-10 w-10 text-gray-50 stroke-4",
+                          !isCompleted && "fill-gray-100",
+                          isCompleted && "fill-none",
+                        )}
+                      />
+                    </div>
                   </Button>
                 </AnimatedCircularProgressBar>
               </>
             ) : (
               <Button
+                asChild
                 size="rounded"
                 variant={unlocked && !isCompleted ? "secondary" : "locked"}
                 className="w-[70px] h-[70px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
               >
-                <Icon
-                  className={cn(
-                    "h-10 w-10 fill-gray-100 text-gray-100",
-                    !unlocked &&
-                      "fill-neutral-400 stroke-neutral-400 text-neutral-400",
-                    isCompleted && "fill-none",
-                  )}
-                />
+                <div>
+                  <Icon
+                    className={cn(
+                      "h-10 w-10 fill-gray-100 text-gray-100",
+                      !unlocked &&
+                        "fill-neutral-400 stroke-neutral-400 text-neutral-400",
+                      isCompleted && "fill-none",
+                    )}
+                  />
+                </div>
               </Button>
             )}
           </div>
         );
+
+        const offsetStyle = {
+          right: `${indentationLevel * 40}px`,
+          marginTop: isFirst && !isCompleted ? 60 : 24,
+        } as const;
 
         if (unlocked) {
           return (
@@ -125,10 +136,7 @@ export function TrialUnitPath({
               key={lesson.id}
               href={`/lesson/${lesson.id}`}
               className="relative"
-              style={{
-                right: `${indentationLevel * 40}px`,
-                marginTop: isFirst && !isCompleted ? 60 : 24,
-              }}
+              style={offsetStyle}
             >
               {node}
             </Link>
@@ -136,20 +144,30 @@ export function TrialUnitPath({
         }
 
         return (
-          <button
+          <div
             key={lesson.id}
-            type="button"
             className="relative"
             style={{
-              right: `${indentationLevel * 40}px`,
-              marginTop: isFirst && !isCompleted ? 60 : 24,
+              ...offsetStyle,
               pointerEvents: onLockedLessonClick ? "auto" : "none",
             }}
-            onClick={onLockedLessonClick}
+            role={onLockedLessonClick ? "button" : undefined}
+            tabIndex={onLockedLessonClick ? 0 : undefined}
             aria-disabled={!onLockedLessonClick}
+            onClick={onLockedLessonClick}
+            onKeyDown={
+              onLockedLessonClick
+                ? (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onLockedLessonClick();
+                    }
+                  }
+                : undefined
+            }
           >
             {node}
-          </button>
+          </div>
         );
       })}
     </div>
