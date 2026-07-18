@@ -1,5 +1,30 @@
-Status: DONE
-Commits: 17813d9
-Tests: N/A
-Self-review: All 5 files modified/created as specified in the brief. BasicInfoStep component created with first name, last name, and age range form. WelcomeFlow refactored to support 2 scenarios (not logged in vs just logged in) with basic-info stage, login state detection via /api/auth/session, and backend sync on complete. Callback page updated to check onboarding_completed from /v1/profile and redirect to /welcome with pre-fill params. Welcome page wrapped in Suspense for useSearchParams. Index updated with BasicInfoStep export.
-Concerns: The pre-fill params from social callback use placeholders (empty firstName/lastName) since Supertokens social login doesn't expose first/last name in a standard way — users will fill these manually in BasicInfoStep.
+# Task 4 Report — FE settings store + API client
+
+**Status:** DONE
+
+**Commits:** `feat(settings): zustand store and settings API client` (branch `feat/guest-settings-sync`)
+
+## Deliverables
+
+| File | Role |
+|------|------|
+| `src/lib/settings-api.ts` | `getSettings`, `patchSettings`, `mergeSettings`; normalize snake/camel; wire snake_case; `DEFAULT_SETTINGS` + `settingsChangedFromDefaults` |
+| `src/store/settings.ts` | `useSettingsStore`: `values`, `setField`, `hydrateFromServer`, `loadGuest`, `clearGuest`, `isDirtyGuest`, `fetchFromServer`; guest key `puchi-settings`; auth cache `puchi-settings:{userId}`; debounced PATCH ~300ms when `accessToken` |
+| `src/providers/AuthProvider.tsx` | Hydrate settings after session/login; `loadGuest` on logout / session clear |
+
+## Smoke
+
+- Unit helpers: normalize snake + camel, `settingsChangedFromDefaults`, `patchToWire` / `settingsToWire` via Bun import — OK.
+- Manual UI guest toggle / login GET overwrite — deferred to Task 5 (pages not wired).
+
+## Self-review
+
+- Matches brief interfaces; no settings pages wired.
+- Guest persist mirrors `trial-learn` guest-only storage; auth uses optional per-user cache + GET overwrite.
+- Request bodies use snake_case (proto names); responses accept both casings like `profile-api`.
+
+## Concerns
+
+- Live GET/PATCH against core needs BE `feat/guest-settings-sync` deployed; not exercised end-to-end here.
+- Protojson may emit camelCase on the wire; normalize covers both. If PATCH rejects snake_case in a specific Kratos config, switch `patchToWire` to camelCase.
+- Debounced PATCH failures keep optimistic local state (no rollback toast yet).

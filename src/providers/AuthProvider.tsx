@@ -40,6 +40,15 @@ export function AuthProvider({
 
   const claimAttemptedForUser = useRef<string | null>(null);
 
+  const hydrateSettings = useCallback(async (userId: string) => {
+    try {
+      const { useSettingsStore } = await import("@/store/settings");
+      await useSettingsStore.getState().fetchFromServer(userId);
+    } catch {
+      // Settings hydrate is best-effort; guest local + defaults remain.
+    }
+  }, []);
+
   const runPostAuthClaims = useCallback(async (userId: string) => {
     if (claimAttemptedForUser.current === userId) return;
     claimAttemptedForUser.current = userId;
@@ -61,21 +70,28 @@ export function AuthProvider({
           (session as { token?: string }).token ??
           authClient.bearer.getTokens()?.accessToken;
         if (sessionToken) setToken(sessionToken);
-        await runPostAuthClaims(sessionUser.id);
+        await Promise.all([
+          runPostAuthClaims(sessionUser.id),
+          hydrateSettings(sessionUser.id),
+        ]);
         setLoading(false);
         return;
       }
       claimAttemptedForUser.current = null;
       clearToken();
       clear();
+      const { useSettingsStore } = await import("@/store/settings");
+      useSettingsStore.getState().loadGuest();
     } catch {
       claimAttemptedForUser.current = null;
       clearToken();
       clear();
+      const { useSettingsStore } = await import("@/store/settings");
+      useSettingsStore.getState().loadGuest();
     } finally {
       setLoading(false);
     }
-  }, [setUser, setLoading, clear, runPostAuthClaims]);
+  }, [setUser, setLoading, clear, runPostAuthClaims, hydrateSettings]);
 
   const sessionChecked = useRef(false);
 
@@ -98,7 +114,11 @@ export function AuthProvider({
       (data as { token?: string } | null | undefined)?.token ??
       authClient.bearer.getTokens()?.accessToken;
     if (sessionToken) setToken(sessionToken);
-    await runPostAuthClaims(userFromLimen(sessionUser).id);
+    const sessionUserId = userFromLimen(sessionUser).id;
+    await Promise.all([
+      runPostAuthClaims(sessionUserId),
+      hydrateSettings(sessionUserId),
+    ]);
   };
 
   const register = async (
@@ -148,6 +168,8 @@ export function AuthProvider({
     claimAttemptedForUser.current = null;
     clearToken();
     clear();
+    const { useSettingsStore } = await import("@/store/settings");
+    useSettingsStore.getState().loadGuest();
   };
 
   return (
