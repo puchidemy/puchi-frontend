@@ -18,9 +18,6 @@ interface GuestState {
   progress: GuestProgress;
   addCompletedLesson: (lessonId: string, correct: number, xp: number) => void;
   reset: () => void;
-  /** Merge current guest progress into the authenticated user's account.
-   *  Returns true if there was progress to merge. */
-  mergeIfNeeded: () => Promise<boolean>;
 }
 
 const defaultProgress: GuestProgress = {
@@ -58,9 +55,6 @@ export const useGuestStore = create<GuestState>()(
       },
 
       reset: () => set({ progress: { ...defaultProgress } }),
-
-      /** @deprecated Learn claim + settings sync replace this. No-op. */
-      mergeIfNeeded: async () => false,
     }),
     {
       name: "puchi-guest",

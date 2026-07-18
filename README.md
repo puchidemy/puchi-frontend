@@ -58,6 +58,8 @@ To set up the development environment:
 
 > **Note:** Dùng **Bun** để install dependencies, nhưng build bằng **Node.js** (Next.js 16 chưa support Bun build).
 
+Guest settings sync (Preferences / Language) cần backend core migration `007_user_settings` đã apply trên DB dev/shared trước khi test flow claim guest.
+
 ### Available Scripts
 
 - `bun run dev` - Start the development server

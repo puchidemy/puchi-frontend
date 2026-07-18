@@ -52,12 +52,8 @@ export function AuthProvider({
   const runPostAuthClaims = useCallback(async (userId: string) => {
     if (claimAttemptedForUser.current === userId) return;
     claimAttemptedForUser.current = userId;
-    const { useGuestStore } = await import("@/store/guest");
     const { claimGuestIfNeeded } = await import("@/hooks/use-claim-guest");
-    await Promise.all([
-      useGuestStore.getState().mergeIfNeeded(),
-      claimGuestIfNeeded(),
-    ]);
+    await claimGuestIfNeeded();
   }, []);
 
   const refreshSession = useCallback(async () => {

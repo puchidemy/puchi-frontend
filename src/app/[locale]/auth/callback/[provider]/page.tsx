@@ -27,11 +27,7 @@ export default function SocialCallbackPage() {
         const token = authClient.bearer.getTokens()?.accessToken;
         if (token) setToken(token);
         const { claimGuestIfNeeded } = await import("@/hooks/use-claim-guest");
-        const { useGuestStore } = await import("@/store/guest");
-        await Promise.all([
-          claimGuestIfNeeded(),
-          useGuestStore.getState().mergeIfNeeded(),
-        ]);
+        await claimGuestIfNeeded();
         window.location.href = "/auth/continue";
       }
     })();

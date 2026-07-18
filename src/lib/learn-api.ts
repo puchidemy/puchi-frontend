@@ -5,17 +5,10 @@ import { fetchWithAuth } from "./fetch-with-auth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-/**
- * Default curriculum unit shown on /learn (seed unit).
- * Prefer NEXT_PUBLIC_LEARN_UNIT_ID; NEXT_PUBLIC_TRIAL_UNIT_ID kept as legacy alias.
- */
+/** Default curriculum unit shown on /learn (seed unit). */
 export const DEFAULT_UNIT_ID =
   process.env.NEXT_PUBLIC_LEARN_UNIT_ID ||
-  process.env.NEXT_PUBLIC_TRIAL_UNIT_ID ||
   "11111111-1111-1111-1111-111111111111";
-
-/** @deprecated Use DEFAULT_UNIT_ID */
-export const TRIAL_UNIT_ID = DEFAULT_UNIT_ID;
 
 const SOFT_GATE_CODES = new Set(["GUEST_SOFT_GATE", "TRIAL_LIMIT"]);
 
@@ -130,20 +123,10 @@ export interface UnitResponse {
   unit_status?: "not_started" | "in_progress" | "completed";
 }
 
-/** @deprecated Use UnitResponse */
-export type TrialUnitResponse = UnitResponse;
-
 export async function getUnit(
   unitId: string = DEFAULT_UNIT_ID,
 ): Promise<UnitResponse> {
   return learnRequest(`/v1/learn/units/${unitId}`);
-}
-
-/** @deprecated Use getUnit */
-export async function getTrialUnit(
-  unitId: string = DEFAULT_UNIT_ID,
-): Promise<UnitResponse> {
-  return getUnit(unitId);
 }
 
 export async function getLesson(
