@@ -179,6 +179,7 @@ export const useSettingsStore = create<SettingsState>()(
 
 export {
   DEFAULT_SETTINGS,
+  guestSettingsChangedKeys,
   settingsChangedFromDefaults,
   type SettingsTheme,
   type UserSettings,

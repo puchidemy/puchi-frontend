@@ -174,13 +174,30 @@ export async function mergeSettings(
 
 /** True when any field differs from product defaults. */
 export function settingsChangedFromDefaults(values: UserSettings): boolean {
-  return (
-    values.soundEffects !== DEFAULT_SETTINGS.soundEffects ||
-    values.animations !== DEFAULT_SETTINGS.animations ||
-    values.motivationalMessages !== DEFAULT_SETTINGS.motivationalMessages ||
-    values.listeningExercises !== DEFAULT_SETTINGS.listeningExercises ||
-    values.theme !== DEFAULT_SETTINGS.theme ||
-    values.locale !== DEFAULT_SETTINGS.locale ||
-    values.privacyJson !== DEFAULT_SETTINGS.privacyJson
-  );
+  return guestSettingsChangedKeys(values).length > 0;
+}
+
+/** Keys whose guest values differ from product defaults (for sync preview). */
+export function guestSettingsChangedKeys(
+  values: UserSettings,
+): (keyof UserSettings)[] {
+  const keys: (keyof UserSettings)[] = [];
+  if (values.soundEffects !== DEFAULT_SETTINGS.soundEffects) {
+    keys.push("soundEffects");
+  }
+  if (values.animations !== DEFAULT_SETTINGS.animations) {
+    keys.push("animations");
+  }
+  if (values.motivationalMessages !== DEFAULT_SETTINGS.motivationalMessages) {
+    keys.push("motivationalMessages");
+  }
+  if (values.listeningExercises !== DEFAULT_SETTINGS.listeningExercises) {
+    keys.push("listeningExercises");
+  }
+  if (values.theme !== DEFAULT_SETTINGS.theme) keys.push("theme");
+  if (values.locale !== DEFAULT_SETTINGS.locale) keys.push("locale");
+  if (values.privacyJson !== DEFAULT_SETTINGS.privacyJson) {
+    keys.push("privacyJson");
+  }
+  return keys;
 }

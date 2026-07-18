@@ -227,6 +227,16 @@
       "title": "Notifications",
       "section": "Alerts",
       "comingSoon": "Notification preferences are coming soon."
+    },
+    "syncGuest": {
+      "title": "Sync guest progress?",
+      "description": "Bring lessons and settings from this device into your account.",
+      "lessons": "{count, plural, one {# lesson completed as a guest} other {# lessons completed as a guest}}",
+      "settingsChanged": "Changed settings",
+      "sync": "Sync",
+      "syncing": "Syncing...",
+      "synced": "Synced!",
+      "skip": "Skip"
     }
   },
   "ProfileActions": {

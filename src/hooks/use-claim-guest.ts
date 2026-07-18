@@ -8,6 +8,11 @@ import {
   useTrialLearnStore,
 } from "@/store/trial-learn";
 
+export type ClaimGuestResult = {
+  claimed: boolean;
+  lessonsMerged: number;
+};
+
 /**
  * Hydrate learn path progress from GET unit (server owner progress).
  * Falls back to in-memory / guest-local progress when status fields are absent.
@@ -37,11 +42,13 @@ export async function hydrateTrialProgressFromUnit(): Promise<void> {
  * Merges server-side guest learn progress into the authenticated user.
  * Safe to call after Limen sign-in; ignores missing-guest-cookie errors.
  */
-export async function claimGuestIfNeeded(): Promise<boolean> {
+export async function claimGuestIfNeeded(): Promise<ClaimGuestResult> {
   try {
-    await claimGuest();
+    const res = await claimGuest();
     await hydrateTrialProgressFromUnit();
-    return true;
+    const lessonsMerged =
+      typeof res.lessons_merged === "number" ? res.lessons_merged : 0;
+    return { claimed: true, lessonsMerged };
   } catch (err) {
     // Missing guest trial / already claimed are expected after normal login.
     const msg = err instanceof Error ? err.message.toLowerCase() : "";
@@ -56,9 +63,9 @@ export async function claimGuestIfNeeded(): Promise<boolean> {
       msg.includes("already claimed") ||
       msg.includes("not found")
     ) {
-      return false;
+      return { claimed: false, lessonsMerged: 0 };
     }
     console.warn("[learn] claimGuest failed:", err);
-    return false;
+    return { claimed: false, lessonsMerged: 0 };
   }
 }

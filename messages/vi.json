@@ -123,6 +123,16 @@
       "title": "Thông báo",
       "section": "Cảnh báo",
       "comingSoon": "Tuỳ chọn thông báo sẽ sớm ra mắt."
+    },
+    "syncGuest": {
+      "title": "Đồng bộ tiến độ khách?",
+      "description": "Mang bài học và cài đặt từ thiết bị này vào tài khoản của bạn.",
+      "lessons": "{count, plural, other {# bài học đã hoàn thành khi dùng thử}}",
+      "settingsChanged": "Cài đặt đã thay đổi",
+      "sync": "Đồng bộ",
+      "syncing": "Đang đồng bộ...",
+      "synced": "Đã đồng bộ!",
+      "skip": "Bỏ qua"
     }
   },
   "errors": {
