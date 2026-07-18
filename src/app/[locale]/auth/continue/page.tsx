@@ -222,12 +222,11 @@ function AuthContinueContent() {
               await routeAfterAuth(router, merged.settings.locale);
               return;
             } catch (err) {
+              // Keep guest settings so user can retry Sync; do not clearGuest.
               setSyncStatus("idle");
               setError(
                 err instanceof Error ? err.message : "Failed to sync settings",
               );
-              useSettingsStore.getState().clearGuest();
-              setSyncOpen(false);
             }
           } else {
             useSettingsStore.getState().clearGuest();
