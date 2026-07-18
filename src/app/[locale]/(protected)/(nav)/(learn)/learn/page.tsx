@@ -1,5 +1,5 @@
-import { TrialUnitView } from "@/components/learn/TrialUnitView";
+import { UnitLearnView } from "@/components/learn/UnitLearnView";
 
 export default function LearnPage() {
-  return <TrialUnitView />;
+  return <UnitLearnView />;
 }

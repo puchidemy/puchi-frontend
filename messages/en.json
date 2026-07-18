@@ -28,11 +28,11 @@
   },
   "Start": {
     "title": "How do you want to start?",
-    "subtitle": "Try a free lesson as a guest, or sign in to save progress across devices.",
-    "tryAsGuest": "Try 1 free unit (guest)",
+    "subtitle": "Try lessons as a guest, or sign in to save progress across devices.",
+    "tryAsGuest": "Continue as guest",
     "createAccount": "Create free account",
     "haveAccount": "I already have an account",
-    "guestHint": "Guest progress is saved on this device and merged when you sign up.",
+    "guestHint": "Guest progress is saved on this device and merged when you sign up. Sign up after a few lessons to keep learning.",
     "guestError": "Could not start guest session. Please try again."
   },
   "Languages": {
@@ -398,13 +398,44 @@
     },
     "server": { "internalError": "Something went wrong. Please try again later" }
   },
+  "Learn": {
+    "loadError": "Could not load this unit. Please try again.",
+    "retry": "Try again",
+    "saveProgress": "Save your progress",
+    "startLesson": "Start",
+    "unitLabel": "Unit {position}",
+    "softGate": {
+      "title": "Create an account to keep going",
+      "description": "You've finished your free guest lessons. Sign up or sign in to save progress and unlock more.",
+      "signUp": "Create free account",
+      "signIn": "I already have an account"
+    },
+    "lessonOneReminder": {
+      "title": "Nice work on your first lesson!",
+      "description": "Create a free account so your progress stays with you across devices.",
+      "signUp": "Create free account",
+      "continue": "Keep learning"
+    },
+    "lesson": {
+      "loadError": "Could not load this lesson.",
+      "submitError": "Could not submit your answer.",
+      "completeError": "Could not complete the lesson.",
+      "backToLearn": "Back to Learn",
+      "step": "Question {current} of {total}",
+      "check": "Check",
+      "checking": "Checking…",
+      "correct": "Correct!",
+      "tryAgain": "Not quite — try again",
+      "matchPrompt": "Confirm these pairs are matched correctly:"
+    }
+  },
   "TrialLearn": {
-    "loadError": "Could not load the trial unit. Please try again.",
+    "loadError": "Could not load this unit. Please try again.",
     "retry": "Try again",
     "saveProgress": "Save your progress",
     "softGate": {
-      "title": "Great job! Save your progress",
-      "description": "You completed the free trial unit. Sign up or sign in to keep your progress and unlock more lessons.",
+      "title": "Create an account to keep going",
+      "description": "You've finished your free guest lessons. Sign up or sign in to save progress and unlock more.",
       "signUp": "Create free account",
       "signIn": "I already have an account"
     },

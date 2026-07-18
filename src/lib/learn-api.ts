@@ -1,13 +1,41 @@
 "client-only";
 
+import { isApiError } from "./api-error";
 import { fetchWithAuth } from "./fetch-with-auth";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-/** Must match learn-service `trial_unit_id` in config / seed migration. */
-export const TRIAL_UNIT_ID =
+/**
+ * Default curriculum unit shown on /learn (seed unit).
+ * Prefer NEXT_PUBLIC_LEARN_UNIT_ID; NEXT_PUBLIC_TRIAL_UNIT_ID kept as legacy alias.
+ */
+export const DEFAULT_UNIT_ID =
+  process.env.NEXT_PUBLIC_LEARN_UNIT_ID ||
   process.env.NEXT_PUBLIC_TRIAL_UNIT_ID ||
   "11111111-1111-1111-1111-111111111111";
+
+/** @deprecated Use DEFAULT_UNIT_ID */
+export const TRIAL_UNIT_ID = DEFAULT_UNIT_ID;
+
+const SOFT_GATE_CODES = new Set(["GUEST_SOFT_GATE", "TRIAL_LIMIT"]);
+
+/** True when learn-service blocks guest start/complete (completed ≥ 3). */
+export function isGuestSoftGateError(err: unknown): boolean {
+  if (isApiError(err)) {
+    return (
+      SOFT_GATE_CODES.has(err.code) ||
+      SOFT_GATE_CODES.has(err.reason) ||
+      SOFT_GATE_CODES.has(err.message)
+    );
+  }
+  if (err instanceof Error) {
+    return (
+      err.message.includes("GUEST_SOFT_GATE") ||
+      err.message.includes("TRIAL_LIMIT")
+    );
+  }
+  return false;
+}
 
 export interface LearnUnit {
   id: string;
@@ -95,17 +123,27 @@ export async function claimGuest(): Promise<ClaimGuestResponse> {
   });
 }
 
-export interface TrialUnitResponse {
+export interface UnitResponse {
   unit: LearnUnit;
   skills: LearnSkill[];
   /** Owner unit progress when returned by learn-service. */
   unit_status?: "not_started" | "in_progress" | "completed";
 }
 
-export async function getTrialUnit(
-  unitId: string = TRIAL_UNIT_ID,
-): Promise<TrialUnitResponse> {
+/** @deprecated Use UnitResponse */
+export type TrialUnitResponse = UnitResponse;
+
+export async function getUnit(
+  unitId: string = DEFAULT_UNIT_ID,
+): Promise<UnitResponse> {
   return learnRequest(`/v1/learn/units/${unitId}`);
+}
+
+/** @deprecated Use getUnit */
+export async function getTrialUnit(
+  unitId: string = DEFAULT_UNIT_ID,
+): Promise<UnitResponse> {
+  return getUnit(unitId);
 }
 
 export async function getLesson(

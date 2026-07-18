@@ -57,6 +57,9 @@ export const API = {
     guestSession: "/v1/learn/guest/session",
     guestClaim: "/v1/learn/guest/claim",
     unit: (id: string) => `/v1/learn/units/${id}`,
+    lesson: (id: string) => `/v1/learn/lessons/${id}`,
+    startLesson: (id: string) => `/v1/learn/lessons/${id}/start`,
+    completeLesson: (id: string) => `/v1/learn/lessons/${id}/complete`,
   },
   media: {
     uploadUrl: "/v1/media/upload-url",

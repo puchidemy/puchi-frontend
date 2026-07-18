@@ -140,20 +140,51 @@
   },
   "Start": {
     "title": "Bạn muốn bắt đầu thế nào?",
-    "subtitle": "Học thử miễn phí với guest, hoặc đăng nhập để lưu tiến độ trên mọi thiết bị.",
-    "tryAsGuest": "Học thử 1 unit (guest)",
+    "subtitle": "Học thử với guest, hoặc đăng nhập để lưu tiến độ trên mọi thiết bị.",
+    "tryAsGuest": "Tiếp tục với guest",
     "createAccount": "Tạo tài khoản miễn phí",
     "haveAccount": "Tôi đã có tài khoản",
-    "guestHint": "Tiến độ guest lưu trên máy này và được gộp khi bạn đăng ký.",
+    "guestHint": "Tiến độ guest lưu trên máy này và được gộp khi bạn đăng ký. Đăng ký sau vài bài để học tiếp.",
     "guestError": "Không tạo được phiên guest. Vui lòng thử lại."
   },
+  "Learn": {
+    "loadError": "Không tải được unit. Vui lòng thử lại.",
+    "retry": "Thử lại",
+    "saveProgress": "Lưu tiến độ",
+    "startLesson": "Bắt đầu",
+    "unitLabel": "Unit {position}",
+    "softGate": {
+      "title": "Tạo tài khoản để học tiếp",
+      "description": "Bạn đã hết số bài guest miễn phí. Đăng ký hoặc đăng nhập để lưu tiến độ và mở thêm bài học.",
+      "signUp": "Tạo tài khoản miễn phí",
+      "signIn": "Tôi đã có tài khoản"
+    },
+    "lessonOneReminder": {
+      "title": "Tuyệt! Bạn đã xong bài đầu tiên",
+      "description": "Tạo tài khoản miễn phí để giữ tiến độ trên mọi thiết bị.",
+      "signUp": "Tạo tài khoản miễn phí",
+      "continue": "Tiếp tục học"
+    },
+    "lesson": {
+      "loadError": "Không tải được bài học.",
+      "submitError": "Không gửi được câu trả lời.",
+      "completeError": "Không hoàn thành được bài học.",
+      "backToLearn": "Về Learn",
+      "step": "Câu {current}/{total}",
+      "check": "Kiểm tra",
+      "checking": "Đang kiểm tra…",
+      "correct": "Đúng rồi!",
+      "tryAgain": "Chưa đúng — thử lại",
+      "matchPrompt": "Xác nhận các cặp đã ghép đúng:"
+    }
+  },
   "TrialLearn": {
-    "loadError": "Không tải được unit dùng thử. Vui lòng thử lại.",
+    "loadError": "Không tải được unit. Vui lòng thử lại.",
     "retry": "Thử lại",
     "saveProgress": "Lưu tiến độ",
     "softGate": {
-      "title": "Tuyệt vời! Lưu tiến độ của bạn",
-      "description": "Bạn đã hoàn thành unit dùng thử miễn phí. Đăng ký hoặc đăng nhập để giữ tiến độ và mở thêm bài học.",
+      "title": "Tạo tài khoản để học tiếp",
+      "description": "Bạn đã hết số bài guest miễn phí. Đăng ký hoặc đăng nhập để lưu tiến độ và mở thêm bài học.",
       "signUp": "Tạo tài khoản miễn phí",
       "signIn": "Tôi đã có tài khoản"
     },

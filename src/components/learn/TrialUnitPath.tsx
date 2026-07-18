@@ -1,7 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Check, Star } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import AnimatedCircularProgressBar from "@/components/ui/animated-circular-progress-bar";
@@ -12,6 +13,8 @@ interface TrialUnitPathProps {
   skills: LearnSkill[];
   completedLessonIds: string[];
   unitColor: string;
+  /** When set, locked/beyond-gate nodes call this instead of navigating. */
+  onLockedLessonClick?: () => void;
 }
 
 function lessonProgress(
@@ -42,7 +45,9 @@ export function TrialUnitPath({
   skills,
   completedLessonIds,
   unitColor,
+  onLockedLessonClick,
 }: TrialUnitPathProps) {
+  const t = useTranslations("Learn");
   const allLessons = skills.flatMap((s) => s.lessons);
 
   return (
@@ -61,69 +66,90 @@ export function TrialUnitPath({
 
         const Icon = isCompleted ? Check : Star;
 
+        const node = (
+          <div className="relative h-[102px] w-[102px]">
+            {isFirst ? (
+              <>
+                <div
+                  className="absolute z-1 -top-8 animate-bounce-slow rounded-xl border-2 px-3 py-2.5 font-bold uppercase tracking-wide bg-background/95 whitespace-nowrap"
+                  style={{ color: unitColor, left: "11px" }}
+                >
+                  {isCompleted ? lesson.title : t("startLesson")}
+                </div>
+                <AnimatedCircularProgressBar
+                  max={100}
+                  min={0}
+                  value={progress}
+                  gaugePrimaryColor="#58CC02"
+                  gaugeSecondaryColor="#525252"
+                  className="w-[100px] h-[96px]"
+                >
+                  <Button
+                    size="rounded"
+                    variant="immersive"
+                    className="w-[70px] h-[68px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
+                    style={{ backgroundColor: unitColor }}
+                  >
+                    <Icon
+                      className={cn(
+                        "h-10 w-10 text-gray-50 stroke-4",
+                        !isCompleted && "fill-gray-100",
+                        isCompleted && "fill-none",
+                      )}
+                    />
+                  </Button>
+                </AnimatedCircularProgressBar>
+              </>
+            ) : (
+              <Button
+                size="rounded"
+                variant={unlocked && !isCompleted ? "secondary" : "locked"}
+                className="w-[70px] h-[70px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
+              >
+                <Icon
+                  className={cn(
+                    "h-10 w-10 fill-gray-100 text-gray-100",
+                    !unlocked &&
+                      "fill-neutral-400 stroke-neutral-400 text-neutral-400",
+                    isCompleted && "fill-none",
+                  )}
+                />
+              </Button>
+            )}
+          </div>
+        );
+
+        if (unlocked) {
+          return (
+            <Link
+              key={lesson.id}
+              href={`/lesson/${lesson.id}`}
+              className="relative"
+              style={{
+                right: `${indentationLevel * 40}px`,
+                marginTop: isFirst && !isCompleted ? 60 : 24,
+              }}
+            >
+              {node}
+            </Link>
+          );
+        }
+
         return (
-          <Link
+          <button
             key={lesson.id}
-            href={unlocked ? `/lesson/trial/${lesson.id}` : "#"}
-            aria-disabled={!unlocked}
+            type="button"
             className="relative"
             style={{
-              pointerEvents: unlocked ? "auto" : "none",
               right: `${indentationLevel * 40}px`,
               marginTop: isFirst && !isCompleted ? 60 : 24,
+              pointerEvents: onLockedLessonClick ? "auto" : "none",
             }}
+            onClick={onLockedLessonClick}
+            aria-disabled={!onLockedLessonClick}
           >
-            <div className="relative h-[102px] w-[102px]">
-              {isFirst ? (
-                <>
-                  <div
-                    className="absolute z-1 -top-8 animate-bounce-slow rounded-xl border-2 px-3 py-2.5 font-bold uppercase tracking-wide bg-background/95 whitespace-nowrap"
-                    style={{ color: unitColor, left: "11px" }}
-                  >
-                    {isCompleted ? lesson.title : "Start"}
-                  </div>
-                  <AnimatedCircularProgressBar
-                    max={100}
-                    min={0}
-                    value={progress}
-                    gaugePrimaryColor="#58CC02"
-                    gaugeSecondaryColor="#525252"
-                    className="w-[100px] h-[96px]"
-                  >
-                    <Button
-                      size="rounded"
-                      variant="immersive"
-                      className="w-[70px] h-[68px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
-                      style={{ backgroundColor: unitColor }}
-                    >
-                      <Icon
-                        className={cn(
-                          "h-10 w-10 text-gray-50 stroke-4",
-                          !isCompleted && "fill-gray-100",
-                          isCompleted && "fill-none",
-                        )}
-                      />
-                    </Button>
-                  </AnimatedCircularProgressBar>
-                </>
-              ) : (
-                <Button
-                  size="rounded"
-                  variant={unlocked && !isCompleted ? "secondary" : "locked"}
-                  className="w-[70px] h-[70px] border-b-8 hover:translate-y-px hover:border-b-[7px]"
-                >
-                  <Icon
-                    className={cn(
-                      "h-10 w-10 fill-gray-100 text-gray-100",
-                      !unlocked &&
-                        "fill-neutral-400 stroke-neutral-400 text-neutral-400",
-                      isCompleted && "fill-none",
-                    )}
-                  />
-                </Button>
-              )}
-            </div>
-          </Link>
+            {node}
+          </button>
         );
       })}
     </div>
@@ -137,6 +163,7 @@ export function TrialUnitHeader({
   title: string;
   position: number;
 }) {
+  const t = useTranslations("Learn");
   const color = `var(--unit-${position % 10})`;
 
   return (
@@ -148,7 +175,7 @@ export function TrialUnitHeader({
         >
           <div>
             <span className="text-gray-200 text-sm uppercase">
-              Trial - Unit {position}
+              {t("unitLabel", { position })}
             </span>
             <h1 className="mt-1 text-xl font-bold text-gray-50">{title}</h1>
           </div>
@@ -156,7 +183,7 @@ export function TrialUnitHeader({
       </div>
       <div className="flex justify-center items-center mt-8">
         <Separator className="w-1/3 h-[3px]" />
-        <h2 className="mx-4">Unit {position}</h2>
+        <h2 className="mx-4">{t("unitLabel", { position })}</h2>
         <Separator className="w-1/3 h-[3px]" />
       </div>
     </>

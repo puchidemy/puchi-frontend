@@ -17,7 +17,7 @@ type ProfileOnboarding = {
 };
 
 /**
- * Landing CTA hub: guest trial vs sign-up vs sign-in.
+ * Landing CTA hub: guest session → /learn vs sign-up vs sign-in.
  * Logged-in users skip to /learn or /welcome based on onboarding.
  */
 export default function StartPage() {

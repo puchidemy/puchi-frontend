@@ -1,6 +1,6 @@
 "use client";
 
-import { claimGuest, getTrialUnit, TRIAL_UNIT_ID } from "@/lib/learn-api";
+import { claimGuest, DEFAULT_UNIT_ID, getUnit } from "@/lib/learn-api";
 import { progressFromUnit } from "@/lib/trial-progress";
 import {
   clearGuestLocalProgress,
@@ -9,12 +9,12 @@ import {
 } from "@/store/trial-learn";
 
 /**
- * Hydrate trial path progress from GET unit (server owner progress).
+ * Hydrate learn path progress from GET unit (server owner progress).
  * Falls back to in-memory / guest-local progress when status fields are absent.
  */
 export async function hydrateTrialProgressFromUnit(): Promise<void> {
   const guestLocal = readGuestLocalProgress();
-  const data = await getTrialUnit(TRIAL_UNIT_ID);
+  const data = await getUnit(DEFAULT_UNIT_ID);
   const server = progressFromUnit(data);
   const store = useTrialLearnStore.getState();
 
