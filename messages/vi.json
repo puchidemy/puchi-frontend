@@ -87,7 +87,43 @@
     "accountLinked": "Đã liên kết",
     "unlinkFailed": "Không thể hủy liên kết",
     "linkFailed": "Không thể liên kết tài khoản",
-    "linkConflict": "Tài khoản mạng xã hội này đã được liên kết với người dùng khác"
+    "linkConflict": "Tài khoản mạng xã hội này đã được liên kết với người dùng khác",
+    "guestProfile": {
+      "title": "Hồ sơ",
+      "headline": "Đăng nhập để quản lý hồ sơ",
+      "description": "Tạo tài khoản hoặc đăng nhập để chỉnh sửa hồ sơ và liên kết mạng xã hội. Tuỳ chọn, ngôn ngữ và quyền riêng tư vẫn dùng được khi chưa đăng nhập.",
+      "signUp": "Tạo tài khoản miễn phí",
+      "signIn": "Đăng nhập"
+    },
+    "preferences": {
+      "title": "Tuỳ chọn",
+      "lessonExperience": "Trải nghiệm bài học",
+      "soundEffects": "Hiệu ứng âm thanh",
+      "animations": "Hoạt ảnh",
+      "motivationalMessages": "Tin nhắn động viên",
+      "listeningExercises": "Bài luyện nghe",
+      "appearance": "Giao diện",
+      "darkMode": "Chế độ tối"
+    },
+    "language": {
+      "title": "Ngôn ngữ",
+      "appLanguage": "Ngôn ngữ ứng dụng"
+    },
+    "privacy": {
+      "title": "Quyền riêng tư",
+      "visibility": "Hiển thị",
+      "profilePublic": "Hồ sơ công khai",
+      "profilePublicHint": "Cho phép người khác xem trang hồ sơ của bạn.",
+      "findableByUsername": "Tìm được bằng tên người dùng",
+      "findableByUsernameHint": "Cho phép người khác tìm bạn theo tên người dùng.",
+      "shareActivity": "Chia sẻ hoạt động học",
+      "shareActivityHint": "Hiển thị bài học gần đây và chuỗi ngày trên hồ sơ."
+    },
+    "notifications": {
+      "title": "Thông báo",
+      "section": "Cảnh báo",
+      "comingSoon": "Tuỳ chọn thông báo sẽ sớm ra mắt."
+    }
   },
   "errors": {
     "profile": { "notFound": "Không tìm thấy hồ sơ" },

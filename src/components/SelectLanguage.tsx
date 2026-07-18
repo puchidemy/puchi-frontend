@@ -11,16 +11,19 @@ import {
 } from "@/components/ui/select";
 import { countries } from "@/constants/countries";
 import { useLocale } from "next-intl";
-import { usePathname } from "@/i18n/routing";
-import { redirect } from "next/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
+import { useSettingsStore } from "@/store/settings";
+import type { Locale } from "@/i18n/config";
 
 const SelectLanguage = () => {
   const currLocale = useLocale();
-  const pathName = usePathname();
+  const pathname = usePathname();
+  const router = useRouter();
+  const setField = useSettingsStore((s) => s.setField);
 
   const handleChangeLanguage = (locale: string) => {
-    const newPath = `/${locale}${pathName}`;
-    redirect(newPath);
+    setField("locale", locale);
+    router.replace(pathname, { locale: locale as Locale });
   };
 
   return (

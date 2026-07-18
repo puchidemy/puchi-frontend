@@ -191,7 +191,43 @@
     "accountLinked": "Linked",
     "unlinkFailed": "Failed to unlink account",
     "linkFailed": "Failed to link account",
-    "linkConflict": "This social account is already linked to another user"
+    "linkConflict": "This social account is already linked to another user",
+    "guestProfile": {
+      "title": "Profile",
+      "headline": "Sign in to manage your profile",
+      "description": "Create an account or sign in to edit your profile and connect social accounts. Preferences, language, and privacy work without signing in.",
+      "signUp": "Create a free account",
+      "signIn": "Sign in"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "lessonExperience": "Lesson experience",
+      "soundEffects": "Sound effects",
+      "animations": "Animations",
+      "motivationalMessages": "Motivational messages",
+      "listeningExercises": "Listening exercises",
+      "appearance": "Appearance",
+      "darkMode": "Dark mode"
+    },
+    "language": {
+      "title": "Language",
+      "appLanguage": "App language"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "visibility": "Visibility",
+      "profilePublic": "Public profile",
+      "profilePublicHint": "Let others view your profile page.",
+      "findableByUsername": "Findable by username",
+      "findableByUsernameHint": "Allow others to find you by your username.",
+      "shareActivity": "Share learning activity",
+      "shareActivityHint": "Show recent lessons and streaks on your profile."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "section": "Alerts",
+      "comingSoon": "Notification preferences are coming soon."
+    }
   },
   "ProfileActions": {
     "actions": {

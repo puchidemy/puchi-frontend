@@ -180,4 +180,6 @@ export const useSettingsStore = create<SettingsState>()(
 export {
   DEFAULT_SETTINGS,
   settingsChangedFromDefaults,
+  type SettingsTheme,
+  type UserSettings,
 } from "@/lib/settings-api";

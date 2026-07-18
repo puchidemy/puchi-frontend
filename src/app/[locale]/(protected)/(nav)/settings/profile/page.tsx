@@ -30,14 +30,51 @@ import {
   type StampButtonStatus,
 } from "@/components/ui/stamp-button";
 import { useAuthStore } from "@/store/auth";
+import { getToken } from "@/lib/token-manager";
+import { Link } from "@/i18n/routing";
 
 const ageRanges = ["13-17", "18-24", "25-34", "35-44", "45-54", "55+"];
 const SAVED_FLASH_MS = 2000;
+
+function GuestProfileSettingsCta() {
+  const t = useTranslations("Settings.guestProfile");
+
+  return (
+    <div className="flex-1 space-y-6">
+      <div className="text-3xl text-gray-700 dark:text-gray-100 font-bold">
+        {t("title")}
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-xl">{t("headline")}</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <p className="text-muted-foreground">{t("description")}</p>
+          <Link href="/auth/sign-up">
+            <Button variant="primary" className="w-full text-gray-200">
+              {t("signUp")}
+            </Button>
+          </Link>
+          <Link href="/auth/sign-in">
+            <Button variant="secondary" className="w-full text-gray-200">
+              {t("signIn")}
+            </Button>
+          </Link>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
 
 function SettingsProfileContent() {
   const t = useTranslations("Settings");
   const searchParams = useSearchParams();
   const savedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const authUser = useAuthStore((s) => s.user);
+  const accessToken = useAuthStore((s) => s.accessToken);
+  const authLoading = useAuthStore((s) => s.loading);
+  const isGuest =
+    !authLoading && !authUser && !accessToken && !getToken();
 
   const [saveStatus, setSaveStatus] = useState<StampButtonStatus>("idle");
   const [formError, setFormError] = useState<string | null>(null);
@@ -58,7 +95,6 @@ function SettingsProfileContent() {
   const [bio, setBio] = useState("");
   const [ageRange, setAgeRange] = useState("");
   const [email, setEmail] = useState("");
-  const authUser = useAuthStore((s) => s.user);
 
   const [linkedAccounts, setLinkedAccounts] = useState<LinkedAccount[]>([]);
 
@@ -94,6 +130,8 @@ function SettingsProfileContent() {
   }, [searchParams]);
 
   useEffect(() => {
+    if (authLoading || isGuest) return;
+
     async function load() {
       try {
         const data = await getMyProfile();
@@ -114,7 +152,19 @@ function SettingsProfileContent() {
     }
     void load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [authLoading, isGuest]);
+
+  if (authLoading) {
+    return (
+      <div className="py-24 text-center">
+        <div className="w-8 h-8 border-4 border-sky-300 border-t-sky-500 rounded-full animate-spin mx-auto" />
+      </div>
+    );
+  }
+
+  if (isGuest) {
+    return <GuestProfileSettingsCta />;
+  }
 
   const markDirty = () => {
     setFormError(null);
