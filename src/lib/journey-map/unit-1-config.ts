@@ -14,15 +14,15 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
       slug: "hoan-kiem",
       skillId: "22222222-2222-2222-2222-222222222222",
       baseStatus: "unlocked",
-      hotspot: { x: 0.48, y: 0.28 },
+      hotspot: { x: 0.4, y: 0.15 },
       visualSize: 28,
       hitArea: 48,
-      assets: { hero: `${V1}/landmarks/hoan-kiem/hero.webp` },
+      assets: { hero: `${V1}/landmarks/hoan-kiem/hero.png` },
     },
     {
       slug: "one-pillar-pagoda",
       baseStatus: "coming_soon",
-      hotspot: { x: 0.4, y: 0.34 },
+      hotspot: { x: 0.5, y: 0.35 },
       visualSize: 24,
       hitArea: 48,
       assets: {},
@@ -30,7 +30,7 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
     {
       slug: "old-quarter",
       baseStatus: "coming_soon",
-      hotspot: { x: 0.52, y: 0.32 },
+      hotspot: { x: 0.65, y: 0.22 },
       visualSize: 24,
       hitArea: 48,
       assets: {},
@@ -38,7 +38,7 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
     {
       slug: "coffee-shop",
       baseStatus: "coming_soon",
-      hotspot: { x: 0.44, y: 0.48 },
+      hotspot: { x: 0.4, y: 0.48 },
       visualSize: 24,
       hitArea: 48,
       assets: {},
@@ -46,7 +46,7 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
     {
       slug: "street-food",
       baseStatus: "coming_soon",
-      hotspot: { x: 0.56, y: 0.52 },
+      hotspot: { x: 0.65, y: 0.5 },
       visualSize: 24,
       hitArea: 48,
       assets: {},
@@ -54,7 +54,7 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
     {
       slug: "bamboo-grove",
       baseStatus: "coming_soon",
-      hotspot: { x: 0.38, y: 0.62 },
+      hotspot: { x: 0.55, y: 0.58 },
       visualSize: 24,
       hitArea: 48,
       assets: {},
@@ -62,7 +62,7 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
     {
       slug: "traditional-bridge",
       baseStatus: "coming_soon",
-      hotspot: { x: 0.5, y: 0.68 },
+      hotspot: { x: 0.45, y: 0.8 },
       visualSize: 24,
       hitArea: 48,
       assets: {},
@@ -71,5 +71,5 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
 };
 
 export function islandBaseSrc(config: JourneyMapConfig): string {
-  return `${config.assetBasePath}/map/island-base.webp`;
+  return `${config.assetBasePath}/map/island-base.png`;
 }
