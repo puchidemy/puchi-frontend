@@ -1,0 +1,48 @@
+"use client";
+
+import Image from "next/image";
+import { useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
+import type { DerivedLandmarkView } from "@/lib/journey-map/types";
+
+/** Prefer welcome v2; beginner student is the documented fallback. */
+const MASCOT_SRC = "/images/mascot/puchi_welcome_v2.png";
+
+const OVERLAY_SIZE = 56;
+/** Nudge Puchi beside the current hotspot (normalized map space). */
+const OFFSET_X = 0.06;
+
+export type JourneyPuchiOverlayProps = {
+  views: DerivedLandmarkView[];
+};
+
+export function JourneyPuchiOverlay({ views }: JourneyPuchiOverlayProps) {
+  const reduceMotion = useReducedMotion();
+  const current = views.find((v) => v.isCurrent);
+  if (!current) return null;
+
+  return (
+    <div
+      className={cn(
+        "pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-1/2",
+        !reduceMotion && "animate-bounce-slow",
+      )}
+      style={{
+        left: `${(current.hotspot.x + OFFSET_X) * 100}%`,
+        top: `${current.hotspot.y * 100}%`,
+        width: OVERLAY_SIZE,
+        height: OVERLAY_SIZE,
+      }}
+      aria-hidden
+    >
+      <Image
+        src={MASCOT_SRC}
+        alt=""
+        width={OVERLAY_SIZE}
+        height={OVERLAY_SIZE}
+        className="h-full w-full object-contain drop-shadow-md"
+        draggable={false}
+      />
+    </div>
+  );
+}
