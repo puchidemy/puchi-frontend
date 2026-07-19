@@ -1,14 +1,52 @@
-# Task 7 report — Sync dialog on `/auth/continue`
+# Task 7 Report — Polish + verification
 
-**Branch:** `feat/guest-settings-sync`  
-**Commit:** `feat(auth): guest sync dialog for lessons and settings`
+**Branch:** `feat/unit-1-journey-map`  
+**Date:** 2026-07-20
 
-## Done
+## Status: Complete
 
-1. **`SyncGuestDialog`** — shadcn Dialog + StampButton (sync) / ghost Skip; blocking dismiss.
-2. **`claimGuestIfNeeded`** → `{ claimed, lessonsMerged }` from `lessons_merged`.
-3. **`/auth/continue`** — session/token → always claim learn → if `lessonsMerged > 0` OR guest settings ≠ defaults → dialog.
-4. **Confirm** → `mergeSettings` + hydrate + theme/locale + `clearGuest` → route.
-5. **Skip** → `clearGuest` only (learn claim already ran).
-6. **`mergeIfNeeded`** no-op (deprecated `merge-guest`); continue no longer calls it.
-7. **i18n** `Settings.syncGuest.*` in `en.json` / `vi.json`.
+No journey-map code changes required. Selftest, ESLint, and `next build` all passed. FooterLink working-tree regression (hardcoded EN, undoing Task 5 i18n) was discarded — not committed.
+
+## CLI verification
+
+| Check | Command | Result |
+|-------|---------|--------|
+| Selftest | `bun src/lib/journey-map/selftest.ts` | `journey-map selftest OK` |
+| Lint (project) | `bun run lint` | exit 0 (baseline-browser-mapping stale warning only) |
+| Lint (journey scope) | `bunx eslint` on `journey/**`, `journey-map/**`, `learn/**` pages | exit 0 |
+| Build | `bun run build` | exit 0 — compiled; routes include `/[locale]/learn` + `/[locale]/learn/chapter/[landmarkSlug]` |
+
+**Note:** Next build log shows `Skipping validation of types`. Pre-existing tsc issues elsewhere (e.g. dictation) were not exercised; journey files lint clean and build includes journey routes.
+
+## Manual QA checklist
+
+| # | Criterion | Result | How verified |
+|---|-----------|--------|--------------|
+| 1 | `/learn` is diorama, not zigzag buttons | **CLI/code** ✓ | `UnitLearnView` renders `JourneyMapView` + `JourneyMapCanvas` (map + hotspots); no zigzag path UI |
+| 2 | Pan/zoom + Reset; Back from chapter restores viewport | **CLI/code** ✓ / **browser** needed for feel | Canvas: pan/pinch/wheel + Reset; `saveJourneyViewport` / `loadJourneyViewport` (sessionStorage). Back → `/learn` remount. Interactive pan feel = browser |
+| 3 | Hotspot visual small but hit ≥ 44px | **CLI/code** ✓ | Config `visualSize` 24–28, `hitArea` 48; `JourneyHotspot` `Math.max(hitArea, MIN_HIT=44)` |
+| 4 | Puchi 2D only on map; KV may differ | **CLI/code** ✓ | `JourneyPuchiOverlay` 2D asset on map; chapter/KV can use separate hero (`view.assets.hero`) |
+| 5 | 6 coming_soon tips via toast (URL clean) | **CLI/code** ✓ / **browser** for toast UI | Config: 6 landmarks `baseStatus: "coming_soon"`; select → `toast.message` + no URL tip; selftest blocks `bamboo-grove` |
+| 6 | Chapter Continue / Review for 0/3, 1/3, 3/3 | **CLI/code** ✓ / **browser** for labels | Selftest: 0/3 unlocked+current, 1/3 unlocked+current, 3/3 completed; CTA: `completed` → Review else Continue |
+| 7 | Guest soft-gate at lesson 4 | **CLI/code** ✓ / **browser** for dialog | `GUEST_SOFT_GATE_LIMIT = 3` in `UnitLearnView` + `ChapterView`; gate on Continue/incomplete when `completedLessonIds.length >= 3` |
+| 8 | `prefers-reduced-motion` stops bounce/pulse | **CLI/code** ✓ / **browser** for OS setting | `useReducedMotion` → no `animate-pulse` / `animate-bounce-slow` |
+| 9 | Mobile + desktop no horizontal page scroll bleed | **CLI/code** partial / **browser** required | Canvas `overflow-hidden` + `touch-none`; full scroll-bleed check needs mobile/desktop browser |
+
+### Legend
+
+- **CLI/code** — verified via selftest, lint, build, and/or static review of journey sources
+- **browser** — needs interactive pass in a real browser (not run in this task)
+
+## Commit
+
+```
+chore(learn): verify journey map build and document QA
+```
+
+(No UX polish diff; verification + SDD report only.)
+
+## Concerns / follow-ups
+
+1. Manual browser QA items 2, 5–9 (feel, toast, soft-gate dialog, reduced-motion, scroll bleed) still recommended before merge.
+2. Next build skips TypeScript validation — run `tsc --noEmit` separately if CI does not; do not expand into unrelated modules unless journey code fails.
+3. Transient uncommitted `FooterLink.tsx` hardcode-EN change was reverted to keep Task 5 i18n fix.
