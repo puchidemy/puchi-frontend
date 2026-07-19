@@ -24,8 +24,8 @@ import { useAuthStore } from "@/store/auth";
 import { useTrialLearnStore } from "@/store/trial-learn";
 
 export default function ChapterPage() {
-  const params = useParams<{ landmarkSlug: string }>();
-  const landmarkSlug = params.landmarkSlug;
+  const params = useParams<{ regionSlug: string }>();
+  const regionSlug = params.regionSlug;
   const t = useTranslations("Learn");
   const router = useRouter();
 
@@ -88,8 +88,8 @@ export default function ChapterPage() {
       skills,
       completedLessonIds,
     );
-    return resolveChapterAccess(UNIT_1_JOURNEY_MAP, views, landmarkSlug);
-  }, [unit, skills, completedLessonIds, landmarkSlug]);
+    return resolveChapterAccess(UNIT_1_JOURNEY_MAP, views, regionSlug);
+  }, [unit, skills, completedLessonIds, regionSlug]);
 
   useEffect(() => {
     if (loading || authLoading || !access) return;
@@ -105,7 +105,7 @@ export default function ChapterPage() {
 
   if (loading || authLoading) {
     return (
-      <div className="flex justify-center py-24">
+      <div className="flex h-full min-h-0 w-full items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -113,30 +113,34 @@ export default function ChapterPage() {
 
   if (error || !unit) {
     return (
-      <div className="mx-auto max-w-md space-y-4 p-8">
-        <Alert variant="destructive">
-          <AlertDescription>{error || t("loadError")}</AlertDescription>
-        </Alert>
-        <Button variant="outline" onClick={loadUnit}>
-          {t("retry")}
-        </Button>
+      <div className="flex h-full min-h-0 w-full items-center justify-center p-8">
+        <div className="mx-auto max-w-md space-y-4">
+          <Alert variant="destructive">
+            <AlertDescription>{error || t("loadError")}</AlertDescription>
+          </Alert>
+          <Button variant="outline" onClick={loadUnit}>
+            {t("retry")}
+          </Button>
+        </div>
       </div>
     );
   }
 
   if (!access?.ok) {
     return (
-      <div className="flex justify-center py-24">
+      <div className="flex h-full min-h-0 w-full items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
 
   return (
-    <ChapterView
-      view={access.view}
-      unitTitle={unit.title}
-      completedLessonIds={completedLessonIds}
-    />
+    <div className="h-full min-h-0 overflow-y-auto">
+      <ChapterView
+        view={access.view}
+        unitTitle={unit.title}
+        completedLessonIds={completedLessonIds}
+      />
+    </div>
   );
 }

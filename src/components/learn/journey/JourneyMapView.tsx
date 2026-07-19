@@ -22,7 +22,7 @@ export type JourneyMapViewProps = {
 
 /**
  * Journey → Region → Chapter → Lessons
- * Mainland regions are large buttons; islands are decorative on the art only.
+ * Full-height 2.5D board; islands are decorative on the art only.
  */
 export function JourneyMapView({
   unit,
@@ -47,7 +47,7 @@ export function JourneyMapView({
   const previewSlug = pinnedSlug ?? hoveredSlug;
   const previewView =
     previewSlug != null
-      ? views.find((v) => v.slug === previewSlug) ?? null
+      ? (views.find((v) => v.slug === previewSlug) ?? null)
       : null;
   const showPreview =
     previewView != null &&
@@ -74,7 +74,6 @@ export function JourneyMapView({
       setPinnedSlug(null);
       return;
     }
-    // Pin preview card; Continue opens chapter (not direct navigate).
     setPinnedSlug((prev) => (prev === slug ? null : slug));
   };
 
@@ -90,8 +89,9 @@ export function JourneyMapView({
   };
 
   return (
-    <div className="flex w-full flex-col font-din">
+    <div className="flex h-full min-h-0 w-full flex-col">
       <JourneyMapHeader
+        className="shrink-0"
         title={unit.title}
         completedLessons={completedLessons}
         totalLessons={totalLessons}
@@ -100,7 +100,7 @@ export function JourneyMapView({
           total: totalLessons,
         })}
       />
-      <div className="relative h-[min(70vh,720px)] w-full min-h-[320px]">
+      <div className="relative min-h-0 flex-1">
         <JourneyMapCanvas
           config={config}
           views={views}
@@ -113,7 +113,7 @@ export function JourneyMapView({
         />
         {showPreview && previewView && (
           <div
-            className="pointer-events-none absolute inset-x-0 bottom-3 z-40 flex justify-center px-3 sm:bottom-4 sm:justify-end sm:pr-16"
+            className="pointer-events-none absolute inset-x-0 bottom-3 z-40 flex justify-center px-3 sm:bottom-4 sm:justify-end sm:pr-4"
             onMouseEnter={() => setHoveredSlug(previewView.slug)}
             onMouseLeave={() => {
               if (!pinnedSlug) setHoveredSlug(null);

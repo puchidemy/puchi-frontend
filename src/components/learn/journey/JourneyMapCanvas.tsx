@@ -444,7 +444,7 @@ export function JourneyMapCanvas({
     <div
       ref={containerRef}
       className={cn(
-        "relative h-full min-h-[320px] w-full touch-none overflow-hidden bg-sky-100/40 dark:bg-sky-950/30",
+        "relative h-full min-h-0 w-full touch-none overflow-hidden bg-neutral-100 dark:bg-neutral-900",
         className,
       )}
       onPointerDown={onPointerDown}

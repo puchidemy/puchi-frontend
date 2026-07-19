@@ -20,7 +20,7 @@ import { JourneyMapView } from "./journey/JourneyMapView";
 
 const GUEST_SOFT_GATE_LIMIT = 3;
 
-/** Real curriculum unit path for guest + authenticated learners. */
+/** Unit 1 Journey Map — full-height board for guest + authenticated learners. */
 export function UnitLearnView() {
   const t = useTranslations("Learn");
   const user = useAuthStore((s) => s.user);
@@ -80,7 +80,7 @@ export function UnitLearnView() {
 
   if (loading || authLoading) {
     return (
-      <div className="flex justify-center py-24">
+      <div className="flex h-full min-h-0 w-full items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -88,19 +88,21 @@ export function UnitLearnView() {
 
   if (error || !unit) {
     return (
-      <div className="p-8 max-w-md mx-auto space-y-4">
-        <Alert variant="destructive">
-          <AlertDescription>{error || t("loadError")}</AlertDescription>
-        </Alert>
-        <Button variant="outline" onClick={loadUnit}>
-          {t("retry")}
-        </Button>
+      <div className="flex h-full min-h-0 w-full items-center justify-center p-8">
+        <div className="mx-auto max-w-md space-y-4">
+          <Alert variant="destructive">
+            <AlertDescription>{error || t("loadError")}</AlertDescription>
+          </Alert>
+          <Button variant="outline" onClick={loadUnit}>
+            {t("retry")}
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full xl:pr-8 pr-0 font-din">
+    <div className="relative flex h-full min-h-0 w-full flex-col font-din">
       <JourneyMapView
         unit={unit}
         skills={skills}
@@ -110,8 +112,12 @@ export function UnitLearnView() {
         }
       />
       {atSoftGate && (
-        <div className="text-center pb-8 px-4">
-          <Button variant="highlight" onClick={() => setGateOpen(true)}>
+        <div className="pointer-events-none absolute inset-x-0 bottom-3 z-50 flex justify-center px-3">
+          <Button
+            variant="highlight"
+            className="pointer-events-auto shadow-lg"
+            onClick={() => setGateOpen(true)}
+          >
             {t("saveProgress")}
           </Button>
         </div>
