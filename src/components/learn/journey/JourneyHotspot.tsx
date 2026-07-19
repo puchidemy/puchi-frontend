@@ -1,14 +1,18 @@
 "use client";
 
-import { Check, Lock } from "lucide-react";
+import Image from "next/image";
+import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { RuntimeLandmarkStatus } from "@/lib/journey-map/types";
 
+const LOCK_SRC = "/images/learn/journey/ui/lock-3d.webp";
+
 const statusClass: Record<RuntimeLandmarkStatus, string> = {
-  unlocked: "bg-transparent ring-0 hover:bg-white/20 hover:ring-2 hover:ring-white/50",
-  completed: "bg-emerald-400/20 ring-2 ring-emerald-300/60",
-  locked: "bg-black/20",
-  coming_soon: "bg-black/15",
+  unlocked:
+    "bg-transparent hover:bg-white/18 hover:ring-2 hover:ring-white/45",
+  completed: "bg-emerald-400/18 ring-2 ring-emerald-300/55",
+  locked: "bg-black/[0.07]",
+  coming_soon: "bg-black/[0.05]",
 };
 
 export type JourneyHotspotProps = {
@@ -25,10 +29,6 @@ export type JourneyHotspotProps = {
   reduceMotion?: boolean;
 };
 
-/**
- * Region hit box — no translate on hover (avoids “đẩy xuống”).
- * Uses scale/ring only so lock stays aligned with the clay block.
- */
 export function JourneyHotspot({
   hotspot,
   hitW,
@@ -42,7 +42,7 @@ export function JourneyHotspot({
   onHoverEnd,
   reduceMotion = false,
 }: JourneyHotspotProps) {
-  const canPreview = status === "unlocked" || status === "completed";
+  const isLocked = status === "locked" || status === "coming_soon";
   const pulse =
     isCurrent && status === "unlocked" && !reduceMotion && !isPreviewed
       ? "animate-pulse"
@@ -55,14 +55,14 @@ export function JourneyHotspot({
       aria-label={ariaLabel}
       aria-expanded={isPreviewed || undefined}
       className={cn(
-        "absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[22%] transition-[transform,box-shadow,background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[22%] transition-[transform,background-color,box-shadow] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         statusClass[status],
         pulse,
         isCurrent &&
           status === "unlocked" &&
-          "bg-primary/15 ring-2 ring-primary/45",
-        isPreviewed && canPreview && "z-20 bg-white/30 ring-2 ring-primary/55 scale-[1.03]",
-        canPreview && "hover:scale-[1.03]",
+          "bg-primary/12 ring-2 ring-primary/40",
+        isPreviewed && "z-20 bg-white/28 ring-2 ring-primary/50 scale-[1.03]",
+        "hover:scale-[1.03]",
       )}
       style={{
         left: `${hotspot.x * 100}%`,
@@ -71,13 +71,9 @@ export function JourneyHotspot({
         height: `${hitH * 100}%`,
       }}
       onClick={onSelect}
-      onMouseEnter={() => {
-        if (canPreview) onHoverStart?.();
-      }}
+      onMouseEnter={() => onHoverStart?.()}
       onMouseLeave={() => onHoverEnd?.()}
-      onFocus={() => {
-        if (canPreview) onHoverStart?.();
-      }}
+      onFocus={() => onHoverStart?.()}
       onBlur={() => onHoverEnd?.()}
     >
       {status === "completed" && (
@@ -87,10 +83,15 @@ export function JourneyHotspot({
           aria-hidden
         />
       )}
-      {(status === "locked" || status === "coming_soon") && (
-        <Lock
-          className="h-4 w-4 text-white drop-shadow sm:h-5 sm:w-5"
-          strokeWidth={2.5}
+      {isLocked && (
+        <Image
+          src={LOCK_SRC}
+          alt=""
+          width={28}
+          height={28}
+          className="h-[22%] w-[22%] min-h-3.5 min-w-3.5 max-h-7 max-w-7 object-contain opacity-90 drop-shadow-sm"
+          draggable={false}
+          unoptimized
           aria-hidden
         />
       )}

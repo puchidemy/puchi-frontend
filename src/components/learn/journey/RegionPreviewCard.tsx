@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { DerivedLandmarkView } from "@/lib/journey-map/types";
 
+const LOCK_SRC = "/images/learn/journey/ui/lock-3d.webp";
+
 export type RegionPreviewCardProps = {
   view: DerivedLandmarkView;
   onContinue: () => void;
@@ -15,7 +17,7 @@ export type RegionPreviewCardProps = {
   className?: string;
 };
 
-/** Hover/tap preview: chapter hero, title, progress, Continue — not on the map art. */
+/** Preview for any region; Continue disabled when locked / coming soon. */
 export function RegionPreviewCard({
   view,
   onContinue,
@@ -26,8 +28,13 @@ export function RegionPreviewCard({
 }: RegionPreviewCardProps) {
   const t = useTranslations("Learn");
   const title = t(`Journey.landmark.${view.slug}`);
-  const cta =
-    view.status === "completed"
+  const isLocked =
+    view.status === "locked" || view.status === "coming_soon";
+  const cta = isLocked
+    ? view.status === "coming_soon"
+      ? t("Journey.comingSoon")
+      : t("Journey.locked")
+    : view.status === "completed"
       ? t("Journey.Chapter.review")
       : t("Journey.Chapter.continue");
   const hero = view.assets.hero;
@@ -50,7 +57,7 @@ export function RegionPreviewCard({
             src={hero}
             alt=""
             fill
-            className="object-cover"
+            className={cn("object-cover", isLocked && "opacity-70")}
             sizes="320px"
           />
         ) : (
@@ -60,11 +67,29 @@ export function RegionPreviewCard({
             </span>
           </div>
         )}
+        {isLocked && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+            <Image
+              src={LOCK_SRC}
+              alt=""
+              width={40}
+              height={40}
+              className="h-10 w-10 object-contain opacity-95 drop-shadow-md"
+              unoptimized
+              aria-hidden
+            />
+          </div>
+        )}
       </div>
       <div className="space-y-3 p-4">
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             {t("Journey.previewChapter")}
+            {isLocked && (
+              <span className="ml-2 text-amber-600 dark:text-amber-400">
+                · {t(`Journey.status.${view.status}`)}
+              </span>
+            )}
           </p>
           <h3 className="mt-0.5 text-lg font-bold leading-tight">{title}</h3>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -100,6 +125,7 @@ export function RegionPreviewCard({
             type="button"
             variant="highlight"
             className="flex-1"
+            disabled={isLocked}
             onClick={onContinue}
           >
             {cta}

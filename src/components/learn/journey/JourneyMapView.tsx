@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { toast } from "sonner";
 import { useRouter } from "@/i18n/routing";
 import type { LearnSkill, LearnUnit } from "@/lib/learn-api";
 import { resolveChapterAccess } from "@/lib/journey-map/chapter-access";
@@ -17,6 +16,7 @@ export type JourneyMapViewProps = {
   unit: LearnUnit;
   skills: LearnSkill[];
   completedLessonIds: string[];
+  /** Reserved for guest soft-gate (lesson quota) — not region lock. */
   onLockedLessonClick?: () => void;
 };
 
@@ -31,7 +31,6 @@ export function JourneyMapView({
   unit,
   skills,
   completedLessonIds,
-  onLockedLessonClick,
 }: JourneyMapViewProps) {
   const t = useTranslations("Learn");
   const router = useRouter();
@@ -53,9 +52,8 @@ export function JourneyMapView({
     previewSlug != null
       ? (views.find((v) => v.slug === previewSlug) ?? null)
       : null;
-  const showPreview =
-    previewView != null &&
-    (previewView.status === "unlocked" || previewView.status === "completed");
+  // Preview mọi vùng (kể cả khóa); Continue disabled trong card.
+  const showPreview = previewView != null;
 
   useEffect(() => {
     return () => {
@@ -91,29 +89,20 @@ export function JourneyMapView({
   };
 
   const onSelectRegion = (slug: string) => {
-    const access = resolveChapterAccess(config, views, slug);
-    if (!access.ok) {
-      if (access.reason === "locked" && onLockedLessonClick) {
-        onLockedLessonClick();
-        return;
-      }
-      toast.message(
-        access.reason === "coming_soon"
-          ? t("Journey.comingSoon")
-          : t("Journey.locked"),
-      );
-      setPinnedSlug(null);
-      setHoveredSlug(null);
-      return;
-    }
     clearCloseTimer();
-    // Pin so preview stays while user clicks Continue
+    // Pin preview for every region (locked included — CTA disabled in card).
     setPinnedSlug(slug);
     setHoveredSlug(slug);
   };
 
   const onContinue = () => {
     if (!previewView) return;
+    if (
+      previewView.status === "locked" ||
+      previewView.status === "coming_soon"
+    ) {
+      return;
+    }
     const access = resolveChapterAccess(config, views, previewView.slug);
     if (!access.ok) return;
     router.push(`/learn/chapter/${previewView.slug}`);
