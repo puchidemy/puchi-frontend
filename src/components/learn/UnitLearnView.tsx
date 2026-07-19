@@ -16,7 +16,7 @@ import {
 import { progressFromUnit } from "@/lib/trial-progress";
 import { useAuthStore } from "@/store/auth";
 import { useTrialLearnStore } from "@/store/trial-learn";
-import { TrialUnitHeader, TrialUnitPath } from "./TrialUnitPath";
+import { JourneyMapView } from "./journey/JourneyMapView";
 
 const GUEST_SOFT_GATE_LIMIT = 3;
 
@@ -99,15 +99,12 @@ export function UnitLearnView() {
     );
   }
 
-  const unitColor = `var(--unit-${unit.position % 10})`;
-
   return (
     <div className="w-full xl:pr-8 pr-0 font-din">
-      <TrialUnitHeader title={unit.title} position={unit.position} />
-      <TrialUnitPath
+      <JourneyMapView
+        unit={unit}
         skills={skills}
         completedLessonIds={completedLessonIds}
-        unitColor={unitColor}
         onLockedLessonClick={
           atSoftGate ? () => setGateOpen(true) : undefined
         }

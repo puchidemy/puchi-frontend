@@ -578,6 +578,27 @@
       "correct": "Correct!",
       "tryAgain": "Not quite — try again",
       "matchPrompt": "Confirm these pairs are matched correctly:"
+    },
+    "Journey": {
+      "progressChip": "{completed}/{total} lessons",
+      "resetView": "Reset view",
+      "comingSoon": "This chapter is coming soon.",
+      "locked": "Finish the previous chapter first.",
+      "landmark": {
+        "hoan-kiem": "Hoàn Kiếm Lake",
+        "one-pillar-pagoda": "One Pillar Pagoda",
+        "old-quarter": "Hanoi Old Quarter",
+        "coffee-shop": "Coffee Shop",
+        "street-food": "Street Food Corner",
+        "bamboo-grove": "Bamboo Grove",
+        "traditional-bridge": "Traditional Bridge"
+      },
+      "status": {
+        "unlocked": "Available",
+        "locked": "Locked",
+        "coming_soon": "Coming soon",
+        "completed": "Completed"
+      }
     }
   },
   "TrialLearn": {

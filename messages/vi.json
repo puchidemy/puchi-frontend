@@ -215,6 +215,27 @@
       "correct": "Đúng rồi!",
       "tryAgain": "Chưa đúng — thử lại",
       "matchPrompt": "Xác nhận các cặp đã ghép đúng:"
+    },
+    "Journey": {
+      "progressChip": "{completed}/{total} bài",
+      "resetView": "Đặt lại khung nhìn",
+      "comingSoon": "Chương này sắp ra mắt.",
+      "locked": "Hãy hoàn thành chương trước đó.",
+      "landmark": {
+        "hoan-kiem": "Hồ Hoàn Kiếm",
+        "one-pillar-pagoda": "Chùa Một Cột",
+        "old-quarter": "Phố cổ Hà Nội",
+        "coffee-shop": "Quán cà phê",
+        "street-food": "Góc ẩm thực đường phố",
+        "bamboo-grove": "Rừng tre",
+        "traditional-bridge": "Cầu truyền thống"
+      },
+      "status": {
+        "unlocked": "Có thể học",
+        "locked": "Đã khóa",
+        "coming_soon": "Sắp ra mắt",
+        "completed": "Đã hoàn thành"
+      }
     }
   },
   "TrialLearn": {
@@ -433,12 +454,12 @@
     "startYourLanguageJourneyHere": "bắt đầu hành trình ngôn ngữ tại đây.",
     "learnAnytimeLearnAnywhere": "học mọi lúc, học mọi nơi.",
     "start": "bắt đầu",
-    "about": "Về chúng tôi",
-    "help": "Trợ giúp",
-    "attribution": "Ghi nhận",
-    "guidelines": "Hướng dẫn cộng đồng",
-    "terms": "Điều khoản",
-    "privacy": "Quyền riêng tư"
+    "about": "About",
+    "help": "Help",
+    "attribution": "Attribution",
+    "guidelines": "Guidelines",
+    "terms": "Terms",
+    "privacy": "Privacy"
   },
   "HelpPage": {
     "breadcrumbs": {
