@@ -131,11 +131,124 @@
     }
   },
   "AboutPage": {
-    "title": "Puchiについて",
-    "intro": "Puchiは、ユーザーがベトナム語を習得するのを支援する革新的なプラットフォームです。多言語サポートにより、世界中の学習者がアクセスできるようになっています。",
-    "technologies": "Next.js 15、Shadcn UI、Clerk認証などの最新技術で構築されたPuchiは、高速で安全、シームレスな学習体験を提供します。国際化（i18n）は、ユーザーが好みの言語でコンテンツを探索できるようにする主要機能です。",
-    "creator": "教育における技術活用に情熱を注ぐ開発者、Lê Công Hoanによって作成されました。",
-    "joinCommunity": "<facebookLink>Facebook</facebookLink>でコミュニティに参加して他の学習者とつながるか、<githubLink>GitHub</githubLink>でプロジェクトのソースコードを探索してください。"
+    "metaTitle": "About Puchi",
+    "metaDescription": "Learn about Puchi: origin story, personality, signature details, and what the bamboo leaves mean.",
+    "brand": "Puchi",
+    "tagline": "About Puchi",
+    "heroHeadline": "The story behind the panda who learns Vietnamese.",
+    "heroLead": "From a bamboo forest to every lesson — who Puchi is, why we made this companion, and how the character grows with you.",
+    "heroImageAlt": "Puchi the panda learning companion standing happily",
+    "ctaStart": "Start learning",
+    "communityShort": "<facebookLink>Facebook</facebookLink> · <githubLink>GitHub</githubLink>",
+    "storyEyebrow": "Origin story",
+    "storyTitle": "Puchi’s story",
+    "storyOrigin": "Puchi was born in a cool green bamboo forest — soft light, quiet leaves, and endless curiosity.",
+    "storyDream": "Puchi’s dream is to help people everywhere speak Vietnamese and feel closer to Vietnamese culture.",
+    "storyGrowth": "Every time you learn and grow, the sprout on Puchi’s head grows too — and your own bamboo forest becomes greener.",
+    "storyImageAlt": "Puchi with two bamboo leaves — active learning stage",
+    "personalityEyebrow": "Personality",
+    "personalityTitle": "How Puchi shows up.",
+    "personalityLead": "Six traits from the brand system — the voice behind every lesson, cheer, and gentle nudge.",
+    "personality": {
+      "curious": "Curious",
+      "friendly": "Friendly",
+      "energetic": "Energetic",
+      "smart": "Smart",
+      "persistent": "Persistent",
+      "humorous": "Humorous"
+    },
+    "keywordsEyebrow": "Brand keywords",
+    "keywordsTitle": "Words we design around.",
+    "keywords": {
+      "cute": "Cute",
+      "friendly": "Friendly",
+      "smart": "Smart",
+      "inspiring": "Inspiring",
+      "energetic": "Energetic",
+      "fun": "Fun"
+    },
+    "signatureEyebrow": "Signature details",
+    "signatureTitle": "Why Puchi looks this way.",
+    "signatureLead": "Each detail from the brand system carries meaning.",
+    "signature": {
+      "leaf": {
+        "title": "Bamboo leaf on the head",
+        "description": "A symbol of growth and progress. Leaves mark how far you’ve come."
+      },
+      "scarf": {
+        "title": "P scarf",
+        "description": "The brand mark that stays with Puchi — always by your side."
+      },
+      "backpack": {
+        "title": "Bamboo backpack",
+        "description": "Always ready to explore, practice, and learn something new."
+      },
+      "eyes": {
+        "title": "Smiling eyes",
+        "description": "Friendly, positive, and built to encourage learners."
+      },
+      "belly": {
+        "title": "Bamboo belly",
+        "description": "A quiet nod to nature and love for Vietnamese culture."
+      }
+    },
+    "meetEyebrow": "Meet Puchi",
+    "meetTitle": "A learning companion, not a lecture.",
+    "meetLead": "Same silhouette, many moods — hello, curiosity, pride, and a paw pointing the way.",
+    "poses": {
+      "wave": {
+        "label": "Hello",
+        "alt": "Puchi waving hello"
+      },
+      "think": {
+        "label": "Curious",
+        "alt": "Puchi listening carefully with headphones"
+      },
+      "celebrate": {
+        "label": "Proud",
+        "alt": "Puchi cheering with excitement"
+      },
+      "guide": {
+        "label": "With you",
+        "alt": "Puchi pointing forward to guide you"
+      }
+    },
+    "leavesEyebrow": "Bamboo leaves",
+    "leavesTitle": "Leaves grow as you do.",
+    "leavesLead": "From the brand system: each bamboo leaf marks learning progress — from first hello to flourishing fluency.",
+    "leaves": {
+      "stages": {
+        "0": {
+          "title": "Discover",
+          "description": "Just arriving. No pressure — just curiosity.",
+          "alt": "Puchi at the discover stage"
+        },
+        "1": {
+          "title": "Beginner",
+          "description": "First lessons. One small leaf of progress.",
+          "alt": "Puchi as a beginner student"
+        },
+        "2": {
+          "title": "Active",
+          "description": "Everyday practice. Two leaves strong.",
+          "alt": "Puchi in active everyday practice"
+        },
+        "3": {
+          "title": "Flourishing",
+          "description": "Graduation milestone. Cap, gown, and three leaves shining.",
+          "alt": "Puchi in a graduation cap and gown with three bamboo leaves"
+        }
+      }
+    },
+    "missionTitle": "Vietnamese that fits real life.",
+    "missionLead": "Puchi helps learners worldwide build Vietnamese through short, playful practice — anytime, anywhere.",
+    "creator": "Created by Lê Công Hoan.",
+    "community": "Join us on <facebookLink>Facebook</facebookLink> or explore the code on <githubLink>GitHub</githubLink>.",
+    "sheetLink": "View the full brand system board",
+    "signatureStripAlt": "Five Puchi signature details: bamboo leaf, P scarf, backpack, smiling eyes, bamboo belly",
+    "cultureImageAlt": "Puchi in áo dài with bamboo, lotus, and Vietnamese culture — proud of Vietnamese identity",
+    "skillsImageAlt": "Practice makes progress — Puchi practicing listening, speaking, reading, and writing",
+    "growthImageAlt": "Grow every day — Puchi progressing from 0 to 3 bamboo leaves"
   },
   "ProfileActions": {
     "actions": {

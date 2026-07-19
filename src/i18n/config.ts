@@ -12,6 +12,7 @@ export const locales = [
   "ja",
   "ko",
   "ru",
+  "vi",
 ] as const;
 
 export const pathnames: Pathnames<typeof locales> = {};

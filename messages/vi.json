@@ -54,10 +54,22 @@
       "orShareOn": "Hoặc chia sẻ qua",
       "findFriends": "Tìm bạn bè",
       "findFriendsDescription": "Kết nối với danh bạ của bạn và xem ai đang học trên Puchi",
+      "addFriendsPlaceholder": "Tìm theo tên người dùng hoặc tên",
       "invite": "Mời bạn bè",
       "inviteDescription": "Chia sẻ liên kết mời của bạn và nhận XP khi bạn bè tham gia",
       "following": "Đang theo dõi",
-      "followers": "Người theo dõi"
+      "followers": "Người theo dõi",
+      "noOneYet": "Chưa có ai cả",
+      "noOneYetHint": "Tìm bạn để học cùng nhau nhé",
+      "accountSettings": "Cài đặt tài khoản",
+      "accountSettingsDescription": "Hồ sơ, tùy chọn và quyền riêng tư"
+    },
+    "social": {
+      "friends": "Bạn bè",
+      "followers": "Người theo dõi",
+      "following": "Đang theo dõi",
+      "leaderboard": "Bảng xếp hạng tuần",
+      "friendsList": "Danh sách bạn bè"
     }
   },
   "Settings": {
@@ -136,17 +148,23 @@
     }
   },
   "errors": {
-    "profile": { "notFound": "Không tìm thấy hồ sơ" },
+    "profile": {
+      "notFound": "Không tìm thấy hồ sơ"
+    },
     "validation": {
       "invalidInput": "Dữ liệu không hợp lệ. Vui lòng kiểm tra lại",
       "usernameTaken": "Tên đăng nhập này đã được sử dụng"
     },
-    "auth": { "unauthorized": "Vui lòng đăng nhập để tiếp tục" },
+    "auth": {
+      "unauthorized": "Vui lòng đăng nhập để tiếp tục"
+    },
     "network": {
       "timeout": "Yêu cầu đã hết hạn. Vui lòng thử lại",
       "connectionError": "Không thể kết nối. Vui lòng kiểm tra mạng"
     },
-    "server": { "internalError": "Có lỗi xảy ra. Vui lòng thử lại sau" }
+    "server": {
+      "internalError": "Có lỗi xảy ra. Vui lòng thử lại sau"
+    }
   },
   "Start": {
     "title": "Bạn muốn bắt đầu thế nào?",
@@ -163,6 +181,17 @@
     "saveProgress": "Lưu tiến độ",
     "startLesson": "Bắt đầu",
     "unitLabel": "Unit {position}",
+    "rightBar": {
+      "unlockLeaderboards": "Mở bảng xếp hạng!",
+      "unlockLeaderboardsHint": "Hoàn thành thêm {count} bài để bắt đầu thi đua",
+      "dailyQuests": "Nhiệm vụ ngày",
+      "viewAll": "Xem tất cả",
+      "earnXp": "Kiếm {count} XP",
+      "createProfileTitle": "Lưu tiến độ của bạn!",
+      "createProfileHint": "Tạo hồ sơ miễn phí để giữ XP và streak.",
+      "createProfile": "Tạo hồ sơ",
+      "signIn": "Đăng nhập"
+    },
     "softGate": {
       "title": "Tạo tài khoản để học tiếp",
       "description": "Bạn đã hết số bài guest miễn phí. Đăng ký hoặc đăng nhập để lưu tiến độ và mở thêm bài học.",
@@ -228,5 +257,350 @@
     "nameRequired": "Vui lòng nhập họ tên",
     "ageRequired": "Vui lòng chọn độ tuổi",
     "syncFailed": "Không lưu được hồ sơ. Vui lòng thử lại."
+  },
+  "AboutPage": {
+    "metaTitle": "Về Puchi",
+    "metaDescription": "Tìm hiểu về Puchi: câu chuyện nguồn gốc, tính cách, đặc điểm nhận diện và ý nghĩa của lá tre.",
+    "brand": "Puchi",
+    "tagline": "Về Puchi",
+    "heroHeadline": "Câu chuyện phía sau chú gấu trúc học tiếng Việt.",
+    "heroLead": "Từ khu rừng tre đến từng bài học — Puchi là ai, vì sao chúng mình tạo ra người bạn này, và nhân vật lớn lên cùng bạn thế nào.",
+    "heroImageAlt": "Puchi — chú gấu trúc đồng hành học tiếng Việt đang đứng vui vẻ",
+    "ctaStart": "Bắt đầu học",
+    "communityShort": "<facebookLink>Facebook</facebookLink> · <githubLink>GitHub</githubLink>",
+    "storyEyebrow": "Câu chuyện",
+    "storyTitle": "Câu chuyện của Puchi",
+    "storyOrigin": "Puchi sinh ra trong một khu rừng tre xanh mát — ánh sáng dịu, lá tre thì thầm, và sự tò mò không ngừng.",
+    "storyDream": "Ước mơ của Puchi là giúp mọi người trên thế giới nói được tiếng Việt và hiểu văn hóa Việt Nam.",
+    "storyGrowth": "Mỗi lần bạn học và tiến bộ, mầm lá trên đầu Puchi lớn thêm — khu rừng tre của bạn cũng xanh hơn.",
+    "storyImageAlt": "Puchi với hai lá tre — giai đoạn đang học",
+    "personalityEyebrow": "Tính cách",
+    "personalityTitle": "Puchi hiện diện thế nào.",
+    "personalityLead": "Sáu tính cách từ hệ thống thương hiệu — giọng nói trong mỗi bài học, lời cổ vũ và cú huých nhẹ nhàng.",
+    "personality": {
+      "curious": "Tò mò",
+      "friendly": "Thân thiện",
+      "energetic": "Năng động",
+      "smart": "Thông minh",
+      "persistent": "Kiên trì",
+      "humorous": "Hài hước"
+    },
+    "keywordsEyebrow": "Từ khóa thương hiệu",
+    "keywordsTitle": "Những từ chúng mình thiết kế quanh.",
+    "keywords": {
+      "cute": "Dễ thương",
+      "friendly": "Thân thiện",
+      "smart": "Thông minh",
+      "inspiring": "Truyền cảm hứng",
+      "energetic": "Năng động",
+      "fun": "Vui nhộn"
+    },
+    "signatureEyebrow": "Đặc điểm nhận diện",
+    "signatureTitle": "Vì sao Puchi trông như vậy.",
+    "signatureLead": "Mỗi chi tiết từ hệ thống thương hiệu đều mang ý nghĩa.",
+    "signature": {
+      "leaf": {
+        "title": "Lá tre trên đầu",
+        "description": "Biểu tượng của sự trưởng thành và tiến bộ. Lá đánh dấu bạn đã đi được bao xa."
+      },
+      "scarf": {
+        "title": "Khăn quàng P",
+        "description": "Dấu hiệu thương hiệu luôn đồng hành cùng Puchi — luôn ở bên bạn."
+      },
+      "backpack": {
+        "title": "Balo tre",
+        "description": "Luôn sẵn sàng khám phá, luyện tập và học điều mới."
+      },
+      "eyes": {
+        "title": "Mắt cười",
+        "description": "Thân thiện, tích cực và luôn khích lệ người học."
+      },
+      "belly": {
+        "title": "Bụng tre",
+        "description": "Tình yêu với thiên nhiên và văn hóa Việt Nam."
+      }
+    },
+    "meetEyebrow": "Gặp Puchi",
+    "meetTitle": "Bạn đồng hành, không phải bài giảng.",
+    "meetLead": "Cùng một dáng hình, nhiều tâm trạng — chào hỏi, tò mò, tự hào, và bàn chân chỉ đường.",
+    "poses": {
+      "wave": {
+        "label": "Xin chào",
+        "alt": "Puchi vẫy chào"
+      },
+      "think": {
+        "label": "Tò mò",
+        "alt": "Puchi chăm chú lắng nghe với tai nghe"
+      },
+      "celebrate": {
+        "label": "Tự hào",
+        "alt": "Puchi reo hò vui mừng"
+      },
+      "guide": {
+        "label": "Cùng bạn",
+        "alt": "Puchi chỉ đường phía trước"
+      }
+    },
+    "leavesEyebrow": "Lá tre",
+    "leavesTitle": "Lá lớn lên cùng bạn.",
+    "leavesLead": "Theo hệ thống thương hiệu: mỗi lá tre đánh dấu tiến bộ học — từ lần chào đầu đến lúc vững vàng.",
+    "leaves": {
+      "stages": {
+        "0": {
+          "title": "Khám phá",
+          "description": "Vừa mới đến. Không áp lực — chỉ cần tò mò.",
+          "alt": "Puchi ở giai đoạn khám phá"
+        },
+        "1": {
+          "title": "Mới bắt đầu",
+          "description": "Bài đầu tiên. Một chiếc lá nhỏ của tiến bộ.",
+          "alt": "Puchi học sinh mới bắt đầu"
+        },
+        "2": {
+          "title": "Đang học",
+          "description": "Luyện mỗi ngày. Hai lá vững vàng.",
+          "alt": "Puchi luyện tập hàng ngày"
+        },
+        "3": {
+          "title": "Vững vàng",
+          "description": "Cột mốc tốt nghiệp. Áo mũ cử nhân và ba lá rực rỡ.",
+          "alt": "Puchi mặc áo mũ tốt nghiệp với ba lá tre"
+        }
+      }
+    },
+    "missionTitle": "Tiếng Việt gắn với đời thật.",
+    "missionLead": "Puchi giúp người học khắp nơi xây dựng tiếng Việt qua luyện tập ngắn, vui — mọi lúc, mọi nơi.",
+    "creator": "Tạo bởi Lê Công Hoan.",
+    "community": "Tham gia cộng đồng trên <facebookLink>Facebook</facebookLink> hoặc xem mã nguồn trên <githubLink>GitHub</githubLink>.",
+    "sheetLink": "Xem bảng hệ thống thương hiệu đầy đủ",
+    "signatureStripAlt": "Năm đặc điểm nhận diện của Puchi: lá tre, khăn P, balo, mắt cười, bụng tre",
+    "cultureImageAlt": "Puchi mặc áo dài bên tre và sen — tự hào bản sắc Việt Nam",
+    "skillsImageAlt": "Luyện tập mỗi ngày — Puchi luyện nghe, nói, đọc và viết",
+    "growthImageAlt": "Lớn lên mỗi ngày — Puchi tiến bộ từ 0 đến 3 lá tre"
+  },
+  "Locale": {
+    "key": "vi",
+    "name": "Tiếng Việt",
+    "siteLanguage": "Ngôn ngữ trang"
+  },
+  "Error": {
+    "description": "<p>Rất tiếc, đã xảy ra lỗi.</p><p>Bạn có thể thử <retry>tải lại trang</retry> đang xem.</p>",
+    "title": "Đã có lỗi xảy ra!"
+  },
+  "NotFoundPage": {
+    "description": "Hãy kiểm tra lại thanh địa chỉ trình duyệt hoặc dùng điều hướng để đến một trang đã biết.",
+    "title": "Không tìm thấy trang"
+  },
+  "Navigation": {
+    "review": "Ôn tập",
+    "learn": "Học",
+    "conversation": "Hội thoại",
+    "write": "Viết",
+    "event": "Sự kiện"
+  },
+  "PublicLayout": {
+    "title": "Puchi - Thành thạo tiếng Việt. Học mọi lúc mọi nơi.",
+    "description": "Puchi là nền tảng tương tác giúp học tiếng Việt vui và cuốn hút. Tham gia để có trải nghiệm học ngôn ngữ dễ chịu."
+  },
+  "Hero": {
+    "continueLearning": "Tiếp tục học"
+  },
+  "Languages": {
+    "multiLanguage": "Đa ngôn ngữ",
+    "supportWebsite": "hỗ trợ trên website"
+  },
+  "Metrics": {
+    "byThe": "qua những",
+    "numbers": "con số",
+    "hoursOfFunContent": "giờ nội dung vui",
+    "languageCourses": "khóa học ngôn ngữ",
+    "usersGlobally": "người học toàn cầu",
+    "fluencyInTwoMonths": "lưu loát sau hai tháng"
+  },
+  "Reasons": {
+    "the": "Tương lai",
+    "future": "của",
+    "of": "việc",
+    "learning": "học",
+    "items": [
+      "Học nhanh hơn 5 lần, vui hơn 5 lần",
+      "Bài học tùy chỉnh dựa trên khoa học",
+      "Thử thách vui để giữ động lực",
+      "Dùng Puchi mọi lúc mọi nơi"
+    ]
+  },
+  "Footer": {
+    "startYourLanguageJourneyHere": "bắt đầu hành trình ngôn ngữ tại đây.",
+    "learnAnytimeLearnAnywhere": "học mọi lúc, học mọi nơi.",
+    "start": "bắt đầu",
+    "about": "Về chúng tôi",
+    "help": "Trợ giúp",
+    "attribution": "Ghi nhận",
+    "guidelines": "Hướng dẫn cộng đồng",
+    "terms": "Điều khoản",
+    "privacy": "Quyền riêng tư"
+  },
+  "HelpPage": {
+    "breadcrumbs": {
+      "helpCenter": "TRUNG TÂM TRỢ GIÚP",
+      "home": "TRANG CHỦ"
+    },
+    "faqTitle": "Câu hỏi thường gặp",
+    "sections": {
+      "usingPuchi": "Dùng Puchi",
+      "accountManagement": "Quản lý tài khoản"
+    },
+    "questions": {
+      "whatIsStreak": "Streak là gì?",
+      "whatAreLeaderboards": "Bảng xếp hạng và giải đấu là gì?",
+      "openSourceLibraries": "Puchi có dùng thư viện mã nguồn mở không?",
+      "changeUsernameOrEmail": "Làm sao đổi tên người dùng hoặc email?",
+      "findFollowBlockUsers": "Làm sao tìm, theo dõi và chặn người dùng trên Puchi?"
+    },
+    "answers": {
+      "whatIsStreak": {
+        "part1": "Streak (biểu tượng ngọn lửa) là số ngày liên tiếp bạn hoàn thành một bài học trên Puchi.",
+        "part2": "Học ngôn ngữ là xây mục tiêu theo thời gian, và streak là cách đã được chứng minh để giữ bạn học và luyện mỗi ngày.",
+        "part3": "Mẹo: Nhắc luyện tập rất hữu ích để nhớ làm bài. Trong cài đặt thông báo bạn có thể bật nhắc luyện và chọn giờ phù hợp."
+      },
+      "whatAreLeaderboards": {
+        "part1": "Bảng xếp hạng là cách vui để thi với người học Puchi khác mỗi tuần. Càng kiếm nhiều XP (điểm kinh nghiệm) từ bài học, bạn càng lên hạng. Mỗi tuần bạn sẽ gặp nhóm đối thủ mới. Mở tab Bảng xếp hạng trong ứng dụng để bắt đầu!"
+      },
+      "openSourceLibraries": {
+        "part1": "Có. Bạn có thể xem ghi nhận mã nguồn mở và tìm hiểu thêm tại",
+        "linkText": "trang này"
+      },
+      "changeUsernameOrEmail": {
+        "part1": "Nếu muốn sửa tên người dùng hoặc email Puchi, hãy vào phần cài đặt",
+        "linkText": "vào phần cài đặt",
+        "part2": "và chỉnh tên người dùng hoặc email. Tên người dùng hiện trên bảng xếp hạng tuần. Nhớ nhấn “Lưu thay đổi” sau khi chỉnh."
+      },
+      "findFollowBlockUsers": {
+        "part1": "Bạn có thể kết nối với người học khác trên Puchi!",
+        "part2": "Khi theo dõi ai đó, họ sẽ xuất hiện trong danh sách bạn bè và hai bên có thể cổ vũ nhau giữ mục tiêu ngôn ngữ!!"
+      }
+    },
+    "feedbackPrompt": "Vẫn còn thắc mắc?",
+    "sendFeedback": "GỬI PHẢN HỒI"
+  },
+  "PrivacyPage": {
+    "title": "Chính sách quyền riêng tư",
+    "lastRevised": "Lưu ý: Chính sách quyền riêng tư được cập nhật lần cuối ngày 10 tháng 11 năm 2024",
+    "footer": "Cập nhật lần cuối ngày 10 tháng 11 năm 2024",
+    "sections": {
+      "general": {
+        "title": "Chung",
+        "part1": "Tại Puchi, chúng tôi coi trọng thông tin cá nhân của bạn, vì vậy đã chuẩn bị Chính sách quyền riêng tư này để giải thích cách chúng tôi thu thập, sử dụng và chia sẻ thông tin.",
+        "part2": "Chính sách này áp dụng cho website, ứng dụng di động và các dịch vụ liên quan của Puchi (“Dịch vụ”). Khi dùng Dịch vụ, bạn đồng ý với việc Puchi thu thập, sử dụng và chia sẻ thông tin cá nhân theo các điều khoản của Chính sách này."
+      },
+      "updates": {
+        "title": "Cập nhật chính sách",
+        "part1": "Chúng tôi có thể cập nhật Chính sách quyền riêng tư để phản ánh thay đổi trong cách xử lý thông tin.",
+        "part2": "Nếu thay đổi mang tính trọng yếu, chúng tôi sẽ đăng thông báo trên Website ít nhất bảy (7) ngày trước khi áp dụng."
+      },
+      "retention": {
+        "title": "Lưu giữ dữ liệu",
+        "part1": "Puchi thường lưu thông tin cá nhân cho đến khi tài khoản bị xóa. Tuy nhiên, Puchi có thể lưu một số thông tin lâu hơn nếu cần để cung cấp Dịch vụ, bảo vệ quyền lợi hợp pháp, tuân thủ pháp luật, giải quyết tranh chấp, điều tra việc lạm dụng hoặc gián đoạn Dịch vụ, hoặc thực hiện thỏa thuận."
+      },
+      "doNotTrack": {
+        "title": "Do Not Track",
+        "part1": "Dịch vụ không được thiết kế để phản hồi tín hiệu “do not track” từ một số trình duyệt."
+      },
+      "contactUs": {
+        "title": "Liên hệ",
+        "part1": "Puchi, Inc. là bên kiểm soát dữ liệu của bạn theo Quy định Bảo vệ Dữ liệu Chung (“GDPR”) và pháp luật địa phương liên quan.",
+        "part2": "Trụ sở Puchi đặt tại Việt Nam:",
+        "part3": "Hà Nội, Việt Nam",
+        "email": "Mọi thắc mắc về quyền riêng tư dữ liệu và Chính sách này, vui lòng liên hệ Nhân viên Bảo vệ Dữ liệu tại: lehoan.dev@gmail.com"
+      }
+    }
+  },
+  "ProfileActions": {
+    "actions": {
+      "title": "Thao tác",
+      "accountSettings": {
+        "title": "Cài đặt tài khoản",
+        "description": "Quản lý thông tin cá nhân và bảo mật"
+      },
+      "security": {
+        "title": "Bảo mật",
+        "description": "Đổi mật khẩu và xác thực hai bước"
+      },
+      "signOut": {
+        "title": "Đăng xuất",
+        "description": "Đăng xuất khỏi tài khoản hiện tại"
+      }
+    },
+    "dangerZone": {
+      "title": "Vùng nguy hiểm",
+      "deleteAccount": {
+        "title": "Xóa tài khoản",
+        "description": "Hành động này không thể hoàn tác. Mọi dữ liệu sẽ bị xóa vĩnh viễn."
+      }
+    },
+    "deleteAccount": {
+      "success": "Đã xóa tài khoản thành công",
+      "error": {
+        "confirmationRequired": "Vui lòng nhập 'DELETE' để xác nhận",
+        "general": "Đã xảy ra lỗi khi xóa tài khoản"
+      },
+      "dialog": {
+        "title": "Xác nhận xóa tài khoản",
+        "description": "Hành động này không thể hoàn tác. Toàn bộ dữ liệu của bạn sẽ bị xóa vĩnh viễn.",
+        "confirmation": "Để xác nhận, hãy nhập <strong>DELETE</strong> vào ô bên dưới.",
+        "confirmationLabel": "Xác nhận",
+        "confirmationPlaceholder": "Nhập DELETE để xác nhận",
+        "cancel": "Hủy",
+        "confirm": "Xóa tài khoản",
+        "deleting": "Đang xóa..."
+      }
+    }
+  },
+  "ProfileHeader": {
+    "title": "Thông tin cá nhân",
+    "email": "Email",
+    "username": "Tên người dùng",
+    "joinDate": "Ngày tham gia",
+    "member": "Thành viên"
+  },
+  "ProfileForm": {
+    "title": "Chỉnh sửa thông tin",
+    "edit": "Sửa",
+    "save": "Lưu",
+    "firstName": "Tên",
+    "lastName": "Họ",
+    "username": "Tên người dùng",
+    "email": "Email",
+    "emailNote": "Không thể đổi email. Vui lòng liên hệ hỗ trợ nếu bạn cần thay đổi.",
+    "bio": "Tiểu sử",
+    "bioPlaceholder": "Giới thiệu bản thân với mọi người...",
+    "bioNote": "Chia sẻ vài dòng để người khác hiểu bạn hơn.",
+    "success": "Đã cập nhật thông tin thành công!",
+    "error": "Đã xảy ra lỗi khi cập nhật thông tin"
+  },
+  "ProfileStats": {
+    "learningStats": {
+      "title": "Thống kê học tập"
+    },
+    "progress": {
+      "title": "Tiến độ học tập",
+      "completedLessons": "Bài đã hoàn thành",
+      "completed": "{count} bài đã hoàn thành",
+      "remaining": "Còn {count} bài"
+    },
+    "performance": {
+      "title": "Hiệu suất học tập",
+      "averageAccuracy": "Độ chính xác trung bình",
+      "excellent": "Xuất sắc",
+      "needsImprovement": "Cần cải thiện"
+    },
+    "stats": {
+      "completedLessons": "Đã hoàn thành",
+      "currentStreak": "Streak hiện tại",
+      "streakDays": "{days} ngày",
+      "totalXP": "Tổng XP",
+      "currentLevel": "Cấp hiện tại",
+      "level": "Cấp {level}"
+    }
   }
 }

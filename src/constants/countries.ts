@@ -52,6 +52,11 @@ const recordCountries: Record<Locale, Country> = {
     flag: "de",
     word: "Hallo",
   },
+  vi: {
+    title: "Vietnamese",
+    flag: "vi",
+    word: "Xin chào",
+  },
 };
 
 export const countries: [Locale, Country][] = Object.entries(

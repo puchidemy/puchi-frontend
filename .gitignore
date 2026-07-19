@@ -46,3 +46,7 @@ analyze
 
 #Deploy k8s
 k8s/secrets.yaml
+
+# Raw mascot generations (keep finals in public/images/mascot)
+public/images/mascot/_generated/
+
