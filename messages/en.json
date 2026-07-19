@@ -584,6 +584,8 @@
       "resetView": "Reset view",
       "comingSoon": "This chapter is coming soon.",
       "locked": "Finish the previous chapter first.",
+      "previewChapter": "Chapter",
+      "previewClose": "Close",
       "landmark": {
         "hoan-kiem": "Hoàn Kiếm Lake",
         "one-pillar-pagoda": "One Pillar Pagoda",
@@ -591,10 +593,7 @@
         "coffee-shop": "Coffee Shop",
         "street-food": "Street Food Corner",
         "bamboo-grove": "Bamboo Grove",
-        "traditional-bridge": "Traditional Bridge",
-        "phu-quoc": "Phú Quốc",
-        "hoang-sa": "Hoàng Sa",
-        "truong-sa": "Trường Sa"
+        "traditional-bridge": "Traditional Bridge"
       },
       "status": {
         "unlocked": "Available",

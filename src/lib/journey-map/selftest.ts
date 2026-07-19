@@ -42,9 +42,14 @@ function assert(cond: unknown, msg: string): asserts cond {
   if (!cond) throw new Error(msg);
 }
 
+assert(
+  UNIT_1_JOURNEY_MAP.landmarks.length === 7,
+  "7 interactive mainland regions only",
+);
+
 const zero = deriveLandmarkViews(UNIT_1_JOURNEY_MAP, skills, []);
 assert(zero[0].status === "unlocked" && zero[0].isCurrent, "0/3 current unlocked");
-assert(zero[1].status === "coming_soon", "landmark 2 coming_soon");
+assert(zero[1].status === "coming_soon", "region 2 coming_soon");
 
 const mid = deriveLandmarkViews(UNIT_1_JOURNEY_MAP, skills, ["l1"]);
 assert(mid[0].status === "unlocked" && mid[0].isCurrent, "1/3 still unlocked+current");

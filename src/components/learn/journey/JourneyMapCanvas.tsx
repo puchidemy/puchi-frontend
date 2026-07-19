@@ -36,8 +36,10 @@ const WHEEL_SAVE_MS = 180;
 export type JourneyMapCanvasProps = {
   config: JourneyMapConfig;
   views: DerivedLandmarkView[];
-  onSelectLandmark: (slug: string) => void;
-  /** Landmark name + status for a11y (wired with i18n in Task 5). */
+  /** Tap a mainland region (large button). */
+  onSelectRegion: (slug: string) => void;
+  onHoverRegion?: (slug: string | null) => void;
+  previewSlug?: string | null;
   getAriaLabel: (view: DerivedLandmarkView) => string;
   resetLabel?: string;
   className?: string;
@@ -121,7 +123,9 @@ function pinchCenter(a: PointerSample, b: PointerSample) {
 export function JourneyMapCanvas({
   config,
   views,
-  onSelectLandmark,
+  onSelectRegion,
+  onHoverRegion,
+  previewSlug = null,
   getAriaLabel,
   resetLabel = "Reset view",
   className,
@@ -476,12 +480,15 @@ export function JourneyMapCanvas({
             hitArea={view.hitArea}
             status={view.status}
             isCurrent={view.isCurrent}
+            isPreviewed={previewSlug === view.slug}
             ariaLabel={getAriaLabel(view)}
             reduceMotion={!!reduceMotion}
             onSelect={() => {
               if (suppressClickRef.current) return;
-              onSelectLandmark(view.slug);
+              onSelectRegion(view.slug);
             }}
+            onHoverStart={() => onHoverRegion?.(view.slug)}
+            onHoverEnd={() => onHoverRegion?.(null)}
           />
         ))}
         <JourneyPuchiOverlay views={views} />

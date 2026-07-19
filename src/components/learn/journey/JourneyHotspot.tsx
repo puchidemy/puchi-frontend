@@ -7,14 +7,14 @@ import type { RuntimeLandmarkStatus } from "@/lib/journey-map/types";
 const MIN_HIT = 44;
 
 /**
- * Transparent CSS overlay on the 2.5D board — art stays pin/label-free.
- * States: hover lift, glow (current), dim (locked/soon), check (completed).
+ * Large region hit-target overlay. Art has no pins/labels.
+ * Lift/glow/dim/check via CSS for game-board interaction.
  */
 const statusClass: Record<RuntimeLandmarkStatus, string> = {
   unlocked:
-    "bg-white/20 shadow-[0_4px_16px_rgba(0,0,0,0.1)] ring-2 ring-white/60 hover:bg-white/35 hover:-translate-y-1 hover:shadow-[0_10px_22px_rgba(0,0,0,0.14)]",
+    "bg-white/15 ring-2 ring-white/50 hover:bg-white/30 hover:-translate-y-1 hover:shadow-[0_10px_22px_rgba(0,0,0,0.14)]",
   completed:
-    "bg-emerald-400/30 shadow-[0_4px_14px_rgba(16,185,129,0.22)] ring-2 ring-emerald-300/75",
+    "bg-emerald-400/28 ring-2 ring-emerald-300/70",
   locked: "bg-neutral-900/28 opacity-70",
   coming_soon: "bg-neutral-900/22 opacity-55",
 };
@@ -25,9 +25,12 @@ export type JourneyHotspotProps = {
   hitArea: number;
   status: RuntimeLandmarkStatus;
   isCurrent?: boolean;
+  /** Hover or tap-selected preview */
+  isPreviewed?: boolean;
   ariaLabel: string;
   onSelect: () => void;
-  /** Skip pulse when true (prefers-reduced-motion). */
+  onHoverStart?: () => void;
+  onHoverEnd?: () => void;
   reduceMotion?: boolean;
 };
 
@@ -37,14 +40,18 @@ export function JourneyHotspot({
   hitArea,
   status,
   isCurrent = false,
+  isPreviewed = false,
   ariaLabel,
   onSelect,
+  onHoverStart,
+  onHoverEnd,
   reduceMotion = false,
 }: JourneyHotspotProps) {
   const w = Math.max(hitArea, visualSize, MIN_HIT);
   const h = Math.round(w * 0.58);
+  const canPreview = status === "unlocked" || status === "completed";
   const pulse =
-    isCurrent && status === "unlocked" && !reduceMotion
+    isCurrent && status === "unlocked" && !reduceMotion && !isPreviewed
       ? "animate-pulse"
       : undefined;
 
@@ -53,13 +60,17 @@ export function JourneyHotspot({
       type="button"
       data-journey-hotspot
       aria-label={ariaLabel}
+      aria-expanded={isPreviewed || undefined}
       className={cn(
         "absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[1.5rem] transition-[transform,box-shadow,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         statusClass[status],
         pulse,
         isCurrent &&
           status === "unlocked" &&
-          "ring-primary/55 bg-primary/25 -translate-y-1.5 shadow-[0_12px_26px_rgba(0,0,0,0.16)]",
+          "ring-primary/55 bg-primary/20 shadow-[0_8px_20px_rgba(0,0,0,0.12)]",
+        isPreviewed &&
+          canPreview &&
+          "-translate-y-2 bg-white/40 shadow-[0_14px_28px_rgba(0,0,0,0.18)] ring-primary/60",
       )}
       style={{
         left: `${hotspot.x * 100}%`,
@@ -68,6 +79,14 @@ export function JourneyHotspot({
         height: h,
       }}
       onClick={onSelect}
+      onMouseEnter={() => {
+        if (canPreview) onHoverStart?.();
+      }}
+      onMouseLeave={() => onHoverEnd?.()}
+      onFocus={() => {
+        if (canPreview) onHoverStart?.();
+      }}
+      onBlur={() => onHoverEnd?.()}
     >
       {status === "completed" && (
         <Check
