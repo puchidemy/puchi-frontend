@@ -10,9 +10,10 @@ import type { DerivedLandmarkView } from "@/lib/journey-map/types";
 const MASCOT_SRC = "/images/mascot/puchi_welcome_v2.png";
 const MASCOT_FALLBACK_SRC = "/images/mascot/puchi_student_beginner.png";
 
-const OVERLAY_SIZE = 56;
+/** Size as % of board width so it scales with full-height fit. */
+const OVERLAY_W_PCT = 7;
 /** Nudge Puchi beside the current hotspot (normalized map space). */
-const OFFSET_X = 0.06;
+const OFFSET_X = 0.07;
 
 export type JourneyPuchiOverlayProps = {
   views: DerivedLandmarkView[];
@@ -33,18 +34,18 @@ export function JourneyPuchiOverlay({ views }: JourneyPuchiOverlayProps) {
       style={{
         left: `${(current.hotspot.x + OFFSET_X) * 100}%`,
         top: `${current.hotspot.y * 100}%`,
-        width: OVERLAY_SIZE,
-        height: OVERLAY_SIZE,
+        width: `${OVERLAY_W_PCT}%`,
+        aspectRatio: "1",
       }}
       aria-hidden
     >
       <Image
         src={mascotSrc}
         alt=""
-        width={OVERLAY_SIZE}
-        height={OVERLAY_SIZE}
-        className="h-full w-full object-contain drop-shadow-md"
+        fill
+        className="object-contain drop-shadow-md"
         draggable={false}
+        unoptimized
         onError={() => {
           if (mascotSrc !== MASCOT_FALLBACK_SRC) {
             setMascotSrc(MASCOT_FALLBACK_SRC);

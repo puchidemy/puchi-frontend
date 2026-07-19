@@ -108,7 +108,6 @@ export function JourneyMapView({
           onHoverRegion={onHoverRegion}
           previewSlug={previewSlug}
           getAriaLabel={getAriaLabel}
-          resetLabel={t("Journey.resetView")}
           className="h-full"
         />
         {showPreview && previewView && (
