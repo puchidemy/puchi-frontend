@@ -50,3 +50,40 @@ chore(learn): verify journey map build and document QA
 1. Manual browser QA items 2, 5–9 (feel, toast, soft-gate dialog, reduced-motion, scroll bleed) still recommended before merge.
 2. Next build skips TypeScript validation — run `tsc --noEmit` separately if CI does not; do not expand into unrelated modules unless journey code fails.
 3. Transient uncommitted `FooterLink.tsx` hardcode-EN change was reverted to keep Task 5 i18n fix.
+
+---
+
+## Final-review must-fix (2026-07-20)
+
+**Status:** Complete
+
+Applied two must-fix items from final review: hardened `saveJourneyViewport` against sessionStorage failures, and converted journey art to WebP while keeping PNG sources for transition.
+
+### Changes
+
+| Item | File | Change |
+|------|------|--------|
+| Viewport hardening | `src/lib/journey-map/viewport.ts` | `sessionStorage.setItem` wrapped in try/catch (silent fail on QuotaExceeded / private mode) |
+| Asset format | `src/lib/journey-map/unit-1-config.ts` | `hero.webp`, `islandBaseSrc()` → `island-base.webp` |
+| WebP assets | `public/images/learn/journey/unit-1/v1/**` | Added `.webp` via `npx sharp-cli -f webp`; PNGs retained |
+
+### Asset size (PNG → WebP)
+
+| Asset | PNG (bytes) | WebP (bytes) | Saved |
+|-------|-------------|--------------|-------|
+| `key-visual/vietnam-diorama-kv` | 1,726,074 | 146,840 | −91.5% |
+| `map/island-base` | 1,680,420 | 130,752 | −92.2% |
+| `landmarks/hoan-kiem/hero` | 2,306,235 | 185,016 | −92.0% |
+| **Total** | **5,712,729** | **462,608** | **−91.9%** |
+
+### Test
+
+| Check | Command | Result |
+|-------|---------|--------|
+| Journey selftest | `bun run test:journey-map` | `journey-map selftest OK` (exit 0) |
+
+### Commit
+
+```
+fix(learn): harden viewport save and serve journey art as webp
+```

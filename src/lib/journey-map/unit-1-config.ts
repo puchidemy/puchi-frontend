@@ -17,7 +17,7 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
       hotspot: { x: 0.4, y: 0.15 },
       visualSize: 28,
       hitArea: 48,
-      assets: { hero: `${V1}/landmarks/hoan-kiem/hero.png` },
+      assets: { hero: `${V1}/landmarks/hoan-kiem/hero.webp` },
     },
     {
       slug: "one-pillar-pagoda",
@@ -71,5 +71,5 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
 };
 
 export function islandBaseSrc(config: JourneyMapConfig): string {
-  return `${config.assetBasePath}/map/island-base.png`;
+  return `${config.assetBasePath}/map/island-base.webp`;
 }

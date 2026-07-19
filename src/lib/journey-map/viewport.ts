@@ -31,5 +31,9 @@ export function saveJourneyViewport(
   viewport: JourneyViewport,
 ): void {
   if (typeof window === "undefined") return;
-  sessionStorage.setItem(key(unitId), JSON.stringify(viewport));
+  try {
+    sessionStorage.setItem(key(unitId), JSON.stringify(viewport));
+  } catch {
+    // QuotaExceededError / private mode — silent fail
+  }
 }
