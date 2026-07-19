@@ -1,5 +1,6 @@
 import { deriveLandmarkViews } from "./derive";
 import { resolveChapterAccess } from "./chapter-access";
+import { slugAtNormalized } from "./region-mask";
 import { UNIT_1_JOURNEY_MAP } from "./unit-1-config";
 import type { LearnSkill } from "@/lib/learn-api";
 
@@ -67,5 +68,20 @@ assert(
   "coming_soon blocked",
 );
 assert(resolveChapterAccess(UNIT_1_JOURNEY_MAP, zero, "hoan-kiem").ok, "open ok");
+
+const maskPixel = new Uint8ClampedArray([255, 0, 0, 255]);
+assert(
+  slugAtNormalized({ width: 1, height: 1, data: maskPixel }, 0.5, 0.5) ===
+    "hoan-kiem",
+  "mask red → hoan-kiem",
+);
+assert(
+  slugAtNormalized(
+    { width: 1, height: 1, data: new Uint8ClampedArray([0, 0, 0, 0]) },
+    0.5,
+    0.5,
+  ) === null,
+  "mask empty → null",
+);
 
 console.log("journey-map selftest OK");

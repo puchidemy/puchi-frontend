@@ -43,7 +43,7 @@ export function JourneyPuchiOverlay({ views }: JourneyPuchiOverlayProps) {
         src={mascotSrc}
         alt=""
         fill
-        className="object-contain drop-shadow-md"
+        className="object-contain"
         draggable={false}
         unoptimized
         onError={() => {

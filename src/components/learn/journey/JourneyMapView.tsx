@@ -10,7 +10,7 @@ import type { DerivedLandmarkView } from "@/lib/journey-map/types";
 import { UNIT_1_JOURNEY_MAP } from "@/lib/journey-map/unit-1-config";
 import { JourneyMapCanvas } from "./JourneyMapCanvas";
 import { JourneyMapHeader } from "./JourneyMapHeader";
-import { RegionPreviewCard } from "./RegionPreviewCard";
+import { RegionPreviewAnchor } from "./RegionPreviewAnchor";
 
 export type JourneyMapViewProps = {
   unit: LearnUnit;
@@ -20,7 +20,7 @@ export type JourneyMapViewProps = {
   onLockedLessonClick?: () => void;
 };
 
-const HOVER_CLOSE_MS = 280;
+const HOVER_CLOSE_MS = 420;
 
 /**
  * Journey → Region → Chapter → Lessons
@@ -120,7 +120,7 @@ export function JourneyMapView({
           total: totalLessons,
         })}
       />
-      <div className="relative min-h-0 flex-1">
+      <div className="relative min-h-0 flex-1 overflow-visible">
         <JourneyMapCanvas
           config={config}
           views={views}
@@ -131,11 +131,10 @@ export function JourneyMapView({
           }}
           previewSlug={previewSlug}
           getAriaLabel={getAriaLabel}
-          className="h-full"
-        />
-        {showPreview && previewView && (
-          <div className="absolute inset-x-0 bottom-3 z-40 flex justify-center px-3 sm:bottom-4 sm:justify-end sm:pr-4">
-            <RegionPreviewCard
+          className="h-full overflow-visible"
+        >
+          {showPreview && previewView && (
+            <RegionPreviewAnchor
               view={previewView}
               onContinue={onContinue}
               onDismiss={() => {
@@ -146,8 +145,8 @@ export function JourneyMapView({
               onPointerEnter={() => openHover(previewView.slug)}
               onPointerLeave={() => scheduleCloseHover()}
             />
-          </div>
-        )}
+          )}
+        </JourneyMapCanvas>
       </div>
     </div>
   );

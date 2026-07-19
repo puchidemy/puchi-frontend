@@ -15,6 +15,8 @@ export type RegionPreviewCardProps = {
   onPointerEnter?: () => void;
   onPointerLeave?: () => void;
   className?: string;
+  /** Tighter layout when anchored beside a hotspot. */
+  compact?: boolean;
 };
 
 /** Preview for any region; Continue disabled when locked / coming soon. */
@@ -25,16 +27,14 @@ export function RegionPreviewCard({
   onPointerEnter,
   onPointerLeave,
   className,
+  compact = false,
 }: RegionPreviewCardProps) {
   const t = useTranslations("Learn");
   const title = t(`Journey.landmark.${view.slug}`);
   const isLocked =
     view.status === "locked" || view.status === "coming_soon";
-  const cta = isLocked
-    ? view.status === "coming_soon"
-      ? t("Journey.comingSoon")
-      : t("Journey.locked")
-    : view.status === "completed"
+  const cta =
+    view.status === "completed"
       ? t("Journey.Chapter.review")
       : t("Journey.Chapter.continue");
   const hero = view.assets.hero;
@@ -43,7 +43,7 @@ export function RegionPreviewCard({
     <div
       data-journey-preview
       className={cn(
-        "pointer-events-auto w-full max-w-sm overflow-hidden rounded-2xl border bg-background/95 shadow-lg backdrop-blur-md",
+        "pointer-events-auto w-full max-w-sm overflow-hidden rounded-2xl border border-border/70 bg-background/96 shadow-xl backdrop-blur-md",
         className,
       )}
       role="dialog"
@@ -51,18 +51,23 @@ export function RegionPreviewCard({
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
     >
-      <div className="relative aspect-[16/9] w-full bg-muted">
+      <div
+        className={cn(
+          "relative w-full bg-muted",
+          compact ? "aspect-[16/9]" : "aspect-[16/9]",
+        )}
+      >
         {hero ? (
           <Image
             src={hero}
             alt=""
             fill
             className={cn("object-cover", isLocked && "opacity-70")}
-            sizes="320px"
+            sizes="360px"
           />
         ) : (
           <div className="flex h-full items-center justify-center bg-gradient-to-br from-emerald-100 to-sky-100 dark:from-emerald-950 dark:to-sky-950">
-            <span className="px-4 text-center text-sm font-medium text-muted-foreground">
+            <span className="px-3 text-center text-sm font-medium text-muted-foreground">
               {title}
             </span>
           </div>
@@ -72,16 +77,19 @@ export function RegionPreviewCard({
             <Image
               src={LOCK_SRC}
               alt=""
-              width={40}
-              height={40}
-              className="h-10 w-10 object-contain opacity-95 drop-shadow-md"
+              width={compact ? 36 : 40}
+              height={compact ? 36 : 40}
+              className={cn(
+                "object-contain opacity-95 drop-shadow-md",
+                compact ? "h-9 w-9" : "h-10 w-10",
+              )}
               unoptimized
               aria-hidden
             />
           </div>
         )}
       </div>
-      <div className="space-y-3 p-4">
+      <div className={cn(compact ? "space-y-2.5 p-3.5" : "space-y-3 p-4")}>
         <div>
           <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             {t("Journey.previewChapter")}
@@ -91,7 +99,14 @@ export function RegionPreviewCard({
               </span>
             )}
           </p>
-          <h3 className="mt-0.5 text-lg font-bold leading-tight">{title}</h3>
+          <h3
+            className={cn(
+              "mt-0.5 font-bold leading-tight",
+              compact ? "text-lg" : "text-lg",
+            )}
+          >
+            {title}
+          </h3>
           <p className="mt-1 text-sm text-muted-foreground">
             {t("Journey.Chapter.progress", {
               completed: view.completedCount,
@@ -110,27 +125,32 @@ export function RegionPreviewCard({
             }}
           />
         </div>
-        <div className="flex gap-2">
-          {onDismiss && (
-            <Button
-              type="button"
-              variant="outline"
-              className="flex-1"
-              onClick={onDismiss}
-            >
-              {t("Journey.previewClose")}
-            </Button>
-          )}
-          <Button
-            type="button"
-            variant="highlight"
-            className="flex-1"
-            disabled={isLocked}
-            onClick={onContinue}
-          >
-            {cta}
-          </Button>
-        </div>
+        {(onDismiss || !isLocked) && (
+          <div className="flex gap-2">
+            {onDismiss && (
+              <Button
+                type="button"
+                variant="outline"
+                size={compact ? "sm" : "default"}
+                className="flex-1"
+                onClick={onDismiss}
+              >
+                {t("Journey.previewClose")}
+              </Button>
+            )}
+            {!isLocked && (
+              <Button
+                type="button"
+                variant="highlight"
+                size={compact ? "sm" : "default"}
+                className="flex-1"
+                onClick={onContinue}
+              >
+                {cta}
+              </Button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
