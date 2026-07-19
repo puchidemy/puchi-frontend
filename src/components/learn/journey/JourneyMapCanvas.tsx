@@ -286,7 +286,9 @@ export function JourneyMapCanvas({
   }, [zoomAtPoint, scheduleWheelSave]);
 
   const onPointerDown = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if ((e.target as HTMLElement).closest("[data-journey-reset]")) return;
+    const target = e.target as HTMLElement;
+    if (target.closest("[data-journey-reset]")) return;
+    if (target.closest("[data-journey-hotspot]")) return;
 
     const sample = { id: e.pointerId, x: e.clientX, y: e.clientY };
     pointersRef.current.set(e.pointerId, sample);

@@ -45,8 +45,9 @@ export function JourneyHotspot({
   return (
     <button
       type="button"
+      data-journey-hotspot
       aria-label={ariaLabel}
-      className="absolute z-10 -translate-x-1/2 -translate-y-1/2 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+      className="absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       style={{
         left: `${hotspot.x * 100}%`,
         top: `${hotspot.y * 100}%`,
@@ -57,7 +58,7 @@ export function JourneyHotspot({
     >
       <span
         className={cn(
-          "mx-auto block rounded-full",
+          "block rounded-full",
           statusClass[status],
           pulse,
         )}

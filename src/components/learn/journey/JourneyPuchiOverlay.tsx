@@ -2,11 +2,13 @@
 
 import Image from "next/image";
 import { useReducedMotion } from "motion/react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import type { DerivedLandmarkView } from "@/lib/journey-map/types";
 
 /** Prefer welcome v2; beginner student is the documented fallback. */
 const MASCOT_SRC = "/images/mascot/puchi_welcome_v2.png";
+const MASCOT_FALLBACK_SRC = "/images/mascot/puchi_student_beginner.png";
 
 const OVERLAY_SIZE = 56;
 /** Nudge Puchi beside the current hotspot (normalized map space). */
@@ -18,6 +20,7 @@ export type JourneyPuchiOverlayProps = {
 
 export function JourneyPuchiOverlay({ views }: JourneyPuchiOverlayProps) {
   const reduceMotion = useReducedMotion();
+  const [mascotSrc, setMascotSrc] = useState(MASCOT_SRC);
   const current = views.find((v) => v.isCurrent);
   if (!current) return null;
 
@@ -36,12 +39,17 @@ export function JourneyPuchiOverlay({ views }: JourneyPuchiOverlayProps) {
       aria-hidden
     >
       <Image
-        src={MASCOT_SRC}
+        src={mascotSrc}
         alt=""
         width={OVERLAY_SIZE}
         height={OVERLAY_SIZE}
         className="h-full w-full object-contain drop-shadow-md"
         draggable={false}
+        onError={() => {
+          if (mascotSrc !== MASCOT_FALLBACK_SRC) {
+            setMascotSrc(MASCOT_FALLBACK_SRC);
+          }
+        }}
       />
     </div>
   );
