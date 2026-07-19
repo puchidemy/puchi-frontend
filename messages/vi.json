@@ -228,7 +228,10 @@
         "coffee-shop": "Quán cà phê",
         "street-food": "Góc ẩm thực đường phố",
         "bamboo-grove": "Rừng tre",
-        "traditional-bridge": "Cầu truyền thống"
+        "traditional-bridge": "Cầu truyền thống",
+        "phu-quoc": "Phú Quốc",
+        "hoang-sa": "Hoàng Sa",
+        "truong-sa": "Trường Sa"
       },
       "status": {
         "unlocked": "Có thể học",
