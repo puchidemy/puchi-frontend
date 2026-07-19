@@ -6,7 +6,7 @@ const V1 = "/images/learn/journey/unit-1/v1";
 export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
   unitId: DEFAULT_UNIT_ID,
   version: 1,
-  mapDimensions: { width: 2048, height: 2048 },
+  mapDimensions: { width: 1024, height: 1024 },
   defaultViewport: { x: 0.5, y: 0.42, zoom: 1 },
   assetBasePath: V1,
   landmarks: [
