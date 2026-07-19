@@ -22,19 +22,19 @@ export default async function LearnLayout({ children }: LearnLayoutProps) {
         <ItemsInfo />
       </div>
       <div className="flex justify-center">
-        <div className="h-full flex xl:w-[1024px] w-full relative">
-          <main className="min-w-[300px] absolute left-0 right-0 xl:right-[350px]">
+        <div className="relative flex w-full xl:w-[1024px]">
+          <main className="min-w-0 w-full min-h-0 xl:pr-[350px]">
             {children}
             <ScrollToTopButton className="max-sm:bottom-20 xl:right-[calc(50%-220px)]" />
           </main>
-          <div
-            className="max-xl:hidden w-[350px] fixed"
+          <aside
+            className="max-xl:hidden fixed top-0 z-20 h-dvh w-[350px] overflow-y-auto pt-2 md:pt-4"
             style={{ right: "calc((100vw - 1276px) / 2)" }}
           >
             <Suspense fallback={<RightBarFallback />}>
               <RightBarSection />
             </Suspense>
-          </div>
+          </aside>
         </div>
       </div>
     </>

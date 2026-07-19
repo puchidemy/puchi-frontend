@@ -78,6 +78,7 @@ export const UNIT_1_JOURNEY_MAP: JourneyMapConfig = {
   ],
 };
 
+/** Versioned filename — busts Next/Image + browser cache when art updates. */
 export function islandBaseSrc(config: JourneyMapConfig): string {
-  return `${config.assetBasePath}/map/island-base.webp`;
+  return `${config.assetBasePath}/map/island-base-v${config.version}.webp`;
 }

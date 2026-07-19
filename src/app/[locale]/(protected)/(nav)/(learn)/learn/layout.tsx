@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * Full-viewport shell for Journey Map + Chapter.
- * Escapes parent learn padding / dual-column layout; clears bottom nav + sidebar.
+ * Tall journey shell inside the learn two-column layout (keeps RightBar).
+ * Does NOT use fixed fullscreen — that was covering the right panel.
  */
 export default function JourneyShellLayout({
   children,
@@ -10,15 +10,7 @@ export default function JourneyShellLayout({
   children: ReactNode;
 }) {
   return (
-    <div
-      className={[
-        "fixed inset-0 z-30 flex flex-col bg-background",
-        // Mobile bottom nav (~4rem)
-        "max-sm:bottom-16",
-        // Match SidebarLeft offsets from (nav)/layout
-        "sm:left-[84px] lg:left-60",
-      ].join(" ")}
-    >
+    <div className="flex h-[calc(100dvh-1.25rem)] min-h-[480px] w-full min-w-0 flex-col max-sm:h-[calc(100dvh-5.5rem)]">
       {children}
     </div>
   );

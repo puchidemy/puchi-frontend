@@ -464,6 +464,7 @@ export function JourneyMapCanvas({
         }}
       >
         <Image
+          key={islandBaseSrc(config)}
           src={islandBaseSrc(config)}
           alt=""
           width={mapW}
@@ -471,6 +472,7 @@ export function JourneyMapCanvas({
           className="pointer-events-none select-none"
           draggable={false}
           priority
+          unoptimized
         />
         {views.map((view) => (
           <JourneyHotspot
