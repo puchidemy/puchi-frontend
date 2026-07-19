@@ -598,6 +598,16 @@
         "locked": "Locked",
         "coming_soon": "Coming soon",
         "completed": "Completed"
+      },
+      "Chapter": {
+        "back": "Back to map",
+        "continue": "Continue",
+        "review": "Review",
+        "emptyLessons": "No lessons in this chapter yet.",
+        "progress": "{completed} of {total} lessons",
+        "intros": {
+          "hoan-kiem": "Begin your journey at Hoàn Kiếm Lake — greet Vietnam with your first words."
+        }
       }
     }
   },

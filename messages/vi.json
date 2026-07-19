@@ -235,6 +235,16 @@
         "locked": "Đã khóa",
         "coming_soon": "Sắp ra mắt",
         "completed": "Đã hoàn thành"
+      },
+      "Chapter": {
+        "back": "Về bản đồ",
+        "continue": "Tiếp tục",
+        "review": "Ôn lại",
+        "emptyLessons": "Chương này chưa có bài học.",
+        "progress": "{completed}/{total} bài",
+        "intros": {
+          "hoan-kiem": "Bắt đầu hành trình tại Hồ Hoàn Kiếm — chào Việt Nam bằng những từ đầu tiên."
+        }
       }
     }
   },
