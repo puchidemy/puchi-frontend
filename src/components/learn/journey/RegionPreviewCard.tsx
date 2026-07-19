@@ -10,6 +10,8 @@ export type RegionPreviewCardProps = {
   view: DerivedLandmarkView;
   onContinue: () => void;
   onDismiss?: () => void;
+  onPointerEnter?: () => void;
+  onPointerLeave?: () => void;
   className?: string;
 };
 
@@ -18,6 +20,8 @@ export function RegionPreviewCard({
   view,
   onContinue,
   onDismiss,
+  onPointerEnter,
+  onPointerLeave,
   className,
 }: RegionPreviewCardProps) {
   const t = useTranslations("Learn");
@@ -37,6 +41,8 @@ export function RegionPreviewCard({
       )}
       role="dialog"
       aria-label={title}
+      onPointerEnter={onPointerEnter}
+      onPointerLeave={onPointerLeave}
     >
       <div className="relative aspect-[16/9] w-full bg-muted">
         {hero ? (

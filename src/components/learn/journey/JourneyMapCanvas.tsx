@@ -68,8 +68,8 @@ export function JourneyMapCanvas({
           <JourneyHotspot
             key={view.slug}
             hotspot={view.hotspot}
-            visualSize={view.visualSize}
-            hitArea={view.hitArea}
+            hitW={view.hitW}
+            hitH={view.hitH}
             status={view.status}
             isCurrent={view.isCurrent}
             isPreviewed={previewSlug === view.slug}

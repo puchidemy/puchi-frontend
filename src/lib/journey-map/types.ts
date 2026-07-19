@@ -13,9 +13,14 @@ export type JourneyLandmark = {
   slug: string;
   skillId?: string;
   baseStatus: LandmarkBaseStatus;
+  /** Center of region on the board (0–1). */
   hotspot: { x: number; y: number };
-  visualSize: number;
-  hitArea: number;
+  /** Hit box size as fraction of board (0–1). */
+  hitW: number;
+  hitH: number;
+  /** @deprecated kept optional for older callers */
+  visualSize?: number;
+  hitArea?: number;
   assets: {
     hero?: string;
     pin?: string;
@@ -30,7 +35,7 @@ export type JourneyMapConfig = {
   version: number;
   mapDimensions: { width: number; height: number };
   defaultViewport: JourneyViewport;
-  assetBasePath: string; // e.g. /images/learn/journey/unit-1/v1
+  assetBasePath: string;
   landmarks: JourneyLandmark[];
 };
 
@@ -40,8 +45,8 @@ export type DerivedLandmarkView = {
   status: RuntimeLandmarkStatus;
   isCurrent: boolean;
   hotspot: JourneyLandmark["hotspot"];
-  visualSize: number;
-  hitArea: number;
+  hitW: number;
+  hitH: number;
   assets: JourneyLandmark["assets"];
   skillId?: string;
   lessons: LearnSkill["lessons"];

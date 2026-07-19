@@ -4,20 +4,17 @@ import { Check, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { RuntimeLandmarkStatus } from "@/lib/journey-map/types";
 
-const MIN_HIT = 44;
-
 const statusClass: Record<RuntimeLandmarkStatus, string> = {
-  unlocked:
-    "bg-white/10 ring-2 ring-white/40 hover:bg-white/25 hover:-translate-y-1 hover:shadow-[0_10px_22px_rgba(0,0,0,0.12)]",
-  completed: "bg-emerald-400/25 ring-2 ring-emerald-300/65",
-  locked: "bg-black/25",
-  coming_soon: "bg-black/20",
+  unlocked: "bg-transparent ring-0 hover:bg-white/20 hover:ring-2 hover:ring-white/50",
+  completed: "bg-emerald-400/20 ring-2 ring-emerald-300/60",
+  locked: "bg-black/20",
+  coming_soon: "bg-black/15",
 };
 
 export type JourneyHotspotProps = {
   hotspot: { x: number; y: number };
-  visualSize: number;
-  hitArea: number;
+  hitW: number;
+  hitH: number;
   status: RuntimeLandmarkStatus;
   isCurrent?: boolean;
   isPreviewed?: boolean;
@@ -28,11 +25,14 @@ export type JourneyHotspotProps = {
   reduceMotion?: boolean;
 };
 
-/** Hit overlay sized in % of the board box so it scales with full-height fit. */
+/**
+ * Region hit box — no translate on hover (avoids “đẩy xuống”).
+ * Uses scale/ring only so lock stays aligned with the clay block.
+ */
 export function JourneyHotspot({
   hotspot,
-  visualSize,
-  hitArea,
+  hitW,
+  hitH,
   status,
   isCurrent = false,
   isPreviewed = false,
@@ -43,9 +43,6 @@ export function JourneyHotspot({
   reduceMotion = false,
 }: JourneyHotspotProps) {
   const canPreview = status === "unlocked" || status === "completed";
-  // Convert design px (@1024 board) → % of board so full-height scale stays aligned
-  const wPct = (Math.max(hitArea, visualSize, MIN_HIT) / 1024) * 100;
-  const hPct = wPct * 0.62;
   const pulse =
     isCurrent && status === "unlocked" && !reduceMotion && !isPreviewed
       ? "animate-pulse"
@@ -58,21 +55,20 @@ export function JourneyHotspot({
       aria-label={ariaLabel}
       aria-expanded={isPreviewed || undefined}
       className={cn(
-        "absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[18%] transition-[transform,box-shadow,background-color] duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        "absolute z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[22%] transition-[transform,box-shadow,background-color] duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
         statusClass[status],
         pulse,
         isCurrent &&
           status === "unlocked" &&
-          "ring-primary/50 bg-primary/15 shadow-md",
-        isPreviewed &&
-          canPreview &&
-          "-translate-y-[6%] bg-white/35 shadow-lg ring-primary/55",
+          "bg-primary/15 ring-2 ring-primary/45",
+        isPreviewed && canPreview && "z-20 bg-white/30 ring-2 ring-primary/55 scale-[1.03]",
+        canPreview && "hover:scale-[1.03]",
       )}
       style={{
         left: `${hotspot.x * 100}%`,
         top: `${hotspot.y * 100}%`,
-        width: `${wPct}%`,
-        height: `${hPct}%`,
+        width: `${hitW * 100}%`,
+        height: `${hitH * 100}%`,
       }}
       onClick={onSelect}
       onMouseEnter={() => {
@@ -86,14 +82,14 @@ export function JourneyHotspot({
     >
       {status === "completed" && (
         <Check
-          className="h-[28%] w-[28%] min-h-3.5 min-w-3.5 text-emerald-700 drop-shadow-sm"
+          className="h-5 w-5 text-emerald-700 drop-shadow-sm sm:h-6 sm:w-6"
           strokeWidth={3}
           aria-hidden
         />
       )}
       {(status === "locked" || status === "coming_soon") && (
         <Lock
-          className="h-[26%] w-[26%] min-h-3.5 min-w-3.5 text-white/90 drop-shadow"
+          className="h-4 w-4 text-white drop-shadow sm:h-5 sm:w-5"
           strokeWidth={2.5}
           aria-hidden
         />

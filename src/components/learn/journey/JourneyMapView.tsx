@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { toast } from "sonner";
 import { useRouter } from "@/i18n/routing";
@@ -20,9 +20,12 @@ export type JourneyMapViewProps = {
   onLockedLessonClick?: () => void;
 };
 
+const HOVER_CLOSE_MS = 280;
+
 /**
  * Journey → Region → Chapter → Lessons
- * Full-height 2.5D board; islands are decorative on the art only.
+ * Preview stays open while pointer is on region OR card (leave delay).
+ * Click pins the card so it never disappears while interacting.
  */
 export function JourneyMapView({
   unit,
@@ -37,6 +40,7 @@ export function JourneyMapView({
 
   const [pinnedSlug, setPinnedSlug] = useState<string | null>(null);
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const allLessons = skills.flatMap((s) => s.lessons);
   const totalLessons = allLessons.length;
@@ -52,6 +56,33 @@ export function JourneyMapView({
   const showPreview =
     previewView != null &&
     (previewView.status === "unlocked" || previewView.status === "completed");
+
+  useEffect(() => {
+    return () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, []);
+
+  const clearCloseTimer = () => {
+    if (closeTimer.current) {
+      clearTimeout(closeTimer.current);
+      closeTimer.current = null;
+    }
+  };
+
+  const openHover = (slug: string) => {
+    clearCloseTimer();
+    setHoveredSlug(slug);
+  };
+
+  const scheduleCloseHover = () => {
+    if (pinnedSlug) return;
+    clearCloseTimer();
+    closeTimer.current = setTimeout(() => {
+      setHoveredSlug(null);
+      closeTimer.current = null;
+    }, HOVER_CLOSE_MS);
+  };
 
   const getAriaLabel = (view: DerivedLandmarkView) => {
     const name = t(`Journey.landmark.${view.slug}`);
@@ -72,12 +103,12 @@ export function JourneyMapView({
           : t("Journey.locked"),
       );
       setPinnedSlug(null);
+      setHoveredSlug(null);
       return;
     }
-    setPinnedSlug((prev) => (prev === slug ? null : slug));
-  };
-
-  const onHoverRegion = (slug: string | null) => {
+    clearCloseTimer();
+    // Pin so preview stays while user clicks Continue
+    setPinnedSlug(slug);
     setHoveredSlug(slug);
   };
 
@@ -105,30 +136,26 @@ export function JourneyMapView({
           config={config}
           views={views}
           onSelectRegion={onSelectRegion}
-          onHoverRegion={onHoverRegion}
+          onHoverRegion={(slug) => {
+            if (slug) openHover(slug);
+            else scheduleCloseHover();
+          }}
           previewSlug={previewSlug}
           getAriaLabel={getAriaLabel}
           className="h-full"
         />
         {showPreview && previewView && (
-          <div
-            className="pointer-events-none absolute inset-x-0 bottom-3 z-40 flex justify-center px-3 sm:bottom-4 sm:justify-end sm:pr-4"
-            onMouseEnter={() => setHoveredSlug(previewView.slug)}
-            onMouseLeave={() => {
-              if (!pinnedSlug) setHoveredSlug(null);
-            }}
-          >
+          <div className="absolute inset-x-0 bottom-3 z-40 flex justify-center px-3 sm:bottom-4 sm:justify-end sm:pr-4">
             <RegionPreviewCard
               view={previewView}
               onContinue={onContinue}
-              onDismiss={
-                pinnedSlug
-                  ? () => {
-                      setPinnedSlug(null);
-                      setHoveredSlug(null);
-                    }
-                  : undefined
-              }
+              onDismiss={() => {
+                clearCloseTimer();
+                setPinnedSlug(null);
+                setHoveredSlug(null);
+              }}
+              onPointerEnter={() => openHover(previewView.slug)}
+              onPointerLeave={() => scheduleCloseHover()}
             />
           </div>
         )}
