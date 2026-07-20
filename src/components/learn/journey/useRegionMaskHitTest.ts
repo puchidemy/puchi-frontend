@@ -23,7 +23,10 @@ export function useRegionMaskHitTest(
   const [mask, setMask] = useState<RegionMaskData | null>(null);
   const maskRef = useRef<RegionMaskData | null>(null);
   const viewsRef = useRef(views);
-  viewsRef.current = views;
+
+  useEffect(() => {
+    viewsRef.current = views;
+  }, [views]);
 
   useEffect(() => {
     let cancelled = false;
