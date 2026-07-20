@@ -215,6 +215,39 @@
       "correct": "Đúng rồi!",
       "tryAgain": "Chưa đúng — thử lại",
       "matchPrompt": "Xác nhận các cặp đã ghép đúng:"
+    },
+    "Journey": {
+      "progressChip": "{completed}/{total} bài",
+      "resetView": "Đặt lại khung nhìn",
+      "comingSoon": "Chương này sắp ra mắt.",
+      "locked": "Hãy hoàn thành chương trước đó.",
+      "previewChapter": "Chương",
+      "previewClose": "Đóng",
+      "landmark": {
+        "hoan-kiem": "Hồ Hoàn Kiếm",
+        "one-pillar-pagoda": "Chùa Một Cột",
+        "old-quarter": "Phố cổ Hà Nội",
+        "coffee-shop": "Quán cà phê",
+        "street-food": "Góc ẩm thực đường phố",
+        "bamboo-grove": "Rừng tre",
+        "traditional-bridge": "Cầu truyền thống"
+      },
+      "status": {
+        "unlocked": "Có thể học",
+        "locked": "Đã khóa",
+        "coming_soon": "Sắp ra mắt",
+        "completed": "Đã hoàn thành"
+      },
+      "Chapter": {
+        "back": "Về bản đồ",
+        "continue": "Tiếp tục",
+        "review": "Ôn lại",
+        "emptyLessons": "Chương này chưa có bài học.",
+        "progress": "{completed}/{total} bài",
+        "intros": {
+          "hoan-kiem": "Bắt đầu hành trình tại Hồ Hoàn Kiếm — chào Việt Nam bằng những từ đầu tiên."
+        }
+      }
     }
   },
   "TrialLearn": {

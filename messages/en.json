@@ -578,6 +578,39 @@
       "correct": "Correct!",
       "tryAgain": "Not quite — try again",
       "matchPrompt": "Confirm these pairs are matched correctly:"
+    },
+    "Journey": {
+      "progressChip": "{completed}/{total} lessons",
+      "resetView": "Reset view",
+      "comingSoon": "This chapter is coming soon.",
+      "locked": "Finish the previous chapter first.",
+      "previewChapter": "Chapter",
+      "previewClose": "Close",
+      "landmark": {
+        "hoan-kiem": "Hoàn Kiếm Lake",
+        "one-pillar-pagoda": "One Pillar Pagoda",
+        "old-quarter": "Hanoi Old Quarter",
+        "coffee-shop": "Coffee Shop",
+        "street-food": "Street Food Corner",
+        "bamboo-grove": "Bamboo Grove",
+        "traditional-bridge": "Traditional Bridge"
+      },
+      "status": {
+        "unlocked": "Available",
+        "locked": "Locked",
+        "coming_soon": "Coming soon",
+        "completed": "Completed"
+      },
+      "Chapter": {
+        "back": "Back to map",
+        "continue": "Continue",
+        "review": "Review",
+        "emptyLessons": "No lessons in this chapter yet.",
+        "progress": "{completed} of {total} lessons",
+        "intros": {
+          "hoan-kiem": "Begin your journey at Hoàn Kiếm Lake — greet Vietnam with your first words."
+        }
+      }
     }
   },
   "TrialLearn": {
