@@ -53,7 +53,13 @@
   "Footer": {
     "startYourLanguageJourneyHere": "여기에서 언어 여정을 시작하세요.",
     "learnAnytimeLearnAnywhere": "언제 어디서나 배우세요.",
-    "start": "시작"
+    "start": "시작",
+    "about": "소개",
+    "help": "도움말",
+    "attribution": "출처",
+    "guidelines": "가이드라인",
+    "terms": "이용약관",
+    "privacy": "개인정보"
   },
   "HelpPage": {
     "breadcrumbs": {
@@ -308,7 +314,10 @@
     "email": "이메일",
     "emailNote": "이메일은 변경할 수 없습니다. 변경이 필요한 경우 지원팀에 문의하세요.",
     "success": "정보가 성공적으로 업데이트되었습니다!",
-    "error": "정보 업데이트 중 오류가 발생했습니다"
+    "error": "정보 업데이트 중 오류가 발생했습니다",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell the world about yourself...",
+    "bioNote": "Share a short bio to let others know you better."
   },
   "ProfileStats": {
     "learningStats": {
@@ -333,6 +342,298 @@
       "totalXP": "총 XP",
       "currentLevel": "현재 레벨",
       "level": "레벨 {level}"
+    }
+  },
+  "Start": {
+    "title": "How do you want to start?",
+    "subtitle": "Try lessons as a guest, or sign in to save progress across devices.",
+    "tryAsGuest": "Continue as guest",
+    "createAccount": "Create free account",
+    "haveAccount": "I already have an account",
+    "guestHint": "Guest progress is saved on this device and merged when you sign up. Sign up after a few lessons to keep learning.",
+    "guestError": "Could not start guest session. Please try again."
+  },
+  "Welcome": {
+    "tellUsAboutYou": "Tell us about yourself",
+    "basicInfoDescription": "We just need a few details to personalize your experience",
+    "firstName": "First Name",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastName": "Last Name",
+    "lastNamePlaceholder": "Enter your last name",
+    "username": "Username",
+    "usernamePlaceholder": "Choose a username",
+    "usernameRequired": "Username is required",
+    "usernameTaken": "This username is already taken",
+    "ageRange": "Age Range",
+    "selectAgeRange": "Select your age range",
+    "continue": "Continue",
+    "nameRequired": "Name is required",
+    "ageRequired": "Please select your age range",
+    "syncFailed": "Could not save your profile. Please try again."
+  },
+  "Settings": {
+    "editProfile": "Edit Profile",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "bio": "Bio",
+    "bioPlaceholder": "Tell the world about yourself...",
+    "ageRange": "Age Range",
+    "selectAgeRange": "Select your age range",
+    "save": "Save",
+    "saving": "Saving...",
+    "saved": "Saved!",
+    "profileSaved": "Profile saved successfully!",
+    "saveFailed": "Failed to save profile",
+    "networkError": "Network error. Please try again.",
+    "connectedAccounts": "Connected Accounts",
+    "notConnected": "Not connected",
+    "unlink": "Unlink",
+    "link": "Link",
+    "linking": "Linking...",
+    "unlinking": "Unlinking...",
+    "linked": "Connected",
+    "linkedAs": "Connected ({id})",
+    "accountUnlinked": "Unlinked",
+    "accountLinked": "Linked",
+    "unlinkFailed": "Failed to unlink account",
+    "linkFailed": "Failed to link account",
+    "linkConflict": "This social account is already linked to another user",
+    "guestProfile": {
+      "title": "Profile",
+      "headline": "Sign in to manage your profile",
+      "description": "Create an account or sign in to edit your profile and connect social accounts. Preferences, language, and privacy work without signing in.",
+      "signUp": "Create a free account",
+      "signIn": "Sign in"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "lessonExperience": "Lesson experience",
+      "soundEffects": "Sound effects",
+      "animations": "Animations",
+      "motivationalMessages": "Motivational messages",
+      "listeningExercises": "Listening exercises",
+      "appearance": "Appearance",
+      "darkMode": "Dark mode"
+    },
+    "language": {
+      "title": "Language",
+      "appLanguage": "App language"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "visibility": "Visibility",
+      "profilePublic": "Public profile",
+      "profilePublicHint": "Let others view your profile page.",
+      "findableByUsername": "Findable by username",
+      "findableByUsernameHint": "Allow others to find you by your username.",
+      "shareActivity": "Share learning activity",
+      "shareActivityHint": "Show recent lessons and streaks on your profile."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "section": "Alerts",
+      "comingSoon": "Notification preferences are coming soon."
+    },
+    "syncGuest": {
+      "title": "Sync guest progress?",
+      "description": "Bring lessons and settings from this device into your account.",
+      "lessons": "{count, plural, one {# lesson completed as a guest} other {# lessons completed as a guest}}",
+      "settingsChanged": "Changed settings",
+      "sync": "Sync",
+      "syncing": "Syncing...",
+      "synced": "Synced!",
+      "skip": "Skip"
+    }
+  },
+  "Profile": {
+    "editProfile": "Edit Profile",
+    "avatarUpdated": "Photo updated!",
+    "avatarUpdateFailed": "Couldn't update photo",
+    "tabs": {
+      "overview": "Overview",
+      "stats": "Stats",
+      "achievements": "Achievements"
+    },
+    "streak": "Streak",
+    "crowns": "Crowns",
+    "gems": "Gems",
+    "dayStreak": "day streak",
+    "days": "days",
+    "longestStreak": "Longest",
+    "freezesRemaining": "freezes left",
+    "weeklyRecap": "Weekly Recap",
+    "daysActive": "days active",
+    "learningProgress": "Learning Progress",
+    "courseCompletion": "Course Completion",
+    "lessonsCompleted": "lessons completed",
+    "minutesLearned": "minutes learned",
+    "totalXP": "Total XP",
+    "stats": {
+      "lessonsCompleted": "Lessons",
+      "accuracy": "Accuracy",
+      "totalHours": "Total Hours",
+      "wordsLearned": "Words Learned",
+      "learningCalendar": "Learning Calendar",
+      "weeklyXP": "Weekly XP",
+      "accuracyChart": "Accuracy"
+    },
+    "achievements": {
+      "title": "Achievements",
+      "unlocked": "unlocked",
+      "inProgress": "In Progress",
+      "all": "All Badges",
+      "progress": "Progress",
+      "unlockedAt": "Unlocked"
+    },
+    "social": {
+      "friends": "Friends",
+      "followers": "Followers",
+      "following": "Following",
+      "leaderboard": "Weekly Leaderboard",
+      "friendsList": "Friends"
+    },
+    "settingsLinks": {
+      "profile": "Edit Profile",
+      "preferences": "Preferences",
+      "notifications": "Notifications",
+      "privacy": "Privacy & Security",
+      "language": "Language",
+      "signOut": "Sign Out"
+    },
+    "inviteFriends": {
+      "title": "Invite Friends",
+      "description": "Tell your friends it's free and fun to learn a language on Puchi!",
+      "linkCopied": "Copied!",
+      "orShareOn": "Or share on",
+      "findFriends": "Find friends",
+      "findFriendsDescription": "Connect with your contacts and see who's already learning on Puchi",
+      "addFriendsPlaceholder": "Search by username or name",
+      "invite": "Invite friends",
+      "inviteDescription": "Share your invite link and earn XP when friends join",
+      "following": "Following",
+      "followers": "Followers",
+      "noOneYet": "No one yet",
+      "noOneYetHint": "Find friends to learn together",
+      "accountSettings": "Account settings",
+      "accountSettingsDescription": "Profile, preferences, and privacy"
+    }
+  },
+  "errors": {
+    "profile": {
+      "notFound": "Profile not found"
+    },
+    "validation": {
+      "invalidInput": "Invalid input. Please check your information",
+      "usernameTaken": "This username is already taken"
+    },
+    "auth": {
+      "unauthorized": "Please sign in to continue"
+    },
+    "network": {
+      "timeout": "The request timed out. Please try again",
+      "connectionError": "Unable to connect. Please check your internet"
+    },
+    "server": {
+      "internalError": "Something went wrong. Please try again later"
+    }
+  },
+  "Learn": {
+    "loadError": "Could not load this unit. Please try again.",
+    "retry": "Try again",
+    "saveProgress": "Save your progress",
+    "startLesson": "Start",
+    "unitLabel": "Unit {position}",
+    "rightBar": {
+      "unlockLeaderboards": "Unlock Leaderboards!",
+      "unlockLeaderboardsHint": "Complete {count} more lessons to start competing",
+      "dailyQuests": "Daily Quests",
+      "viewAll": "View all",
+      "earnXp": "Earn {count} XP",
+      "createProfileTitle": "Save your progress!",
+      "createProfileHint": "Create a free profile so your XP and streak stay with you.",
+      "createProfile": "Create a profile",
+      "signIn": "Sign in"
+    },
+    "softGate": {
+      "title": "Create an account to keep going",
+      "description": "You've finished your free guest lessons. Sign up or sign in to save progress and unlock more.",
+      "signUp": "Create free account",
+      "signIn": "I already have an account"
+    },
+    "lessonOneReminder": {
+      "title": "Nice work on your first lesson!",
+      "description": "Create a free account so your progress stays with you across devices.",
+      "signUp": "Create free account",
+      "continue": "Keep learning"
+    },
+    "lesson": {
+      "loadError": "Could not load this lesson.",
+      "submitError": "Could not submit your answer.",
+      "completeError": "Could not complete the lesson.",
+      "backToLearn": "Back to Learn",
+      "step": "Question {current} of {total}",
+      "check": "Check",
+      "checking": "Checking…",
+      "correct": "Correct!",
+      "tryAgain": "Not quite — try again",
+      "matchPrompt": "Confirm these pairs are matched correctly:"
+    },
+    "Journey": {
+      "progressChip": "{completed}/{total} 레슨",
+      "resetView": "보기 초기화",
+      "comingSoon": "이 챕터는 곧 공개됩니다.",
+      "locked": "이전 챕터를 먼저 완료하세요.",
+      "previewChapter": "챕터",
+      "previewClose": "닫기",
+      "landmark": {
+        "hoan-kiem": "호안끼엠 호수",
+        "one-pillar-pagoda": "한기둥 사원",
+        "old-quarter": "하노이 구시가지",
+        "coffee-shop": "카페",
+        "street-food": "길거리 음식 코너",
+        "bamboo-grove": "대나무 숲",
+        "traditional-bridge": "전통 다리"
+      },
+      "status": {
+        "unlocked": "이용 가능",
+        "locked": "잠김",
+        "coming_soon": "곧 공개",
+        "completed": "완료"
+      },
+      "Chapter": {
+        "back": "맵으로 돌아가기",
+        "continue": "계속",
+        "review": "복습",
+        "emptyLessons": "이 챕터에는 아직 레슨이 없습니다.",
+        "progress": "{total}개 중 {completed}개 레슨",
+        "intros": {
+          "hoan-kiem": "호안끼엠 호수에서 여정을 시작하세요 — 첫 인사로 베트남을 만나보세요."
+        }
+      }
+    }
+  },
+  "TrialLearn": {
+    "loadError": "Could not load this unit. Please try again.",
+    "retry": "Try again",
+    "saveProgress": "Save your progress",
+    "softGate": {
+      "title": "Create an account to keep going",
+      "description": "You've finished your free guest lessons. Sign up or sign in to save progress and unlock more.",
+      "signUp": "Create free account",
+      "signIn": "I already have an account"
+    },
+    "lesson": {
+      "loadError": "Could not load this lesson.",
+      "submitError": "Could not submit your answer.",
+      "completeError": "Could not complete the lesson.",
+      "backToLearn": "Back to Learn",
+      "step": "Question {current} of {total}",
+      "check": "Check",
+      "checking": "Checking…",
+      "correct": "Correct!",
+      "tryAgain": "Not quite — try again",
+      "matchPrompt": "Confirm these pairs are matched correctly:"
     }
   }
 }
