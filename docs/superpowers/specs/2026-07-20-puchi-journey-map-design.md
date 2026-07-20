@@ -1,6 +1,8 @@
 # Puchi Journey Map — Unit 1 Vietnam Diorama Design
 
-**Status:** Draft (awaiting user review)  
+> **Superseded (product IA):** Chapter / Landmark / skill-lock path is replaced by **Story-first**. Canonical spec: canonical [`2026-07-20-story-first-learn-design.md`](./2026-07-20-story-first-learn-design.md). This copy remains for map art / pan-zoom technique only.
+
+**Status:** Historical (product path superseded 2026-07-20)  
 **Date:** 2026-07-20  
 **Scope:** Frontend Learn Unit 1 + art pipeline  
 **Replaces:** Duolingo-style zigzag path (`TrialUnitPath`) for Unit 1

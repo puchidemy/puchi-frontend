@@ -1,16 +1,15 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import type { DerivedLandmarkView } from "@/lib/journey-map/types";
-import { RegionPreviewCard } from "./RegionPreviewCard";
+import type { CityMapView } from "@/lib/journey-cities";
+import { CityPreviewCard } from "./CityPreviewCard";
 
-/** Card footprint (fraction of board) for clamp math. */
 const CARD_W = 0.48;
 const CARD_H = 0.52;
 const GAP = 0.012;
 const EDGE = 0.02;
 
-function placeBeside(view: DerivedLandmarkView) {
+function placeBeside(view: CityMapView) {
   const halfW = view.hitW / 2;
   let placeRight = view.hotspot.x < 0.52;
   const rightEdge = view.hotspot.x + halfW + GAP;
@@ -19,18 +18,12 @@ function placeBeside(view: DerivedLandmarkView) {
   if (placeRight && rightEdge + CARD_W > 1 - EDGE) placeRight = false;
   if (!placeRight && leftEdge - CARD_W < EDGE) placeRight = true;
 
-  // Center on hotspot, then push up near bottom so card isn't clipped.
   const halfH = CARD_H / 2;
   let top = view.hotspot.y;
   const minTop = EDGE + halfH;
   const maxTop = 1 - EDGE - halfH;
-  // Extra lift for southern regions (preview taller than hotspot band).
-  if (view.hotspot.y > 0.62) {
-    top = Math.min(top, maxTop - 0.04);
-  }
-  if (view.hotspot.y > 0.78) {
-    top = Math.min(top, maxTop - 0.08);
-  }
+  if (view.hotspot.y > 0.62) top = Math.min(top, maxTop - 0.04);
+  if (view.hotspot.y > 0.78) top = Math.min(top, maxTop - 0.08);
   top = Math.min(Math.max(top, minTop), maxTop);
 
   return {
@@ -45,22 +38,21 @@ function placeBeside(view: DerivedLandmarkView) {
   };
 }
 
-export type RegionPreviewAnchorProps = {
-  view: DerivedLandmarkView;
-  onContinue: () => void;
+export type CityPreviewAnchorProps = {
+  view: CityMapView;
+  onExplore: () => void;
   onDismiss?: () => void;
   onPointerEnter?: () => void;
   onPointerLeave?: () => void;
 };
 
-/** Anchors preview beside the region so the pointer can slide across. */
-export function RegionPreviewAnchor({
+export function CityPreviewAnchor({
   view,
-  onContinue,
+  onExplore,
   onDismiss,
   onPointerEnter,
   onPointerLeave,
-}: RegionPreviewAnchorProps) {
+}: CityPreviewAnchorProps) {
   const p = placeBeside(view);
 
   return (
@@ -91,9 +83,9 @@ export function RegionPreviewAnchor({
           transform: "translateY(-50%)",
         }}
       >
-        <RegionPreviewCard
+        <CityPreviewCard
           view={view}
-          onContinue={onContinue}
+          onExplore={onExplore}
           onDismiss={onDismiss}
           onPointerEnter={onPointerEnter}
           onPointerLeave={onPointerLeave}

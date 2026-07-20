@@ -6,8 +6,7 @@
     "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
-    "test:journey-map": "bun src/lib/journey-map/selftest.ts"
+    "lint": "eslint"
   },
   "dependencies": {
     "@next/bundle-analyzer": "^16.2.10",

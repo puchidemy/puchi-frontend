@@ -582,37 +582,90 @@
       "tryAgain": "Not quite — try again",
       "matchPrompt": "Confirm these pairs are matched correctly:"
     },
-    "Journey": {
-      "progressChip": "{completed}/{total} 课时",
-      "resetView": "重置视图",
-      "comingSoon": "本章即将上线。",
-      "locked": "请先完成上一章。",
-      "previewChapter": "章节",
-      "previewClose": "关闭",
-      "landmark": {
-        "hoan-kiem": "还剑湖",
-        "one-pillar-pagoda": "独柱寺",
-        "old-quarter": "河内古城",
-        "coffee-shop": "咖啡馆",
-        "street-food": "街头小吃角",
-        "bamboo-grove": "竹林",
-        "traditional-bridge": "传统小桥"
+    "City": {
+      "mapTitle": "Explore Vietnam",
+      "progressChip": "{completed}/{total} stories",
+      "previewLabel": "City",
+      "previewClose": "Close",
+      "explore": "Explore",
+      "open": "Open",
+      "backToMap": "Back to map",
+      "storyCount": "{count, plural, one {# story} other {# stories}}",
+      "comingSoonStories": "Stories coming soon",
+      "comingSoonTitle": "Stories coming soon",
+      "comingSoonBody": "This city is open to explore — new stories are on the way.",
+      "hubProgress": "{completed} of {total} stories",
+      "unknown": "That city isn't on the map.",
+      "names": {
+        "hanoi": "Hà Nội",
+        "ha-long": "Hạ Long",
+        "hue": "Huế",
+        "hoi-an": "Hội An",
+        "da-nang": "Đà Nẵng",
+        "hcmc": "Ho Chi Minh City",
+        "can-tho": "Cần Thơ",
+        "phu-quoc": "Phú Quốc"
       },
-      "status": {
-        "unlocked": "可学习",
-        "locked": "已锁定",
-        "coming_soon": "即将推出",
-        "completed": "已完成"
+      "blurbs": {
+        "hanoi": "Capital mornings, lakeside walks, and your first stories.",
+        "ha-long": "Limestone bays and quiet boat rides.",
+        "hue": "Imperial courtyards and gentle river days.",
+        "hoi-an": "Lantern streets and riverside evenings.",
+        "da-nang": "Beach mornings and mountain views.",
+        "hcmc": "Busy streets, coffee, and city stories.",
+        "can-tho": "Floating markets on the Mekong.",
+        "phu-quoc": "Island beaches and pepper gardens."
+      }
+    },
+    "Story": {
+      "sections": {
+        "continue": "Continue",
+        "recommended": "Recommended",
+        "tags": "Browse by tag",
+        "all": "All stories"
       },
-      "Chapter": {
-        "back": "返回地图",
-        "continue": "继续",
-        "review": "复习",
-        "emptyLessons": "本章暂无课程。",
-        "progress": "已完成 {completed}/{total} 课",
-        "intros": {
-          "hoan-kiem": "从还剑湖开始旅程——用第一句问候认识越南。"
-        }
+      "allTags": "All",
+      "emptyFilter": "No stories match this tag.",
+      "start": "Start",
+      "continue": "Continue",
+      "review": "Review",
+      "minutes": "{count} min",
+      "backToCity": "Back to city",
+      "loadError": "Could not load this story.",
+      "startError": "Could not start practice for this scene.",
+      "submitError": "Could not submit your answer.",
+      "completeError": "Could not finish this story.",
+      "progress": "Scene {scene} of {total}",
+      "continueToPractice": "Continue to practice",
+      "startingPractice": "Starting…",
+      "playAudio": "Play narration",
+      "sceneIllustrationFallback": "Scene",
+      "activityStep": "Practice {current} of {total}",
+      "check": "Check",
+      "checking": "Checking…",
+      "correct": "Correct!",
+      "tryAgain": "Not quite — try again",
+      "matchPrompt": "Confirm these pairs are matched correctly:",
+      "typeAnswer": "Type your answer",
+      "typePlaceholder": "Your answer",
+      "hint": "Hint: {hint}",
+      "unsupportedActivity": "This activity type ({type}) is not supported yet.",
+      "emptyScenesTitle": "No scenes yet",
+      "emptyScenesBody": "This story does not have playable scenes yet.",
+      "complete": {
+        "eyebrow": "Story complete",
+        "subtitle": "Here is what you practiced",
+        "vocab": "Vocabulary",
+        "grammar": "Grammar",
+        "listening": "Listening",
+        "listeningValue": "About {seconds}s of listening",
+        "cultural": "Cultural note",
+        "reward": "Reward: +{xp} XP"
+      },
+      "tags": {
+        "food": "Food",
+        "daily": "Daily life",
+        "travel": "Travel"
       }
     }
   },

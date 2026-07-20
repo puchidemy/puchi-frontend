@@ -1,34 +1,31 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useReducedMotion } from "motion/react";
 import { cn } from "@/lib/utils";
-import { islandBaseSrc } from "@/lib/journey-map/unit-1-config";
-import type {
-  DerivedLandmarkView,
-  JourneyMapConfig,
-} from "@/lib/journey-map/types";
-import { JourneyHotspot } from "./JourneyHotspot";
-import { JourneyPuchiOverlay } from "./JourneyPuchiOverlay";
-import { JourneyRegionHighlight } from "./JourneyRegionHighlight";
-import { useRegionMaskHitTest } from "./useRegionMaskHitTest";
+import {
+  cityBoardSrc,
+  slugAtCityHotspot,
+  type CityMapView,
+  type JourneyCitiesConfig,
+} from "@/lib/journey-cities";
 import { useSquareBoardSize } from "./useSquareBoardSize";
+import { CityHotspot } from "./CityHotspot";
+import { CityPuchiOverlay } from "./CityPuchiOverlay";
 
-/** Fixed scene backdrop (map art has transparent background). */
-export const JOURNEY_MAP_SCENE_BG =
+export const CITY_MAP_SCENE_BG =
   "linear-gradient(180deg, #dceef5 0%, #e8f5ef 45%, #f3f0e6 100%)";
 
-export type JourneyMapCanvasProps = {
-  config: JourneyMapConfig;
-  views: DerivedLandmarkView[];
-  onSelectRegion: (slug: string) => void;
-  onHoverRegion?: (slug: string | null) => void;
+export type CityMapCanvasProps = {
+  config: JourneyCitiesConfig;
+  views: CityMapView[];
+  onSelectCity: (slug: string) => void;
+  onHoverCity?: (slug: string | null) => void;
   previewSlug?: string | null;
-  getAriaLabel: (view: DerivedLandmarkView) => string;
+  getAriaLabel: (view: CityMapView) => string;
   className?: string;
-  /** Rendered inside the square board (same % coords as hotspots). */
   children?: ReactNode;
 };
 
@@ -39,38 +36,42 @@ function isPreviewTarget(target: EventTarget | null): boolean {
   );
 }
 
-/**
- * Full-height fit — no pan/zoom. Board is a measured square so % coords
- * always match the square map image across breakpoints.
- */
-export function JourneyMapCanvas({
+/** Full-height Vietnam board — city pins, box hit-test, no locks. */
+export function CityMapCanvas({
   config,
   views,
-  onSelectRegion,
-  onHoverRegion,
+  onSelectCity,
+  onHoverCity,
   previewSlug = null,
   getAriaLabel,
   className,
   children,
-}: JourneyMapCanvasProps) {
+}: CityMapCanvasProps) {
   const reduceMotion = useReducedMotion();
-  const src = islandBaseSrc(config);
+  const src = cityBoardSrc(config);
   const frameRef = useRef<HTMLDivElement>(null);
   const boardRef = useRef<HTMLDivElement>(null);
   const boardSize = useSquareBoardSize(frameRef);
-  const { hitTest } = useRegionMaskHitTest(config, views);
+  const viewsRef = useRef(views);
+  useEffect(() => {
+    viewsRef.current = views;
+  }, [views]);
   const lastHover = useRef<string | null>(null);
 
   const resolveSlug = (clientX: number, clientY: number) => {
     const board = boardRef.current;
     if (!board) return null;
-    return hitTest(board, clientX, clientY);
+    const rect = board.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return null;
+    const nx = (clientX - rect.left) / rect.width;
+    const ny = (clientY - rect.top) / rect.height;
+    return slugAtCityHotspot(viewsRef.current, nx, ny);
   };
 
   const emitHover = (slug: string | null) => {
     if (lastHover.current === slug) return;
     lastHover.current = slug;
-    onHoverRegion?.(slug);
+    onHoverCity?.(slug);
   };
 
   return (
@@ -80,9 +81,9 @@ export function JourneyMapCanvas({
         "relative flex h-full min-h-0 w-full items-center justify-center overflow-visible",
         className,
       )}
-      style={{ background: JOURNEY_MAP_SCENE_BG }}
+      style={{ background: CITY_MAP_SCENE_BG }}
       role="application"
-      aria-label="Journey map"
+      aria-label="City journey map"
     >
       <div
         ref={boardRef}
@@ -90,7 +91,11 @@ export function JourneyMapCanvas({
         style={
           boardSize > 0
             ? { width: boardSize, height: boardSize }
-            : { width: "min(100%, 100%)", aspectRatio: "1 / 1", maxHeight: "100%" }
+            : {
+                width: "min(100%, 100%)",
+                aspectRatio: "1 / 1",
+                maxHeight: "100%",
+              }
         }
         onPointerMove={(e) => {
           if (isPreviewTarget(e.target)) return;
@@ -100,7 +105,7 @@ export function JourneyMapCanvas({
         onClick={(e) => {
           if (isPreviewTarget(e.target)) return;
           const slug = resolveSlug(e.clientX, e.clientY);
-          if (slug) onSelectRegion(slug);
+          if (slug) onSelectCity(slug);
         }}
       >
         <Image
@@ -114,26 +119,20 @@ export function JourneyMapCanvas({
           unoptimized
           sizes={`${boardSize || 512}px`}
         />
-        <JourneyRegionHighlight
-          config={config}
-          views={views}
-          activeSlug={previewSlug}
-        />
         {views.map((view) => (
-          <JourneyHotspot
+          <CityHotspot
             key={view.slug}
             hotspot={view.hotspot}
-            status={view.status}
             isCurrent={view.isCurrent}
             isPreviewed={previewSlug === view.slug}
             ariaLabel={getAriaLabel(view)}
             reduceMotion={!!reduceMotion}
-            onSelect={() => onSelectRegion(view.slug)}
-            onHoverStart={() => onHoverRegion?.(view.slug)}
-            onHoverEnd={() => onHoverRegion?.(null)}
+            onSelect={() => onSelectCity(view.slug)}
+            onHoverStart={() => onHoverCity?.(view.slug)}
+            onHoverEnd={() => onHoverCity?.(null)}
           />
         ))}
-        <JourneyPuchiOverlay views={views} />
+        <CityPuchiOverlay views={views} />
         {children}
       </div>
     </div>

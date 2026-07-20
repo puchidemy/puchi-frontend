@@ -176,7 +176,7 @@
     "guestError": "Không tạo được phiên guest. Vui lòng thử lại."
   },
   "Learn": {
-    "loadError": "Không tải được unit. Vui lòng thử lại.",
+    "loadError": "Không tải được phần Học. Vui lòng thử lại.",
     "retry": "Thử lại",
     "saveProgress": "Lưu tiến độ",
     "startLesson": "Bắt đầu",
@@ -194,7 +194,7 @@
     },
     "softGate": {
       "title": "Tạo tài khoản để học tiếp",
-      "description": "Bạn đã hết số bài guest miễn phí. Đăng ký hoặc đăng nhập để lưu tiến độ và mở thêm bài học.",
+      "description": "Bạn đã hết số cảnh (scene) guest miễn phí. Đăng ký hoặc đăng nhập để lưu tiến độ và mở thêm câu chuyện.",
       "signUp": "Tạo tài khoản miễn phí",
       "signIn": "Tôi đã có tài khoản"
     },
@@ -216,37 +216,90 @@
       "tryAgain": "Chưa đúng — thử lại",
       "matchPrompt": "Xác nhận các cặp đã ghép đúng:"
     },
-    "Journey": {
-      "progressChip": "{completed}/{total} bài",
-      "resetView": "Đặt lại khung nhìn",
-      "comingSoon": "Chương này sắp ra mắt.",
-      "locked": "Hãy hoàn thành chương trước đó.",
-      "previewChapter": "Chương",
+    "City": {
+      "mapTitle": "Khám phá Việt Nam",
+      "progressChip": "{completed}/{total} câu chuyện",
+      "previewLabel": "Thành phố",
       "previewClose": "Đóng",
-      "landmark": {
-        "hoan-kiem": "Hồ Hoàn Kiếm",
-        "one-pillar-pagoda": "Chùa Một Cột",
-        "old-quarter": "Phố cổ Hà Nội",
-        "coffee-shop": "Quán cà phê",
-        "street-food": "Góc ẩm thực đường phố",
-        "bamboo-grove": "Rừng tre",
-        "traditional-bridge": "Cầu truyền thống"
+      "explore": "Khám phá",
+      "open": "Mở",
+      "backToMap": "Về bản đồ",
+      "storyCount": "{count} câu chuyện",
+      "comingSoonStories": "Câu chuyện sắp ra mắt",
+      "comingSoonTitle": "Câu chuyện sắp ra mắt",
+      "comingSoonBody": "Thành phố này đã mở — câu chuyện mới sẽ sớm có mặt.",
+      "hubProgress": "{completed}/{total} câu chuyện",
+      "unknown": "Không tìm thấy thành phố này trên bản đồ.",
+      "names": {
+        "hanoi": "Hà Nội",
+        "ha-long": "Hạ Long",
+        "hue": "Huế",
+        "hoi-an": "Hội An",
+        "da-nang": "Đà Nẵng",
+        "hcmc": "TP. Hồ Chí Minh",
+        "can-tho": "Cần Thơ",
+        "phu-quoc": "Phú Quốc"
       },
-      "status": {
-        "unlocked": "Có thể học",
-        "locked": "Đã khóa",
-        "coming_soon": "Sắp ra mắt",
-        "completed": "Đã hoàn thành"
-      },
-      "Chapter": {
-        "back": "Về bản đồ",
+      "blurbs": {
+        "hanoi": "Buổi sáng thủ đô, dạo quanh hồ, và những câu chuyện đầu tiên.",
+        "ha-long": "Vịnh đá vôi và chuyến thuyền êm đềm.",
+        "hue": "Sân cung đình và những ngày êm bên sông.",
+        "hoi-an": "Phố đèn lồng và buổi tối ven sông.",
+        "da-nang": "Buổi sáng biển và núi.",
+        "hcmc": "Phố xá nhộn nhịp, cà phê, và chuyện thành phố.",
+        "can-tho": "Chợ nổi trên sông Mekong.",
+        "phu-quoc": "Bãi biển đảo và vườn tiêu."
+      }
+    },
+    "Story": {
+      "sections": {
         "continue": "Tiếp tục",
-        "review": "Ôn lại",
-        "emptyLessons": "Chương này chưa có bài học.",
-        "progress": "{completed}/{total} bài",
-        "intros": {
-          "hoan-kiem": "Bắt đầu hành trình tại Hồ Hoàn Kiếm — chào Việt Nam bằng những từ đầu tiên."
-        }
+        "recommended": "Gợi ý",
+        "tags": "Theo chủ đề",
+        "all": "Tất cả câu chuyện"
+      },
+      "allTags": "Tất cả",
+      "emptyFilter": "Không có câu chuyện nào với thẻ này.",
+      "start": "Bắt đầu",
+      "continue": "Tiếp tục",
+      "review": "Ôn lại",
+      "minutes": "{count} phút",
+      "backToCity": "Về thành phố",
+      "loadError": "Không tải được câu chuyện.",
+      "startError": "Không bắt đầu được phần luyện cho cảnh này.",
+      "submitError": "Không gửi được câu trả lời.",
+      "completeError": "Không hoàn thành được câu chuyện.",
+      "progress": "Cảnh {scene}/{total}",
+      "continueToPractice": "Tiếp tục luyện tập",
+      "startingPractice": "Đang bắt đầu…",
+      "playAudio": "Nghe lời kể",
+      "sceneIllustrationFallback": "Cảnh",
+      "activityStep": "Bài luyện {current}/{total}",
+      "check": "Kiểm tra",
+      "checking": "Đang kiểm tra…",
+      "correct": "Đúng rồi!",
+      "tryAgain": "Chưa đúng — thử lại",
+      "matchPrompt": "Xác nhận các cặp đã ghép đúng:",
+      "typeAnswer": "Nhập câu trả lời",
+      "typePlaceholder": "Câu trả lời của bạn",
+      "hint": "Gợi ý: {hint}",
+      "unsupportedActivity": "Loại bài ({type}) chưa được hỗ trợ.",
+      "emptyScenesTitle": "Chưa có cảnh",
+      "emptyScenesBody": "Câu chuyện này chưa có cảnh để học.",
+      "complete": {
+        "eyebrow": "Hoàn thành câu chuyện",
+        "subtitle": "Những gì bạn vừa luyện",
+        "vocab": "Từ vựng",
+        "grammar": "Ngữ pháp",
+        "listening": "Nghe",
+        "listeningValue": "Khoảng {seconds} giây nghe",
+        "cultural": "Ghi chú văn hóa",
+        "reward": "Phần thưởng: +{xp} XP"
+      },
+      "tags": {
+        "food": "Ẩm thực",
+        "daily": "Đời sống",
+        "travel": "Du lịch"
       }
     }
   },
@@ -256,7 +309,7 @@
     "saveProgress": "Lưu tiến độ",
     "softGate": {
       "title": "Tạo tài khoản để học tiếp",
-      "description": "Bạn đã hết số bài guest miễn phí. Đăng ký hoặc đăng nhập để lưu tiến độ và mở thêm bài học.",
+      "description": "Bạn đã hết số cảnh (scene) guest miễn phí. Đăng ký hoặc đăng nhập để lưu tiến độ và mở thêm câu chuyện.",
       "signUp": "Tạo tài khoản miễn phí",
       "signIn": "Tôi đã có tài khoản"
     },

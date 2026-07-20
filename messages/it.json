@@ -579,37 +579,90 @@
       "tryAgain": "Not quite — try again",
       "matchPrompt": "Confirm these pairs are matched correctly:"
     },
-    "Journey": {
-      "progressChip": "{completed}/{total} lezioni",
-      "resetView": "Reimposta vista",
-      "comingSoon": "Questo capitolo arriverà presto.",
-      "locked": "Completa prima il capitolo precedente.",
-      "previewChapter": "Capitolo",
-      "previewClose": "Chiudi",
-      "landmark": {
-        "hoan-kiem": "Lago Hoàn Kiếm",
-        "one-pillar-pagoda": "Pagoda a un pilastro",
-        "old-quarter": "Quartiere antico di Hanoi",
-        "coffee-shop": "Caffè",
-        "street-food": "Angolo street food",
-        "bamboo-grove": "Boschetto di bambù",
-        "traditional-bridge": "Ponte tradizionale"
+    "City": {
+      "mapTitle": "Explore Vietnam",
+      "progressChip": "{completed}/{total} stories",
+      "previewLabel": "City",
+      "previewClose": "Close",
+      "explore": "Explore",
+      "open": "Open",
+      "backToMap": "Back to map",
+      "storyCount": "{count, plural, one {# story} other {# stories}}",
+      "comingSoonStories": "Stories coming soon",
+      "comingSoonTitle": "Stories coming soon",
+      "comingSoonBody": "This city is open to explore — new stories are on the way.",
+      "hubProgress": "{completed} of {total} stories",
+      "unknown": "That city isn't on the map.",
+      "names": {
+        "hanoi": "Hà Nội",
+        "ha-long": "Hạ Long",
+        "hue": "Huế",
+        "hoi-an": "Hội An",
+        "da-nang": "Đà Nẵng",
+        "hcmc": "Ho Chi Minh City",
+        "can-tho": "Cần Thơ",
+        "phu-quoc": "Phú Quốc"
       },
-      "status": {
-        "unlocked": "Disponibile",
-        "locked": "Bloccato",
-        "coming_soon": "Prossimamente",
-        "completed": "Completato"
+      "blurbs": {
+        "hanoi": "Capital mornings, lakeside walks, and your first stories.",
+        "ha-long": "Limestone bays and quiet boat rides.",
+        "hue": "Imperial courtyards and gentle river days.",
+        "hoi-an": "Lantern streets and riverside evenings.",
+        "da-nang": "Beach mornings and mountain views.",
+        "hcmc": "Busy streets, coffee, and city stories.",
+        "can-tho": "Floating markets on the Mekong.",
+        "phu-quoc": "Island beaches and pepper gardens."
+      }
+    },
+    "Story": {
+      "sections": {
+        "continue": "Continue",
+        "recommended": "Recommended",
+        "tags": "Browse by tag",
+        "all": "All stories"
       },
-      "Chapter": {
-        "back": "Torna alla mappa",
-        "continue": "Continua",
-        "review": "Rivedi",
-        "emptyLessons": "Nessuna lezione in questo capitolo ancora.",
-        "progress": "{completed} di {total} lezioni",
-        "intros": {
-          "hoan-kiem": "Inizia il tuo viaggio al lago Hoàn Kiếm — saluta il Vietnam con le tue prime parole."
-        }
+      "allTags": "All",
+      "emptyFilter": "No stories match this tag.",
+      "start": "Start",
+      "continue": "Continue",
+      "review": "Review",
+      "minutes": "{count} min",
+      "backToCity": "Back to city",
+      "loadError": "Could not load this story.",
+      "startError": "Could not start practice for this scene.",
+      "submitError": "Could not submit your answer.",
+      "completeError": "Could not finish this story.",
+      "progress": "Scene {scene} of {total}",
+      "continueToPractice": "Continue to practice",
+      "startingPractice": "Starting…",
+      "playAudio": "Play narration",
+      "sceneIllustrationFallback": "Scene",
+      "activityStep": "Practice {current} of {total}",
+      "check": "Check",
+      "checking": "Checking…",
+      "correct": "Correct!",
+      "tryAgain": "Not quite — try again",
+      "matchPrompt": "Confirm these pairs are matched correctly:",
+      "typeAnswer": "Type your answer",
+      "typePlaceholder": "Your answer",
+      "hint": "Hint: {hint}",
+      "unsupportedActivity": "This activity type ({type}) is not supported yet.",
+      "emptyScenesTitle": "No scenes yet",
+      "emptyScenesBody": "This story does not have playable scenes yet.",
+      "complete": {
+        "eyebrow": "Story complete",
+        "subtitle": "Here is what you practiced",
+        "vocab": "Vocabulary",
+        "grammar": "Grammar",
+        "listening": "Listening",
+        "listeningValue": "About {seconds}s of listening",
+        "cultural": "Cultural note",
+        "reward": "Reward: +{xp} XP"
+      },
+      "tags": {
+        "food": "Food",
+        "daily": "Daily life",
+        "travel": "Travel"
       }
     }
   },

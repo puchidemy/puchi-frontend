@@ -2,27 +2,24 @@
 
 import { cn } from "@/lib/utils";
 
-export type JourneyMapHeaderProps = {
+export type CityMapHeaderProps = {
   title: string;
-  completedLessons: number;
-  totalLessons: number;
+  completed: number;
+  total: number;
   /** Optional preformatted chip (e.g. i18n). Defaults to `{completed}/{total}`. */
   progressLabel?: string;
   className?: string;
 };
 
-/**
- * Compact unit bar — not a Duolingo-style sticky full-color block.
- */
-export function JourneyMapHeader({
+/** Compact map / city progress bar. */
+export function CityMapHeader({
   title,
-  completedLessons,
-  totalLessons,
+  completed,
+  total,
   progressLabel,
   className,
-}: JourneyMapHeaderProps) {
-  const chip =
-    progressLabel ?? `${completedLessons}/${totalLessons}`;
+}: CityMapHeaderProps) {
+  const chip = progressLabel ?? `${completed}/${total}`;
 
   return (
     <header

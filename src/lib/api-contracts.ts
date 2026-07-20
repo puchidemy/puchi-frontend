@@ -56,9 +56,25 @@ export const API = {
   learn: {
     guestSession: "/v1/learn/guest/session",
     guestClaim: "/v1/learn/guest/claim",
+    /** Story-first (Phase 2 RPCs) — main Learn path */
+    cities: "/v1/learn/cities",
+    city: (slug: string) => `/v1/learn/cities/${slug}`,
+    story: (id: string) => `/v1/learn/stories/${id}`,
+    startActivity: (sceneId: string) =>
+      `/v1/learn/scenes/${sceneId}/activities/start`,
+    submitActivityAnswer: (attemptId: string) =>
+      `/v1/learn/activity-attempts/${attemptId}/answer`,
+    completeScene: (id: string) => `/v1/learn/scenes/${id}/complete`,
+    completeStory: (id: string) => `/v1/learn/stories/${id}/complete`,
+    /**
+     * @deprecated Legacy Unit/Lesson RPCs — kept for `/lesson/[id]` bookmarks only.
+     * Main path is City → Story → Scene → Activity.
+     */
     unit: (id: string) => `/v1/learn/units/${id}`,
     lesson: (id: string) => `/v1/learn/lessons/${id}`,
     startLesson: (id: string) => `/v1/learn/lessons/${id}/start`,
+    submitLessonAnswer: (attemptId: string) =>
+      `/v1/learn/attempts/${attemptId}/answer`,
     completeLesson: (id: string) => `/v1/learn/lessons/${id}/complete`,
   },
   media: {

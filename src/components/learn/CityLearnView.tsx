@@ -7,35 +7,25 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { GuestSoftGateDialog } from "@/components/settings/GuestSoftGateDialog";
 import {
-  DEFAULT_UNIT_ID,
   ensureGuestSession,
-  getUnit,
-  type LearnSkill,
-  type LearnUnit,
+  listCities,
+  type LearnCity,
 } from "@/lib/learn-api";
-import { progressFromUnit } from "@/lib/trial-progress";
 import { useAuthStore } from "@/store/auth";
-import { useTrialLearnStore } from "@/store/trial-learn";
-import { JourneyMapView } from "./journey/JourneyMapView";
+import { CityMapView } from "./city/CityMapView";
 
-const GUEST_SOFT_GATE_LIMIT = 3;
-
-/** Unit 1 Journey Map — full-height board for guest + authenticated learners. */
-export function UnitLearnView() {
+/** Story-first Learn home — city journey map (all unlocked). */
+export function CityLearnView() {
   const t = useTranslations("Learn");
   const user = useAuthStore((s) => s.user);
   const authLoading = useAuthStore((s) => s.loading);
-  const completedLessonIds = useTrialLearnStore((s) => s.completedLessonIds);
-  const hydrateFromServer = useTrialLearnStore((s) => s.hydrateFromServer);
-  const mergeServerProgress = useTrialLearnStore((s) => s.mergeServerProgress);
 
-  const [unit, setUnit] = useState<LearnUnit | null>(null);
-  const [skills, setSkills] = useState<LearnSkill[]>([]);
+  const [cities, setCities] = useState<LearnCity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [gateOpen, setGateOpen] = useState(false);
 
-  const loadUnit = useCallback(async () => {
+  const loadCities = useCallback(async () => {
     if (authLoading) return;
     setLoading(true);
     setError("");
@@ -43,40 +33,18 @@ export function UnitLearnView() {
       if (!user) {
         await ensureGuestSession();
       }
-      const data = await getUnit(DEFAULT_UNIT_ID);
-      setUnit(data.unit);
-      setSkills(data.skills);
-
-      const progress = progressFromUnit(data);
-      if (user) {
-        if (progress.completedLessonIds.length > 0 || progress.unitCompleted) {
-          hydrateFromServer(
-            progress.completedLessonIds,
-            progress.unitCompleted,
-          );
-        }
-      } else if (
-        progress.completedLessonIds.length > 0 ||
-        progress.unitCompleted
-      ) {
-        mergeServerProgress(
-          progress.completedLessonIds,
-          progress.unitCompleted,
-        );
-      }
+      const data = await listCities();
+      setCities(data.cities);
     } catch (err) {
       setError(err instanceof Error ? err.message : t("loadError"));
     } finally {
       setLoading(false);
     }
-  }, [user, authLoading, t, hydrateFromServer, mergeServerProgress]);
+  }, [user, authLoading, t]);
 
   useEffect(() => {
-    loadUnit();
-  }, [loadUnit]);
-
-  const atSoftGate =
-    !user && completedLessonIds.length >= GUEST_SOFT_GATE_LIMIT;
+    loadCities();
+  }, [loadCities]);
 
   if (loading || authLoading) {
     return (
@@ -86,14 +54,14 @@ export function UnitLearnView() {
     );
   }
 
-  if (error || !unit) {
+  if (error && cities.length === 0) {
     return (
       <div className="flex h-full min-h-0 w-full items-center justify-center p-8">
         <div className="mx-auto max-w-md space-y-4">
           <Alert variant="destructive">
             <AlertDescription>{error || t("loadError")}</AlertDescription>
           </Alert>
-          <Button variant="outline" onClick={loadUnit}>
+          <Button variant="secondary" onClick={loadCities}>
             {t("retry")}
           </Button>
         </div>
@@ -103,15 +71,16 @@ export function UnitLearnView() {
 
   return (
     <div className="relative flex h-full min-h-0 w-full flex-col font-din">
-      <JourneyMapView
-        unit={unit}
-        skills={skills}
-        completedLessonIds={completedLessonIds}
-        onLockedLessonClick={
-          atSoftGate ? () => setGateOpen(true) : undefined
-        }
+      <CityMapView
+        cities={cities.map((c) => ({
+          slug: c.slug,
+          name: c.name,
+          blurb: c.blurb,
+          storyCount: c.story_count,
+          completedStoryCount: c.completed_story_count,
+        }))}
       />
-      {atSoftGate && (
+      {!user && (
         <div className="pointer-events-none absolute inset-x-0 bottom-3 z-50 flex justify-center px-3">
           <Button
             variant="highlight"

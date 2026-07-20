@@ -4,25 +4,21 @@ import Image from "next/image";
 import { useReducedMotion } from "motion/react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import type { DerivedLandmarkView } from "@/lib/journey-map/types";
+import type { CityMapView } from "@/lib/journey-cities";
 
-/** Prefer welcome v2; beginner student is the documented fallback. */
 const MASCOT_SRC = "/images/mascot/puchi_welcome_v2.png";
 const MASCOT_FALLBACK_SRC = "/images/mascot/puchi_student_beginner.png";
-
-/** Size as % of board width so it scales with full-height fit. */
 const OVERLAY_W_PCT = 7;
-/** Nudge Puchi beside the current hotspot (normalized map space). */
 const OFFSET_X = 0.07;
 
-export type JourneyPuchiOverlayProps = {
-  views: DerivedLandmarkView[];
+export type CityPuchiOverlayProps = {
+  views: CityMapView[];
 };
 
-export function JourneyPuchiOverlay({ views }: JourneyPuchiOverlayProps) {
+export function CityPuchiOverlay({ views }: CityPuchiOverlayProps) {
   const reduceMotion = useReducedMotion();
   const [mascotSrc, setMascotSrc] = useState(MASCOT_SRC);
-  const current = views.find((v) => v.isCurrent);
+  const current = views.find((v) => v.isCurrent) ?? views[0];
   if (!current) return null;
 
   return (
