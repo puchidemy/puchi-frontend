@@ -1,0 +1,34 @@
+storyId: VN-HN-001
+title:
+  vi: Sáng Hà Nội — tô phở đầu ngày
+  en: Hanoi Morning — First Bowl of Phở
+synopsis: >
+  Một buổi sáng ngắn ở Hà Nội: mùi phở trên phố, xếp hàng,
+  gọi tô, rồi ngụm nước dùng đầu tiên.
+citySlug: ha-noi
+level: B1
+tags: [food, morning, hanoi, culture]
+estimatedMinutes: 10
+objectives:
+  - id: obj.order-pho
+    text:
+      vi: Gọi một tô phở và hỏi topping
+      en: Order a bowl of phở and ask about toppings
+  - id: obj.street-polite
+    text:
+      vi: Dùng câu lịch sự khi xếp hàng
+      en: Use polite phrases when queuing
+coverAssetId: cover.vn-hn-001
+scenes:
+  - id: street-smell
+    order: 1
+    title: { vi: Mùi phố sáng, en: Morning street smell }
+  - id: queue-up
+    order: 2
+    title: { vi: Xếp hàng, en: In the queue }
+  - id: order-bowl
+    order: 3
+    title: { vi: Gọi tô phở, en: Ordering phở }
+  - id: first-sip
+    order: 4
+    title: { vi: Ngụm đầu, en: First sip }

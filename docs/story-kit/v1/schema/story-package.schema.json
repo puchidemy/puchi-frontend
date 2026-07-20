@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://puchi.io.vn/schemas/story-kit/v1/package.json",
+  "title": "Puchi Story Package Manifest (package.json)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "contentVersion",
+    "storyId",
+    "locale",
+    "status",
+    "title",
+    "citySlug",
+    "level"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "contentVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "storyId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2}-[A-Z]{2}-\\d{3}$"
+    },
+    "locale": {
+      "type": "string",
+      "minLength": 2
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "outline", "review", "published", "archived"]
+    },
+    "title": {
+      "$ref": "#/$defs/localizedString"
+    },
+    "citySlug": {
+      "type": "string",
+      "minLength": 1
+    },
+    "level": {
+      "type": "string",
+      "enum": ["A1", "A2", "B1", "B2", "C1", "C2"]
+    },
+    "checksum": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "publishedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "status": { "const": "published" } }
+      },
+      "then": {
+        "required": ["checksum", "publishedAt"]
+      }
+    }
+  ],
+  "$defs": {
+    "localizedString": {
+      "type": "object",
+      "required": ["vi"],
+      "additionalProperties": false,
+      "properties": {
+        "vi": { "type": "string", "minLength": 1 },
+        "en": { "type": "string" }
+      }
+    }
+  }
+}

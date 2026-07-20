@@ -14,25 +14,39 @@ export type ClaimGuestResult = {
 };
 
 /**
- * Hydrate learn path progress from GET unit (server owner progress).
- * Falls back to in-memory / guest-local progress when status fields are absent.
+ * Best-effort hydrate of legacy unit/lesson progress after claim.
+ * Story-first progress lives on the server (scenes); unit GET may be absent.
  */
 export async function hydrateTrialProgressFromUnit(): Promise<void> {
   const guestLocal = readGuestLocalProgress();
-  const data = await getUnit(DEFAULT_UNIT_ID);
-  const server = progressFromUnit(data);
   const store = useTrialLearnStore.getState();
 
-  if (server.completedLessonIds.length > 0 || server.unitCompleted) {
-    store.hydrateFromServer(server.completedLessonIds, server.unitCompleted);
-  } else if (
-    guestLocal.completedLessonIds.length > 0 ||
-    guestLocal.unitCompleted
-  ) {
-    store.hydrateFromServer(
-      guestLocal.completedLessonIds,
-      guestLocal.unitCompleted,
-    );
+  try {
+    const data = await getUnit(DEFAULT_UNIT_ID);
+    const server = progressFromUnit(data);
+
+    if (server.completedLessonIds.length > 0 || server.unitCompleted) {
+      store.hydrateFromServer(server.completedLessonIds, server.unitCompleted);
+    } else if (
+      guestLocal.completedLessonIds.length > 0 ||
+      guestLocal.unitCompleted
+    ) {
+      store.hydrateFromServer(
+        guestLocal.completedLessonIds,
+        guestLocal.unitCompleted,
+      );
+    }
+  } catch {
+    // Unit RPC optional on story-first — keep guest-local lesson ids if any.
+    if (
+      guestLocal.completedLessonIds.length > 0 ||
+      guestLocal.unitCompleted
+    ) {
+      store.hydrateFromServer(
+        guestLocal.completedLessonIds,
+        guestLocal.unitCompleted,
+      );
+    }
   }
 
   clearGuestLocalProgress();

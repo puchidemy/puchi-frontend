@@ -1,0 +1,221 @@
+{
+  "schemaVersion": 1,
+  "assets": [
+    {
+      "assetId": "cover.vn-hn-001",
+      "kind": "image",
+      "path": "covers/cover.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.street-smell",
+      "kind": "image",
+      "path": "images/street-smell.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.queue-up",
+      "kind": "image",
+      "path": "images/queue-up.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.order-bowl",
+      "kind": "image",
+      "path": "images/order-bowl.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.first-sip",
+      "kind": "image",
+      "path": "images/first-sip.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.chat-owner",
+      "kind": "image",
+      "path": "images/chat-owner.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.leave-tip",
+      "kind": "image",
+      "path": "images/leave-tip.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.walk-away",
+      "kind": "image",
+      "path": "images/walk-away.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "image.reflect",
+      "kind": "image",
+      "path": "images/reflect.webp",
+      "mimeType": "image/webp"
+    },
+    {
+      "assetId": "audio.scene.street-smell",
+      "kind": "audio",
+      "path": "audio/scene-street-smell.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.scene.queue-up",
+      "kind": "audio",
+      "path": "audio/scene-queue-up.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.scene.order-bowl",
+      "kind": "audio",
+      "path": "audio/scene-order-bowl.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.scene.first-sip",
+      "kind": "audio",
+      "path": "audio/scene-first-sip.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.scene.chat-owner",
+      "kind": "audio",
+      "path": "audio/scene-chat-owner.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.scene.leave-tip",
+      "kind": "audio",
+      "path": "audio/scene-leave-tip.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.scene.walk-away",
+      "kind": "audio",
+      "path": "audio/scene-walk-away.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.scene.reflect",
+      "kind": "audio",
+      "path": "audio/scene-reflect.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.street-smell.n01",
+      "kind": "audio",
+      "path": "audio/street-smell-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.street-smell.n02",
+      "kind": "audio",
+      "path": "audio/street-smell-n02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.queue-up.n01",
+      "kind": "audio",
+      "path": "audio/queue-up-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.queue-up.n02",
+      "kind": "audio",
+      "path": "audio/queue-up-n02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.order-bowl.n01",
+      "kind": "audio",
+      "path": "audio/order-bowl-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.order-bowl.n02",
+      "kind": "audio",
+      "path": "audio/order-bowl-n02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.order-bowl.d01",
+      "kind": "audio",
+      "path": "audio/order-bowl-d01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.first-sip.n01",
+      "kind": "audio",
+      "path": "audio/first-sip-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.first-sip.n02",
+      "kind": "audio",
+      "path": "audio/first-sip-n02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.chat-owner.n01",
+      "kind": "audio",
+      "path": "audio/chat-owner-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.chat-owner.d01",
+      "kind": "audio",
+      "path": "audio/chat-owner-d01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.chat-owner.d02",
+      "kind": "audio",
+      "path": "audio/chat-owner-d02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.leave-tip.n01",
+      "kind": "audio",
+      "path": "audio/leave-tip-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.leave-tip.n02",
+      "kind": "audio",
+      "path": "audio/leave-tip-n02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.walk-away.n01",
+      "kind": "audio",
+      "path": "audio/walk-away-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.walk-away.n02",
+      "kind": "audio",
+      "path": "audio/walk-away-n02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.reflect.n01",
+      "kind": "audio",
+      "path": "audio/reflect-n01.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.reflect.n02",
+      "kind": "audio",
+      "path": "audio/reflect-n02.mp3",
+      "mimeType": "audio/mpeg"
+    },
+    {
+      "assetId": "audio.word.pho",
+      "kind": "audio",
+      "path": "audio/words/pho.mp3",
+      "mimeType": "audio/mpeg"
+    }
+  ]
+}

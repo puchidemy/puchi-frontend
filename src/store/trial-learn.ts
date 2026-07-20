@@ -6,8 +6,11 @@ interface TrialLearnState {
   /** Guest finished all required lessons in the trial unit. */
   unitCompleted: boolean;
   completedLessonIds: string[];
+  /** Story-first soft-gate metric: completed Scenes (legacy; gating is city-based). */
+  completedSceneIds: string[];
   setUnitCompleted: (value: boolean) => void;
   markLessonCompleted: (lessonId: string) => void;
+  markSceneCompleted: (sceneId: string) => void;
   /** Replace progress from server (authenticated users). */
   hydrateFromServer: (completedLessonIds: string[], unitCompleted: boolean) => void;
   /** Merge server progress into guest local state. */
@@ -35,22 +38,34 @@ const STORAGE_KEY = "puchi-trial-learn";
 /** Read persisted guest progress without auth-guard (used after claim). */
 export function readGuestLocalProgress(): Pick<
   TrialLearnState,
-  "completedLessonIds" | "unitCompleted"
+  "completedLessonIds" | "unitCompleted" | "completedSceneIds"
 > {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
-      return { completedLessonIds: [], unitCompleted: false };
+      return {
+        completedLessonIds: [],
+        unitCompleted: false,
+        completedSceneIds: [],
+      };
     }
     const parsed = JSON.parse(raw) as {
-      state?: Pick<TrialLearnState, "completedLessonIds" | "unitCompleted">;
+      state?: Pick<
+        TrialLearnState,
+        "completedLessonIds" | "unitCompleted" | "completedSceneIds"
+      >;
     };
     return {
       completedLessonIds: parsed.state?.completedLessonIds ?? [],
       unitCompleted: parsed.state?.unitCompleted ?? false,
+      completedSceneIds: parsed.state?.completedSceneIds ?? [],
     };
   } catch {
-    return { completedLessonIds: [], unitCompleted: false };
+    return {
+      completedLessonIds: [],
+      unitCompleted: false,
+      completedSceneIds: [],
+    };
   }
 }
 
@@ -58,11 +73,19 @@ export function clearGuestLocalProgress(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
 
+/** Re-export soft-gate helpers for callers that already import the trial store. */
+export {
+  GUEST_SOFT_GATE_SCENE_LIMIT,
+  guestRequiresLoginForCity,
+  isGuestFreeCitySlug,
+} from "@/lib/learn-soft-gate";
+
 export const useTrialLearnStore = create<TrialLearnState>()(
   persist(
     (set, get) => ({
       unitCompleted: false,
       completedLessonIds: [],
+      completedSceneIds: [],
 
       setUnitCompleted: (value) => set({ unitCompleted: value }),
 
@@ -70,6 +93,12 @@ export const useTrialLearnStore = create<TrialLearnState>()(
         const ids = get().completedLessonIds;
         if (ids.includes(lessonId)) return;
         set({ completedLessonIds: [...ids, lessonId] });
+      },
+
+      markSceneCompleted: (sceneId) => {
+        const ids = get().completedSceneIds;
+        if (ids.includes(sceneId)) return;
+        set({ completedSceneIds: [...ids, sceneId] });
       },
 
       hydrateFromServer: (completedLessonIds, unitCompleted) =>
@@ -84,7 +113,12 @@ export const useTrialLearnStore = create<TrialLearnState>()(
         });
       },
 
-      reset: () => set({ unitCompleted: false, completedLessonIds: [] }),
+      reset: () =>
+        set({
+          unitCompleted: false,
+          completedLessonIds: [],
+          completedSceneIds: [],
+        }),
     }),
     {
       name: STORAGE_KEY,

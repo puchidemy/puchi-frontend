@@ -1,0 +1,14 @@
+[
+  {
+    "grammarId": "grammar.cho-toi",
+    "title": {
+      "vi": "Cho tôi + danh từ",
+      "en": "Cho tôi + noun"
+    },
+    "explanation": {
+      "en": "Polite way to request something: Cho tôi một tô phở.",
+      "vi": "Cách lịch sự để yêu cầu: Cho tôi một tô phở."
+    },
+    "exampleSentenceIds": ["order-bowl.d01"]
+  }
+]

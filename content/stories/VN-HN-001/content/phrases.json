@@ -1,0 +1,65 @@
+[
+  {
+    "phraseId": "phrase.mui-pho",
+    "surface": "mùi phở",
+    "meaning": {
+      "en": "the smell of pho",
+      "vi": "mùi của món phở"
+    },
+    "exampleSentenceIds": ["street-smell.n01"]
+  },
+  {
+    "phraseId": "phrase.via-he",
+    "surface": "vỉa hè",
+    "meaning": {
+      "en": "sidewalk",
+      "vi": "lề đường / vỉa hè"
+    },
+    "exampleSentenceIds": ["street-smell.n02"]
+  },
+  {
+    "phraseId": "phrase.xep-hang",
+    "surface": "xếp hàng",
+    "meaning": {
+      "en": "to queue; stand in line",
+      "vi": "đứng xếp hàng"
+    },
+    "exampleSentenceIds": ["queue-up.n01"]
+  },
+  {
+    "phraseId": "phrase.xin-loi",
+    "surface": "xin lỗi",
+    "meaning": {
+      "en": "excuse me; sorry",
+      "vi": "xin lỗi"
+    },
+    "exampleSentenceIds": ["queue-up.n02"]
+  },
+  {
+    "phraseId": "phrase.goi-mot-to",
+    "surface": "gọi một tô",
+    "meaning": {
+      "en": "order a bowl",
+      "vi": "gọi một tô (phở)"
+    },
+    "exampleSentenceIds": ["order-bowl.n01"]
+  },
+  {
+    "phraseId": "phrase.rau-thom",
+    "surface": "rau thơm",
+    "meaning": {
+      "en": "fresh herbs (for pho)",
+      "vi": "rau sống thơm (húng, ngò…)"
+    },
+    "exampleSentenceIds": ["order-bowl.d01"]
+  },
+  {
+    "phraseId": "phrase.nuoc-dung",
+    "surface": "nước dùng",
+    "meaning": {
+      "en": "broth; soup stock",
+      "vi": "nước dùng của phở"
+    },
+    "exampleSentenceIds": ["first-sip.n01"]
+  }
+]

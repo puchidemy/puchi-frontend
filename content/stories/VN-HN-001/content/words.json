@@ -1,0 +1,399 @@
+[
+  {
+    "wordId": "word.pho",
+    "surface": "phở",
+    "lemma": "phở",
+    "pos": "noun",
+    "meaning": {
+      "en": "pho (Vietnamese noodle soup)",
+      "vi": "món phở"
+    },
+    "audioAssetId": "audio.word.pho",
+    "exampleSentenceIds": ["street-smell.n01", "order-bowl.n01"]
+  },
+  {
+    "wordId": "word.mui",
+    "surface": "mùi",
+    "lemma": "mùi",
+    "pos": "noun",
+    "meaning": {
+      "en": "smell; aroma",
+      "vi": "mùi hương / mùi"
+    },
+    "exampleSentenceIds": ["street-smell.n01"]
+  },
+  {
+    "wordId": "word.quan",
+    "surface": "quán",
+    "lemma": "quán",
+    "pos": "noun",
+    "meaning": {
+      "en": "small eatery; stall",
+      "vi": "quán ăn"
+    },
+    "exampleSentenceIds": ["street-smell.n02", "chat-owner.n01"]
+  },
+  {
+    "wordId": "word.sang",
+    "surface": "sáng",
+    "lemma": "sáng",
+    "pos": "noun",
+    "meaning": {
+      "en": "morning",
+      "vi": "buổi sáng"
+    },
+    "exampleSentenceIds": ["street-smell.n01"]
+  },
+  {
+    "wordId": "word.via",
+    "surface": "vỉa",
+    "lemma": "vỉa",
+    "pos": "noun",
+    "meaning": {
+      "en": "sidewalk (in vỉa hè)",
+      "vi": "vỉa (vỉa hè)"
+    },
+    "exampleSentenceIds": ["street-smell.n02"]
+  },
+  {
+    "wordId": "word.he",
+    "surface": "hè",
+    "lemma": "hè",
+    "pos": "noun",
+    "meaning": {
+      "en": "sidewalk (in vỉa hè)",
+      "vi": "hè (vỉa hè)"
+    },
+    "exampleSentenceIds": ["street-smell.n02"]
+  },
+  {
+    "wordId": "word.xep",
+    "surface": "xếp",
+    "lemma": "xếp",
+    "pos": "verb",
+    "meaning": {
+      "en": "to arrange; form (a line)",
+      "vi": "xếp (hàng)"
+    },
+    "exampleSentenceIds": ["queue-up.n01"]
+  },
+  {
+    "wordId": "word.hang",
+    "surface": "hàng",
+    "lemma": "hàng",
+    "pos": "noun",
+    "meaning": {
+      "en": "line; queue",
+      "vi": "hàng người"
+    },
+    "exampleSentenceIds": ["queue-up.n01"]
+  },
+  {
+    "wordId": "word.lich",
+    "surface": "lịch",
+    "lemma": "lịch sự",
+    "pos": "adj",
+    "meaning": {
+      "en": "polite (in lịch sự)",
+      "vi": "lịch (lịch sự)"
+    },
+    "exampleSentenceIds": ["queue-up.n02"]
+  },
+  {
+    "wordId": "word.su",
+    "surface": "sự",
+    "lemma": "lịch sự",
+    "pos": "adj",
+    "meaning": {
+      "en": "polite (in lịch sự)",
+      "vi": "sự (lịch sự)"
+    },
+    "exampleSentenceIds": ["queue-up.n02"]
+  },
+  {
+    "wordId": "word.xin",
+    "surface": "xin",
+    "lemma": "xin",
+    "pos": "verb",
+    "meaning": {
+      "en": "to ask / please (in xin lỗi)",
+      "vi": "xin"
+    },
+    "exampleSentenceIds": ["queue-up.n02"]
+  },
+  {
+    "wordId": "word.loi",
+    "surface": "lỗi",
+    "lemma": "lỗi",
+    "pos": "noun",
+    "meaning": {
+      "en": "fault; error (in xin lỗi)",
+      "vi": "lỗi"
+    },
+    "exampleSentenceIds": ["queue-up.n02"]
+  },
+  {
+    "wordId": "word.to",
+    "surface": "tô",
+    "lemma": "tô",
+    "pos": "noun",
+    "meaning": {
+      "en": "bowl (of soup/noodles)",
+      "vi": "tô (phở)"
+    },
+    "exampleSentenceIds": ["order-bowl.n01"]
+  },
+  {
+    "wordId": "word.goi",
+    "surface": "gọi",
+    "lemma": "gọi",
+    "pos": "verb",
+    "meaning": {
+      "en": "to order; to call",
+      "vi": "gọi món"
+    },
+    "exampleSentenceIds": ["order-bowl.n01"]
+  },
+  {
+    "wordId": "word.muon",
+    "surface": "muốn",
+    "lemma": "muốn",
+    "pos": "verb",
+    "meaning": {
+      "en": "to want",
+      "vi": "muốn có / muốn làm"
+    },
+    "exampleSentenceIds": ["order-bowl.n02"]
+  },
+  {
+    "wordId": "word.tai",
+    "surface": "tái",
+    "lemma": "tái",
+    "pos": "noun",
+    "meaning": {
+      "en": "rare beef (pho topping)",
+      "vi": "thịt bò tái"
+    },
+    "exampleSentenceIds": ["order-bowl.n02"]
+  },
+  {
+    "wordId": "word.rau",
+    "surface": "rau",
+    "lemma": "rau",
+    "pos": "noun",
+    "meaning": {
+      "en": "vegetables; herbs",
+      "vi": "rau"
+    },
+    "exampleSentenceIds": ["order-bowl.n03"]
+  },
+  {
+    "wordId": "word.thom",
+    "surface": "thơm",
+    "lemma": "thơm",
+    "pos": "adj",
+    "meaning": {
+      "en": "fragrant",
+      "vi": "có mùi thơm"
+    },
+    "exampleSentenceIds": ["order-bowl.n03"]
+  },
+  {
+    "wordId": "word.nuoc",
+    "surface": "nước",
+    "lemma": "nước",
+    "pos": "noun",
+    "meaning": {
+      "en": "water; liquid (in nước dùng)",
+      "vi": "nước"
+    },
+    "exampleSentenceIds": ["first-sip.n01"]
+  },
+  {
+    "wordId": "word.dung-broth",
+    "surface": "dùng",
+    "lemma": "dùng",
+    "pos": "verb",
+    "meaning": {
+      "en": "broth base (in nước dùng)",
+      "vi": "dùng (nước dùng)"
+    },
+    "exampleSentenceIds": ["first-sip.n01"]
+  },
+  {
+    "wordId": "word.nong",
+    "surface": "nóng",
+    "lemma": "nóng",
+    "pos": "adj",
+    "meaning": {
+      "en": "hot",
+      "vi": "có nhiệt độ cao"
+    },
+    "exampleSentenceIds": ["first-sip.n02"]
+  },
+  {
+    "wordId": "word.dam",
+    "surface": "đậm",
+    "lemma": "đậm",
+    "pos": "adj",
+    "meaning": {
+      "en": "rich; intense (flavor)",
+      "vi": "đậm đà"
+    },
+    "exampleSentenceIds": ["first-sip.n02"]
+  },
+  {
+    "wordId": "word.chu",
+    "surface": "chủ",
+    "lemma": "chủ",
+    "pos": "noun",
+    "meaning": {
+      "en": "owner (in chủ quán)",
+      "vi": "chủ"
+    },
+    "exampleSentenceIds": ["chat-owner.n01"]
+  },
+  {
+    "wordId": "word.mo",
+    "surface": "mở",
+    "lemma": "mở",
+    "pos": "verb",
+    "meaning": {
+      "en": "to open",
+      "vi": "mở cửa"
+    },
+    "exampleSentenceIds": ["chat-owner.d01"]
+  },
+  {
+    "wordId": "word.som",
+    "surface": "sớm",
+    "lemma": "sớm",
+    "pos": "adv",
+    "meaning": {
+      "en": "early",
+      "vi": "sớm"
+    },
+    "exampleSentenceIds": ["chat-owner.d01"]
+  },
+  {
+    "wordId": "word.tien",
+    "surface": "tiền",
+    "lemma": "tiền",
+    "pos": "noun",
+    "meaning": {
+      "en": "money",
+      "vi": "tiền bạc"
+    },
+    "exampleSentenceIds": ["leave-tip.n01"]
+  },
+  {
+    "wordId": "word.cam",
+    "surface": "cảm",
+    "lemma": "cảm ơn",
+    "pos": "verb",
+    "meaning": {
+      "en": "feel (in cảm ơn)",
+      "vi": "cảm (cảm ơn)"
+    },
+    "exampleSentenceIds": ["leave-tip.n02"]
+  },
+  {
+    "wordId": "word.on",
+    "surface": "ơn",
+    "lemma": "cảm ơn",
+    "pos": "noun",
+    "meaning": {
+      "en": "favor (in cảm ơn)",
+      "vi": "ơn (cảm ơn)"
+    },
+    "exampleSentenceIds": ["leave-tip.n02"]
+  },
+  {
+    "wordId": "word.tam",
+    "surface": "tạm",
+    "lemma": "tạm biệt",
+    "pos": "adv",
+    "meaning": {
+      "en": "temporary (in tạm biệt)",
+      "vi": "tạm"
+    },
+    "exampleSentenceIds": ["leave-tip.n03"]
+  },
+  {
+    "wordId": "word.biet",
+    "surface": "biệt",
+    "lemma": "tạm biệt",
+    "pos": "verb",
+    "meaning": {
+      "en": "part (in tạm biệt)",
+      "vi": "biệt"
+    },
+    "exampleSentenceIds": ["leave-tip.n03"]
+  },
+  {
+    "wordId": "word.am",
+    "surface": "ấm",
+    "lemma": "ấm",
+    "pos": "adj",
+    "meaning": {
+      "en": "warm",
+      "vi": "ấm áp"
+    },
+    "exampleSentenceIds": ["walk-away.n02"]
+  },
+  {
+    "wordId": "word.no",
+    "surface": "no",
+    "lemma": "no",
+    "pos": "adj",
+    "meaning": {
+      "en": "full (not hungry)",
+      "vi": "no bụng"
+    },
+    "exampleSentenceIds": ["walk-away.n02"]
+  },
+  {
+    "wordId": "word.pho-street",
+    "surface": "phố",
+    "lemma": "phố",
+    "pos": "noun",
+    "meaning": {
+      "en": "street",
+      "vi": "đường phố"
+    },
+    "exampleSentenceIds": ["street-smell.n01", "walk-away.n01"]
+  },
+  {
+    "wordId": "word.ban",
+    "surface": "bạn",
+    "lemma": "bạn",
+    "pos": "noun",
+    "meaning": {
+      "en": "you (friendly); friend",
+      "vi": "bạn"
+    },
+    "exampleSentenceIds": ["street-smell.n02", "leave-tip.n02"]
+  },
+  {
+    "wordId": "word.cho",
+    "surface": "cho",
+    "lemma": "cho",
+    "pos": "verb",
+    "meaning": {
+      "en": "give / for (request marker)",
+      "vi": "cho (ai đó)"
+    },
+    "exampleSentenceIds": ["order-bowl.d01"]
+  },
+  {
+    "wordId": "word.toi",
+    "surface": "tôi",
+    "lemma": "tôi",
+    "pos": "pronoun",
+    "meaning": {
+      "en": "I; me",
+      "vi": "tôi"
+    },
+    "exampleSentenceIds": ["order-bowl.d01"]
+  }
+]

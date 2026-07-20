@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://puchi.io.vn/schemas/story-kit/v1/words.json",
+  "title": "Story Package Words Catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["wordId", "surface"],
+    "properties": {
+      "wordId": {
+        "type": "string",
+        "pattern": "^word\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "surface": { "type": "string", "minLength": 1 },
+      "lemma": { "type": "string" },
+      "pos": { "type": "string" },
+      "meaning": {
+        "type": "object",
+        "additionalProperties": { "type": "string" }
+      },
+      "audioAssetId": { "type": "string" },
+      "exampleSentenceIds": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  }
+}

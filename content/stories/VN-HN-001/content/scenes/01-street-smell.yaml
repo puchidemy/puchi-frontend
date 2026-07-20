@@ -1,0 +1,53 @@
+id: street-smell
+order: 1
+title:
+  vi: Mùi phố sáng
+  en: Morning street smell
+illustrationAssetId: image.street-smell
+audioAssetId: audio.scene.street-smell
+narration:
+  - id: street-smell.n01
+    text: Buổi sáng ở Hà Nội, mùi phở lan khắp góc phố.
+    audioAssetId: audio.street-smell.n01
+    words:
+      - { surface: "Buổi", wordId: "word.buoi" }
+      - { surface: "sáng", wordId: "word.sang" }
+      - { surface: "ở", wordId: "word.o" }
+      - { surface: "Hà", wordId: "word.ha" }
+      - { surface: "Nội,", wordId: "word.noi" }
+      - { surface: "mùi", wordId: "word.mui" }
+      - { surface: "phở", wordId: "word.pho" }
+      - { surface: "lan", wordId: "word.lan" }
+      - { surface: "khắp", wordId: "word.khap" }
+      - { surface: "góc", wordId: "word.goc" }
+      - { surface: "phố.", wordId: "word.pho-street" }
+  - id: street-smell.n02
+    text: Bạn dừng lại trước một quán nhỏ bên vỉa hè.
+    audioAssetId: audio.street-smell.n02
+    words:
+      - { surface: "Bạn", wordId: "word.ban" }
+      - { surface: "dừng", wordId: "word.dung" }
+      - { surface: "lại", wordId: "word.lai" }
+      - { surface: "trước", wordId: "word.truoc" }
+      - { surface: "một", wordId: "word.mot" }
+      - { surface: "quán", wordId: "word.quan" }
+      - { surface: "nhỏ", wordId: "word.nho" }
+      - { surface: "bên", wordId: "word.ben" }
+      - { surface: "vỉa", wordId: "word.via" }
+      - { surface: "hè.", wordId: "word.he" }
+wordAnchors:
+  - { wordId: word.pho, sentenceId: street-smell.n01 }
+  - { wordId: word.mui, sentenceId: street-smell.n01 }
+  - { wordId: word.quan, sentenceId: street-smell.n02 }
+phraseAnchors:
+  - phraseId: phrase.mui-pho
+    sentenceId: street-smell.n01
+    startWord: 5
+    endWord: 6
+  - phraseId: phrase.via-he
+    sentenceId: street-smell.n02
+    startWord: 8
+    endWord: 9
+activities:
+  - id: street-smell.act.read
+    type: read_listen
