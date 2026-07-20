@@ -49,7 +49,7 @@ export default function StoryPage() {
 
   if (loading || authLoading) {
     return (
-      <div className="flex h-full min-h-0 w-full items-center justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -57,7 +57,7 @@ export default function StoryPage() {
 
   if (error || !data) {
     return (
-      <div className="flex h-full min-h-0 w-full items-center justify-center p-8">
+      <div className="flex h-full w-full items-center justify-center p-8">
         <div className="mx-auto max-w-md space-y-4">
           <Alert variant="destructive">
             <AlertDescription>
@@ -72,9 +72,5 @@ export default function StoryPage() {
     );
   }
 
-  return (
-    <div className="h-full min-h-0 overflow-y-auto">
-      <StoryPlayer data={data} />
-    </div>
-  );
+  return <StoryPlayer data={data} />;
 }

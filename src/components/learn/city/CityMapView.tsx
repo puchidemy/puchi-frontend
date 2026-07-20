@@ -3,12 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/routing";
+import { GuestSoftGateDialog } from "@/components/settings/GuestSoftGateDialog";
 import {
   JOURNEY_CITIES_MAP,
   deriveCityMapViews,
   type CityMapView as CityView,
   type CityProgressHint,
 } from "@/lib/journey-cities";
+import { guestRequiresLoginForCity } from "@/lib/learn-soft-gate";
+import { useAuthStore } from "@/store/auth";
 import { CityMapCanvas } from "./CityMapCanvas";
 import { CityMapHeader } from "./CityMapHeader";
 import { CityPreviewAnchor } from "./CityPreviewAnchor";
@@ -20,15 +23,17 @@ export type CityMapViewProps = {
 
 const HOVER_CLOSE_MS = 420;
 
-/** Journey Map → City hub. All 8 cities unlocked. */
+/** Journey Map → City hub. Guests may open Hanoi freely; other cities need login. */
 export function CityMapView({ cities, title }: CityMapViewProps) {
   const t = useTranslations("Learn");
   const router = useRouter();
+  const user = useAuthStore((s) => s.user);
   const config = JOURNEY_CITIES_MAP;
   const views = deriveCityMapViews(cities, config);
 
   const [pinnedSlug, setPinnedSlug] = useState<string | null>(null);
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
+  const [gateOpen, setGateOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const totalStories = views.reduce((n, v) => n + v.storyCount, 0);
@@ -85,6 +90,10 @@ export function CityMapView({ cities, title }: CityMapViewProps) {
 
   const onExplore = () => {
     if (!previewView) return;
+    if (!user && guestRequiresLoginForCity(previewView.slug)) {
+      setGateOpen(true);
+      return;
+    }
     router.push(`/learn/city/${previewView.slug}`);
   };
 
@@ -128,6 +137,7 @@ export function CityMapView({ cities, title }: CityMapViewProps) {
           )}
         </CityMapCanvas>
       </div>
+      <GuestSoftGateDialog open={gateOpen} onOpenChange={setGateOpen} />
     </div>
   );
 }

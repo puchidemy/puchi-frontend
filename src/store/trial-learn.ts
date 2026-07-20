@@ -6,7 +6,7 @@ interface TrialLearnState {
   /** Guest finished all required lessons in the trial unit. */
   unitCompleted: boolean;
   completedLessonIds: string[];
-  /** Story-first soft-gate metric: completed Scenes (limit 3). */
+  /** Story-first soft-gate metric: completed Scenes (legacy; gating is city-based). */
   completedSceneIds: string[];
   setUnitCompleted: (value: boolean) => void;
   markLessonCompleted: (lessonId: string) => void;
@@ -73,8 +73,12 @@ export function clearGuestLocalProgress(): void {
   localStorage.removeItem(STORAGE_KEY);
 }
 
-/** Re-export for callers that already import the trial store. */
-export { GUEST_SOFT_GATE_SCENE_LIMIT } from "@/lib/learn-soft-gate";
+/** Re-export soft-gate helpers for callers that already import the trial store. */
+export {
+  GUEST_SOFT_GATE_SCENE_LIMIT,
+  guestRequiresLoginForCity,
+  isGuestFreeCitySlug,
+} from "@/lib/learn-soft-gate";
 
 export const useTrialLearnStore = create<TrialLearnState>()(
   persist(

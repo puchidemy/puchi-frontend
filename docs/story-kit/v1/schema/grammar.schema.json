@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://puchi.io.vn/schemas/story-kit/v1/grammar.json",
+  "title": "Story Package Grammar Catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["grammarId", "title"],
+    "properties": {
+      "grammarId": {
+        "type": "string",
+        "pattern": "^grammar\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "title": {
+        "type": "object",
+        "required": ["vi"],
+        "additionalProperties": false,
+        "properties": {
+          "vi": { "type": "string", "minLength": 1 },
+          "en": { "type": "string" }
+        }
+      },
+      "explanation": {
+        "type": "object",
+        "additionalProperties": { "type": "string" }
+      },
+      "exampleSentenceIds": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  }
+}

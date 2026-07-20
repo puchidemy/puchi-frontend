@@ -8,6 +8,7 @@ export { resolveChapterToCitySlug } from "./chapter-redirect";
 export { deriveCityMapViews, type CityProgressHint } from "./derive";
 export { slugAtCityHotspot } from "./hit-test";
 export {
+  PACKAGE_HANOI_STORY_ID,
   STUB_HANOI_STORY_ID,
   stubGetCity,
   stubGetStory,

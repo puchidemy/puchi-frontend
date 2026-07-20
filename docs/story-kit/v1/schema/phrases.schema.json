@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://puchi.io.vn/schemas/story-kit/v1/phrases.json",
+  "title": "Story Package Phrases Catalog",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["phraseId", "surface"],
+    "properties": {
+      "phraseId": {
+        "type": "string",
+        "pattern": "^phrase\\.[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "surface": { "type": "string", "minLength": 1 },
+      "meaning": {
+        "type": "object",
+        "additionalProperties": { "type": "string" }
+      },
+      "audioAssetId": { "type": "string" },
+      "exampleSentenceIds": {
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  }
+}

@@ -14,7 +14,8 @@ import {
   stubStartActivity,
   stubStoryKnown,
 } from "./journey-cities/stub-data";
-import { GUEST_SOFT_GATE_SCENE_LIMIT } from "./learn-soft-gate";
+import { isCompiledStory } from "./story-engine";
+import { guestRequiresLoginForCity } from "./learn-soft-gate";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
@@ -26,7 +27,11 @@ export const DEFAULT_UNIT_ID =
   process.env.NEXT_PUBLIC_LEARN_UNIT_ID ||
   "11111111-1111-1111-1111-111111111111";
 
-export { GUEST_SOFT_GATE_SCENE_LIMIT } from "./learn-soft-gate";
+export {
+  GUEST_SOFT_GATE_SCENE_LIMIT,
+  guestRequiresLoginForCity,
+  isGuestFreeCitySlug,
+} from "./learn-soft-gate";
 
 const SOFT_GATE_CODES = new Set(["GUEST_SOFT_GATE", "TRIAL_LIMIT"]);
 
@@ -144,7 +149,7 @@ export class GuestSoftGateError extends Error {
   }
 }
 
-/** True when learn-service blocks guest start/complete (completed ≥ 3). */
+/** True when learn-service (or stub) blocks guest outside free trial cities. */
 export function isGuestSoftGateError(err: unknown): boolean {
   if (err instanceof GuestSoftGateError) return true;
   if (isApiError(err)) {
@@ -340,14 +345,21 @@ export async function listCities(): Promise<ListCitiesResponse> {
 
 /**
  * City hub + story library payload.
- * Falls back to stub (Hanoi has sample stories; others empty).
+ * Sprint 1: Hanoi library prefers compiled Story Packages on the client.
+ * Other cities fall back to stub when backend Story RPCs are unavailable.
  */
 export async function getCity(slug: string): Promise<GetCityResponse> {
+  const stub = stubGetCity(slug);
+  if (
+    slug === "hanoi" &&
+    stub?.stories.some((s) => isCompiledStory(s.id))
+  ) {
+    return stub;
+  }
   try {
     return await learnRequest<GetCityResponse>(API.learn.city(slug));
   } catch (err) {
     if (shouldUseStoryStub(err)) {
-      const stub = stubGetCity(slug);
       if (stub) return stub;
     }
     throw err;
@@ -356,9 +368,13 @@ export async function getCity(slug: string): Promise<GetCityResponse> {
 
 /**
  * Story detail for the player shell.
- * Falls back to stub when backend is unavailable.
+ * Sprint 1: compiled packages load first (no CMS/backend required).
  */
 export async function getStory(id: string): Promise<GetStoryResponse> {
+  if (isCompiledStory(id)) {
+    const packaged = stubGetStory(id);
+    if (packaged) return packaged;
+  }
   try {
     return await learnRequest<GetStoryResponse>(API.learn.story(id));
   } catch (err) {
@@ -376,7 +392,7 @@ export async function getStory(id: string): Promise<GetStoryResponse> {
  */
 export async function startActivity(
   sceneId: string,
-  options?: { completedSceneCount?: number },
+  options?: { citySlug?: string; completedSceneCount?: number },
 ): Promise<{ attempt_id: string }> {
   try {
     return await learnRequest<{ attempt_id: string }>(
@@ -389,8 +405,9 @@ export async function startActivity(
   } catch (err) {
     if (isGuestSoftGateError(err)) throw err;
     if (shouldUseStoryStub(err) && stubSceneBelongsToKnownStory(sceneId)) {
-      const count = options?.completedSceneCount ?? 0;
-      if (count >= GUEST_SOFT_GATE_SCENE_LIMIT) throw new GuestSoftGateError();
+      if (guestRequiresLoginForCity(options?.citySlug)) {
+        throw new GuestSoftGateError();
+      }
       return stubStartActivity(sceneId);
     }
     throw err;
@@ -429,7 +446,7 @@ export async function submitActivityAnswer(
 
 export async function completeScene(
   sceneId: string,
-  options?: { completedSceneCountAfter?: number },
+  options?: { citySlug?: string; completedSceneCountAfter?: number },
 ): Promise<CompleteSceneResponse> {
   try {
     return await learnRequest<CompleteSceneResponse>(
@@ -442,12 +459,11 @@ export async function completeScene(
   } catch (err) {
     if (isGuestSoftGateError(err)) throw err;
     if (shouldUseStoryStub(err) && stubSceneBelongsToKnownStory(sceneId)) {
-      const count = options?.completedSceneCountAfter ?? 1;
-      const res = stubCompleteScene(sceneId, count);
-      if (res.soft_gate && count > GUEST_SOFT_GATE_SCENE_LIMIT) {
+      if (guestRequiresLoginForCity(options?.citySlug)) {
         throw new GuestSoftGateError();
       }
-      return res;
+      const count = options?.completedSceneCountAfter ?? 1;
+      return stubCompleteScene(sceneId, count);
     }
     throw err;
   }

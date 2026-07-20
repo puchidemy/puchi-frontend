@@ -1,0 +1,55 @@
+id: queue-up
+order: 2
+title:
+  vi: Xếp hàng
+  en: In the queue
+illustrationAssetId: image.queue-up
+audioAssetId: audio.scene.queue-up
+narration:
+  - id: queue-up.n01
+    text: Trước quán, vài người đang xếp hàng im lặng.
+    audioAssetId: audio.queue-up.n01
+    words:
+      - { surface: "Trước", wordId: "word.truoc" }
+      - { surface: "quán,", wordId: "word.quan" }
+      - { surface: "vài", wordId: "word.vai" }
+      - { surface: "người", wordId: "word.nguoi" }
+      - { surface: "đang", wordId: "word.dang" }
+      - { surface: "xếp", wordId: "word.xep" }
+      - { surface: "hàng", wordId: "word.hang" }
+      - { surface: "im", wordId: "word.im" }
+      - { surface: "lặng.", wordId: "word.lang" }
+  - id: queue-up.n02
+    text: "Bạn đứng cuối hàng và nói nhỏ: xin lỗi."
+    audioAssetId: audio.queue-up.n02
+    words:
+      - { surface: "Bạn", wordId: "word.ban" }
+      - { surface: "đứng", wordId: "word.dung-stand" }
+      - { surface: "cuối", wordId: "word.cuoi" }
+      - { surface: "hàng", wordId: "word.hang" }
+      - { surface: "và", wordId: "word.va" }
+      - { surface: "nói", wordId: "word.noi-speak" }
+      - { surface: "nhỏ:", wordId: "word.nho" }
+      - { surface: "xin", wordId: "word.xin" }
+      - { surface: "lỗi.", wordId: "word.loi" }
+wordAnchors:
+  - { wordId: word.xep, sentenceId: queue-up.n01 }
+  - { wordId: word.hang, sentenceId: queue-up.n01 }
+  - { wordId: word.xin, sentenceId: queue-up.n02 }
+  - { wordId: word.loi, sentenceId: queue-up.n02 }
+phraseAnchors:
+  - phraseId: phrase.xep-hang
+    sentenceId: queue-up.n01
+    startWord: 5
+    endWord: 6
+  - phraseId: phrase.xin-loi
+    sentenceId: queue-up.n02
+    startWord: 7
+    endWord: 8
+activities:
+  - id: queue-up.act.read
+    type: read_listen
+  - id: queue-up.act.unscramble
+    type: unscramble
+    sentenceId: queue-up.n01
+    phraseIds: [phrase.xep-hang]

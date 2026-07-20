@@ -1,0 +1,1505 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "1.1.0",
+  "storyId": "VN-HN-001",
+  "locale": "vi",
+  "status": "draft",
+  "citySlug": "ha-noi",
+  "journeyCitySlug": "hanoi",
+  "level": "B1",
+  "title": {
+    "vi": "Sáng Hà Nội — tô phở đầu ngày",
+    "en": "Hanoi Morning — First Bowl of Phở"
+  },
+  "synopsis": "Một buổi sáng ngắn ở Hà Nội: mùi phở trên phố, xếp hàng, gọi tô, rồi ngụm nước dùng đầu tiên.",
+  "tags": [
+    "food",
+    "morning",
+    "hanoi",
+    "culture"
+  ],
+  "estimatedMinutes": 10,
+  "coverAssetId": "cover.vn-hn-001",
+  "objectives": [
+    {
+      "id": "obj.order-pho",
+      "text": {
+        "vi": "Gọi một tô phở và hỏi topping",
+        "en": "Order a bowl of phở and ask about toppings"
+      }
+    },
+    {
+      "id": "obj.street-polite",
+      "text": {
+        "vi": "Dùng câu lịch sự khi xếp hàng",
+        "en": "Use polite phrases when queuing"
+      }
+    }
+  ],
+  "words": [
+    {
+      "wordId": "word.pho",
+      "surface": "phở",
+      "lemma": "phở",
+      "pos": "noun",
+      "meaning": {
+        "en": "pho (Vietnamese noodle soup)",
+        "vi": "món phở"
+      },
+      "audioAssetId": "audio.word.pho",
+      "exampleSentenceIds": [
+        "street-smell.n01",
+        "order-bowl.n01"
+      ]
+    },
+    {
+      "wordId": "word.mui",
+      "surface": "mùi",
+      "lemma": "mùi",
+      "pos": "noun",
+      "meaning": {
+        "en": "smell; aroma",
+        "vi": "mùi hương / mùi"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n01"
+      ]
+    },
+    {
+      "wordId": "word.quan",
+      "surface": "quán",
+      "lemma": "quán",
+      "pos": "noun",
+      "meaning": {
+        "en": "small eatery; stall",
+        "vi": "quán ăn"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n02",
+        "chat-owner.n01"
+      ]
+    },
+    {
+      "wordId": "word.sang",
+      "surface": "sáng",
+      "lemma": "sáng",
+      "pos": "noun",
+      "meaning": {
+        "en": "morning",
+        "vi": "buổi sáng"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n01"
+      ]
+    },
+    {
+      "wordId": "word.via",
+      "surface": "vỉa",
+      "lemma": "vỉa",
+      "pos": "noun",
+      "meaning": {
+        "en": "sidewalk (in vỉa hè)",
+        "vi": "vỉa (vỉa hè)"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n02"
+      ]
+    },
+    {
+      "wordId": "word.he",
+      "surface": "hè",
+      "lemma": "hè",
+      "pos": "noun",
+      "meaning": {
+        "en": "sidewalk (in vỉa hè)",
+        "vi": "hè (vỉa hè)"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n02"
+      ]
+    },
+    {
+      "wordId": "word.xep",
+      "surface": "xếp",
+      "lemma": "xếp",
+      "pos": "verb",
+      "meaning": {
+        "en": "to arrange; form (a line)",
+        "vi": "xếp (hàng)"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n01"
+      ]
+    },
+    {
+      "wordId": "word.hang",
+      "surface": "hàng",
+      "lemma": "hàng",
+      "pos": "noun",
+      "meaning": {
+        "en": "line; queue",
+        "vi": "hàng người"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n01"
+      ]
+    },
+    {
+      "wordId": "word.lich",
+      "surface": "lịch",
+      "lemma": "lịch sự",
+      "pos": "adj",
+      "meaning": {
+        "en": "polite (in lịch sự)",
+        "vi": "lịch (lịch sự)"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n02"
+      ]
+    },
+    {
+      "wordId": "word.su",
+      "surface": "sự",
+      "lemma": "lịch sự",
+      "pos": "adj",
+      "meaning": {
+        "en": "polite (in lịch sự)",
+        "vi": "sự (lịch sự)"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n02"
+      ]
+    },
+    {
+      "wordId": "word.xin",
+      "surface": "xin",
+      "lemma": "xin",
+      "pos": "verb",
+      "meaning": {
+        "en": "to ask / please (in xin lỗi)",
+        "vi": "xin"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n02"
+      ]
+    },
+    {
+      "wordId": "word.loi",
+      "surface": "lỗi",
+      "lemma": "lỗi",
+      "pos": "noun",
+      "meaning": {
+        "en": "fault; error (in xin lỗi)",
+        "vi": "lỗi"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n02"
+      ]
+    },
+    {
+      "wordId": "word.to",
+      "surface": "tô",
+      "lemma": "tô",
+      "pos": "noun",
+      "meaning": {
+        "en": "bowl (of soup/noodles)",
+        "vi": "tô (phở)"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.n01"
+      ]
+    },
+    {
+      "wordId": "word.goi",
+      "surface": "gọi",
+      "lemma": "gọi",
+      "pos": "verb",
+      "meaning": {
+        "en": "to order; to call",
+        "vi": "gọi món"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.n01"
+      ]
+    },
+    {
+      "wordId": "word.muon",
+      "surface": "muốn",
+      "lemma": "muốn",
+      "pos": "verb",
+      "meaning": {
+        "en": "to want",
+        "vi": "muốn có / muốn làm"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.n02"
+      ]
+    },
+    {
+      "wordId": "word.tai",
+      "surface": "tái",
+      "lemma": "tái",
+      "pos": "noun",
+      "meaning": {
+        "en": "rare beef (pho topping)",
+        "vi": "thịt bò tái"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.n02"
+      ]
+    },
+    {
+      "wordId": "word.rau",
+      "surface": "rau",
+      "lemma": "rau",
+      "pos": "noun",
+      "meaning": {
+        "en": "vegetables; herbs",
+        "vi": "rau"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.n03"
+      ]
+    },
+    {
+      "wordId": "word.thom",
+      "surface": "thơm",
+      "lemma": "thơm",
+      "pos": "adj",
+      "meaning": {
+        "en": "fragrant",
+        "vi": "có mùi thơm"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.n03"
+      ]
+    },
+    {
+      "wordId": "word.nuoc",
+      "surface": "nước",
+      "lemma": "nước",
+      "pos": "noun",
+      "meaning": {
+        "en": "water; liquid (in nước dùng)",
+        "vi": "nước"
+      },
+      "exampleSentenceIds": [
+        "first-sip.n01"
+      ]
+    },
+    {
+      "wordId": "word.dung-broth",
+      "surface": "dùng",
+      "lemma": "dùng",
+      "pos": "verb",
+      "meaning": {
+        "en": "broth base (in nước dùng)",
+        "vi": "dùng (nước dùng)"
+      },
+      "exampleSentenceIds": [
+        "first-sip.n01"
+      ]
+    },
+    {
+      "wordId": "word.nong",
+      "surface": "nóng",
+      "lemma": "nóng",
+      "pos": "adj",
+      "meaning": {
+        "en": "hot",
+        "vi": "có nhiệt độ cao"
+      },
+      "exampleSentenceIds": [
+        "first-sip.n02"
+      ]
+    },
+    {
+      "wordId": "word.dam",
+      "surface": "đậm",
+      "lemma": "đậm",
+      "pos": "adj",
+      "meaning": {
+        "en": "rich; intense (flavor)",
+        "vi": "đậm đà"
+      },
+      "exampleSentenceIds": [
+        "first-sip.n02"
+      ]
+    },
+    {
+      "wordId": "word.chu",
+      "surface": "chủ",
+      "lemma": "chủ",
+      "pos": "noun",
+      "meaning": {
+        "en": "owner (in chủ quán)",
+        "vi": "chủ"
+      },
+      "exampleSentenceIds": [
+        "chat-owner.n01"
+      ]
+    },
+    {
+      "wordId": "word.mo",
+      "surface": "mở",
+      "lemma": "mở",
+      "pos": "verb",
+      "meaning": {
+        "en": "to open",
+        "vi": "mở cửa"
+      },
+      "exampleSentenceIds": [
+        "chat-owner.d01"
+      ]
+    },
+    {
+      "wordId": "word.som",
+      "surface": "sớm",
+      "lemma": "sớm",
+      "pos": "adv",
+      "meaning": {
+        "en": "early",
+        "vi": "sớm"
+      },
+      "exampleSentenceIds": [
+        "chat-owner.d01"
+      ]
+    },
+    {
+      "wordId": "word.tien",
+      "surface": "tiền",
+      "lemma": "tiền",
+      "pos": "noun",
+      "meaning": {
+        "en": "money",
+        "vi": "tiền bạc"
+      },
+      "exampleSentenceIds": [
+        "leave-tip.n01"
+      ]
+    },
+    {
+      "wordId": "word.cam",
+      "surface": "cảm",
+      "lemma": "cảm ơn",
+      "pos": "verb",
+      "meaning": {
+        "en": "feel (in cảm ơn)",
+        "vi": "cảm (cảm ơn)"
+      },
+      "exampleSentenceIds": [
+        "leave-tip.n02"
+      ]
+    },
+    {
+      "wordId": "word.on",
+      "surface": "ơn",
+      "lemma": "cảm ơn",
+      "pos": "noun",
+      "meaning": {
+        "en": "favor (in cảm ơn)",
+        "vi": "ơn (cảm ơn)"
+      },
+      "exampleSentenceIds": [
+        "leave-tip.n02"
+      ]
+    },
+    {
+      "wordId": "word.tam",
+      "surface": "tạm",
+      "lemma": "tạm biệt",
+      "pos": "adv",
+      "meaning": {
+        "en": "temporary (in tạm biệt)",
+        "vi": "tạm"
+      },
+      "exampleSentenceIds": [
+        "leave-tip.n03"
+      ]
+    },
+    {
+      "wordId": "word.biet",
+      "surface": "biệt",
+      "lemma": "tạm biệt",
+      "pos": "verb",
+      "meaning": {
+        "en": "part (in tạm biệt)",
+        "vi": "biệt"
+      },
+      "exampleSentenceIds": [
+        "leave-tip.n03"
+      ]
+    },
+    {
+      "wordId": "word.am",
+      "surface": "ấm",
+      "lemma": "ấm",
+      "pos": "adj",
+      "meaning": {
+        "en": "warm",
+        "vi": "ấm áp"
+      },
+      "exampleSentenceIds": [
+        "walk-away.n02"
+      ]
+    },
+    {
+      "wordId": "word.no",
+      "surface": "no",
+      "lemma": "no",
+      "pos": "adj",
+      "meaning": {
+        "en": "full (not hungry)",
+        "vi": "no bụng"
+      },
+      "exampleSentenceIds": [
+        "walk-away.n02"
+      ]
+    },
+    {
+      "wordId": "word.pho-street",
+      "surface": "phố",
+      "lemma": "phố",
+      "pos": "noun",
+      "meaning": {
+        "en": "street",
+        "vi": "đường phố"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n01",
+        "walk-away.n01"
+      ]
+    },
+    {
+      "wordId": "word.ban",
+      "surface": "bạn",
+      "lemma": "bạn",
+      "pos": "noun",
+      "meaning": {
+        "en": "you (friendly); friend",
+        "vi": "bạn"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n02",
+        "leave-tip.n02"
+      ]
+    },
+    {
+      "wordId": "word.cho",
+      "surface": "cho",
+      "lemma": "cho",
+      "pos": "verb",
+      "meaning": {
+        "en": "give / for (request marker)",
+        "vi": "cho (ai đó)"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.d01"
+      ]
+    },
+    {
+      "wordId": "word.toi",
+      "surface": "tôi",
+      "lemma": "tôi",
+      "pos": "pronoun",
+      "meaning": {
+        "en": "I; me",
+        "vi": "tôi"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.d01"
+      ]
+    }
+  ],
+  "phrases": [
+    {
+      "phraseId": "phrase.mui-pho",
+      "surface": "mùi phở",
+      "meaning": {
+        "en": "the smell of pho",
+        "vi": "mùi của món phở"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n01"
+      ]
+    },
+    {
+      "phraseId": "phrase.via-he",
+      "surface": "vỉa hè",
+      "meaning": {
+        "en": "sidewalk",
+        "vi": "lề đường / vỉa hè"
+      },
+      "exampleSentenceIds": [
+        "street-smell.n02"
+      ]
+    },
+    {
+      "phraseId": "phrase.xep-hang",
+      "surface": "xếp hàng",
+      "meaning": {
+        "en": "to queue; stand in line",
+        "vi": "đứng xếp hàng"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n01"
+      ]
+    },
+    {
+      "phraseId": "phrase.xin-loi",
+      "surface": "xin lỗi",
+      "meaning": {
+        "en": "excuse me; sorry",
+        "vi": "xin lỗi"
+      },
+      "exampleSentenceIds": [
+        "queue-up.n02"
+      ]
+    },
+    {
+      "phraseId": "phrase.goi-mot-to",
+      "surface": "gọi một tô",
+      "meaning": {
+        "en": "order a bowl",
+        "vi": "gọi một tô (phở)"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.n01"
+      ]
+    },
+    {
+      "phraseId": "phrase.rau-thom",
+      "surface": "rau thơm",
+      "meaning": {
+        "en": "fresh herbs (for pho)",
+        "vi": "rau sống thơm (húng, ngò…)"
+      },
+      "exampleSentenceIds": [
+        "order-bowl.d01"
+      ]
+    },
+    {
+      "phraseId": "phrase.nuoc-dung",
+      "surface": "nước dùng",
+      "meaning": {
+        "en": "broth; soup stock",
+        "vi": "nước dùng của phở"
+      },
+      "exampleSentenceIds": [
+        "first-sip.n01"
+      ]
+    }
+  ],
+  "grammar": [
+    {
+      "grammarId": "grammar.cho-toi",
+      "title": {
+        "vi": "Cho tôi + danh từ",
+        "en": "Cho tôi + noun"
+      },
+      "explanation": {
+        "en": "Polite way to request something: Cho tôi một tô phở.",
+        "vi": "Cách lịch sự để yêu cầu: Cho tôi một tô phở."
+      },
+      "exampleSentenceIds": [
+        "order-bowl.d01"
+      ]
+    }
+  ],
+  "assets": [
+    {
+      "assetId": "cover.vn-hn-001",
+      "kind": "image",
+      "path": "covers/cover.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.street-smell",
+      "kind": "image",
+      "path": "images/street-smell.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.queue-up",
+      "kind": "image",
+      "path": "images/queue-up.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.order-bowl",
+      "kind": "image",
+      "path": "images/order-bowl.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.first-sip",
+      "kind": "image",
+      "path": "images/first-sip.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.chat-owner",
+      "kind": "image",
+      "path": "images/chat-owner.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.leave-tip",
+      "kind": "image",
+      "path": "images/leave-tip.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.walk-away",
+      "kind": "image",
+      "path": "images/walk-away.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "image.reflect",
+      "kind": "image",
+      "path": "images/reflect.webp",
+      "mimeType": "image/webp",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.street-smell",
+      "kind": "audio",
+      "path": "audio/scene-street-smell.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.queue-up",
+      "kind": "audio",
+      "path": "audio/scene-queue-up.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.order-bowl",
+      "kind": "audio",
+      "path": "audio/scene-order-bowl.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.first-sip",
+      "kind": "audio",
+      "path": "audio/scene-first-sip.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.chat-owner",
+      "kind": "audio",
+      "path": "audio/scene-chat-owner.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.leave-tip",
+      "kind": "audio",
+      "path": "audio/scene-leave-tip.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.walk-away",
+      "kind": "audio",
+      "path": "audio/scene-walk-away.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.scene.reflect",
+      "kind": "audio",
+      "path": "audio/scene-reflect.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.street-smell.n01",
+      "kind": "audio",
+      "path": "audio/street-smell-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.street-smell.n02",
+      "kind": "audio",
+      "path": "audio/street-smell-n02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.queue-up.n01",
+      "kind": "audio",
+      "path": "audio/queue-up-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.queue-up.n02",
+      "kind": "audio",
+      "path": "audio/queue-up-n02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.order-bowl.n01",
+      "kind": "audio",
+      "path": "audio/order-bowl-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.order-bowl.n02",
+      "kind": "audio",
+      "path": "audio/order-bowl-n02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.order-bowl.d01",
+      "kind": "audio",
+      "path": "audio/order-bowl-d01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.first-sip.n01",
+      "kind": "audio",
+      "path": "audio/first-sip-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.first-sip.n02",
+      "kind": "audio",
+      "path": "audio/first-sip-n02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.chat-owner.n01",
+      "kind": "audio",
+      "path": "audio/chat-owner-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.chat-owner.d01",
+      "kind": "audio",
+      "path": "audio/chat-owner-d01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.chat-owner.d02",
+      "kind": "audio",
+      "path": "audio/chat-owner-d02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.leave-tip.n01",
+      "kind": "audio",
+      "path": "audio/leave-tip-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.leave-tip.n02",
+      "kind": "audio",
+      "path": "audio/leave-tip-n02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.walk-away.n01",
+      "kind": "audio",
+      "path": "audio/walk-away-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.walk-away.n02",
+      "kind": "audio",
+      "path": "audio/walk-away-n02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.reflect.n01",
+      "kind": "audio",
+      "path": "audio/reflect-n01.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.reflect.n02",
+      "kind": "audio",
+      "path": "audio/reflect-n02.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    },
+    {
+      "assetId": "audio.word.pho",
+      "kind": "audio",
+      "path": "audio/words/pho.mp3",
+      "mimeType": "audio/mpeg",
+      "url": null
+    }
+  ],
+  "scenes": [
+    {
+      "id": "street-smell",
+      "order": 1,
+      "title": {
+        "vi": "Mùi phố sáng",
+        "en": "Morning street smell"
+      },
+      "illustrationAssetId": "image.street-smell",
+      "audioAssetId": "audio.scene.street-smell",
+      "sentences": [
+        {
+          "id": "street-smell.n01",
+          "kind": "narration",
+          "text": "Buổi sáng ở Hà Nội, mùi phở lan khắp góc phố.",
+          "audioAssetId": "audio.street-smell.n01",
+          "words": [
+            {
+              "surface": "Buổi",
+              "wordId": "word.buoi"
+            },
+            {
+              "surface": "sáng",
+              "wordId": "word.sang"
+            },
+            {
+              "surface": "ở",
+              "wordId": "word.o"
+            },
+            {
+              "surface": "Hà",
+              "wordId": "word.ha"
+            },
+            {
+              "surface": "Nội,",
+              "wordId": "word.noi"
+            },
+            {
+              "surface": "mùi",
+              "wordId": "word.mui"
+            },
+            {
+              "surface": "phở",
+              "wordId": "word.pho"
+            },
+            {
+              "surface": "lan",
+              "wordId": "word.lan"
+            },
+            {
+              "surface": "khắp",
+              "wordId": "word.khap"
+            },
+            {
+              "surface": "góc",
+              "wordId": "word.goc"
+            },
+            {
+              "surface": "phố.",
+              "wordId": "word.pho-street"
+            }
+          ]
+        },
+        {
+          "id": "street-smell.n02",
+          "kind": "narration",
+          "text": "Bạn dừng lại trước một quán nhỏ bên vỉa hè.",
+          "audioAssetId": "audio.street-smell.n02",
+          "words": [
+            {
+              "surface": "Bạn",
+              "wordId": "word.ban"
+            },
+            {
+              "surface": "dừng",
+              "wordId": "word.dung"
+            },
+            {
+              "surface": "lại",
+              "wordId": "word.lai"
+            },
+            {
+              "surface": "trước",
+              "wordId": "word.truoc"
+            },
+            {
+              "surface": "một",
+              "wordId": "word.mot"
+            },
+            {
+              "surface": "quán",
+              "wordId": "word.quan"
+            },
+            {
+              "surface": "nhỏ",
+              "wordId": "word.nho"
+            },
+            {
+              "surface": "bên",
+              "wordId": "word.ben"
+            },
+            {
+              "surface": "vỉa",
+              "wordId": "word.via"
+            },
+            {
+              "surface": "hè.",
+              "wordId": "word.he"
+            }
+          ]
+        }
+      ],
+      "wordAnchors": [
+        {
+          "wordId": "word.pho",
+          "sentenceId": "street-smell.n01"
+        },
+        {
+          "wordId": "word.mui",
+          "sentenceId": "street-smell.n01"
+        },
+        {
+          "wordId": "word.quan",
+          "sentenceId": "street-smell.n02"
+        }
+      ],
+      "phraseAnchors": [
+        {
+          "phraseId": "phrase.mui-pho",
+          "sentenceId": "street-smell.n01",
+          "startWord": 5,
+          "endWord": 6
+        },
+        {
+          "phraseId": "phrase.via-he",
+          "sentenceId": "street-smell.n02",
+          "startWord": 8,
+          "endWord": 9
+        }
+      ],
+      "grammarAnchors": [],
+      "activities": [
+        {
+          "id": "street-smell.act.read",
+          "type": "read_listen"
+        }
+      ]
+    },
+    {
+      "id": "queue-up",
+      "order": 2,
+      "title": {
+        "vi": "Xếp hàng",
+        "en": "In the queue"
+      },
+      "illustrationAssetId": "image.queue-up",
+      "audioAssetId": "audio.scene.queue-up",
+      "sentences": [
+        {
+          "id": "queue-up.n01",
+          "kind": "narration",
+          "text": "Trước quán, vài người đang xếp hàng im lặng.",
+          "audioAssetId": "audio.queue-up.n01",
+          "words": [
+            {
+              "surface": "Trước",
+              "wordId": "word.truoc"
+            },
+            {
+              "surface": "quán,",
+              "wordId": "word.quan"
+            },
+            {
+              "surface": "vài",
+              "wordId": "word.vai"
+            },
+            {
+              "surface": "người",
+              "wordId": "word.nguoi"
+            },
+            {
+              "surface": "đang",
+              "wordId": "word.dang"
+            },
+            {
+              "surface": "xếp",
+              "wordId": "word.xep"
+            },
+            {
+              "surface": "hàng",
+              "wordId": "word.hang"
+            },
+            {
+              "surface": "im",
+              "wordId": "word.im"
+            },
+            {
+              "surface": "lặng.",
+              "wordId": "word.lang"
+            }
+          ]
+        },
+        {
+          "id": "queue-up.n02",
+          "kind": "narration",
+          "text": "Bạn đứng cuối hàng và nói nhỏ: xin lỗi.",
+          "audioAssetId": "audio.queue-up.n02",
+          "words": [
+            {
+              "surface": "Bạn",
+              "wordId": "word.ban"
+            },
+            {
+              "surface": "đứng",
+              "wordId": "word.dung-stand"
+            },
+            {
+              "surface": "cuối",
+              "wordId": "word.cuoi"
+            },
+            {
+              "surface": "hàng",
+              "wordId": "word.hang"
+            },
+            {
+              "surface": "và",
+              "wordId": "word.va"
+            },
+            {
+              "surface": "nói",
+              "wordId": "word.noi-speak"
+            },
+            {
+              "surface": "nhỏ:",
+              "wordId": "word.nho"
+            },
+            {
+              "surface": "xin",
+              "wordId": "word.xin"
+            },
+            {
+              "surface": "lỗi.",
+              "wordId": "word.loi"
+            }
+          ]
+        }
+      ],
+      "wordAnchors": [
+        {
+          "wordId": "word.xep",
+          "sentenceId": "queue-up.n01"
+        },
+        {
+          "wordId": "word.hang",
+          "sentenceId": "queue-up.n01"
+        },
+        {
+          "wordId": "word.xin",
+          "sentenceId": "queue-up.n02"
+        },
+        {
+          "wordId": "word.loi",
+          "sentenceId": "queue-up.n02"
+        }
+      ],
+      "phraseAnchors": [
+        {
+          "phraseId": "phrase.xep-hang",
+          "sentenceId": "queue-up.n01",
+          "startWord": 5,
+          "endWord": 6
+        },
+        {
+          "phraseId": "phrase.xin-loi",
+          "sentenceId": "queue-up.n02",
+          "startWord": 7,
+          "endWord": 8
+        }
+      ],
+      "grammarAnchors": [],
+      "activities": [
+        {
+          "id": "queue-up.act.read",
+          "type": "read_listen"
+        },
+        {
+          "id": "queue-up.act.unscramble",
+          "type": "unscramble",
+          "phraseIds": [
+            "phrase.xep-hang"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "order-bowl",
+      "order": 3,
+      "title": {
+        "vi": "Gọi tô phở",
+        "en": "Ordering phở"
+      },
+      "illustrationAssetId": "image.order-bowl",
+      "audioAssetId": "audio.scene.order-bowl",
+      "sentences": [
+        {
+          "id": "order-bowl.n01",
+          "kind": "narration",
+          "text": "Đến lượt bạn. Chủ quán chờ bạn gọi một tô.",
+          "audioAssetId": "audio.order-bowl.n01",
+          "words": [
+            {
+              "surface": "Đến",
+              "wordId": "word.den"
+            },
+            {
+              "surface": "lượt",
+              "wordId": "word.luot"
+            },
+            {
+              "surface": "bạn.",
+              "wordId": "word.ban"
+            },
+            {
+              "surface": "Chủ",
+              "wordId": "word.chu"
+            },
+            {
+              "surface": "quán",
+              "wordId": "word.quan"
+            },
+            {
+              "surface": "chờ",
+              "wordId": "word.cho-wait"
+            },
+            {
+              "surface": "bạn",
+              "wordId": "word.ban"
+            },
+            {
+              "surface": "gọi",
+              "wordId": "word.goi"
+            },
+            {
+              "surface": "một",
+              "wordId": "word.mot"
+            },
+            {
+              "surface": "tô.",
+              "wordId": "word.to"
+            }
+          ]
+        },
+        {
+          "id": "order-bowl.d01",
+          "kind": "dialogue",
+          "speaker": "learner",
+          "text": "Cho tôi một tô tái, thêm rau thơm được không?",
+          "audioAssetId": "audio.order-bowl.d01",
+          "words": [
+            {
+              "surface": "Cho",
+              "wordId": "word.cho"
+            },
+            {
+              "surface": "tôi",
+              "wordId": "word.toi"
+            },
+            {
+              "surface": "một",
+              "wordId": "word.mot"
+            },
+            {
+              "surface": "tô",
+              "wordId": "word.to"
+            },
+            {
+              "surface": "tái,",
+              "wordId": "word.tai"
+            },
+            {
+              "surface": "thêm",
+              "wordId": "word.them"
+            },
+            {
+              "surface": "rau",
+              "wordId": "word.rau"
+            },
+            {
+              "surface": "thơm",
+              "wordId": "word.thom"
+            },
+            {
+              "surface": "được",
+              "wordId": "word.duoc"
+            },
+            {
+              "surface": "không?",
+              "wordId": "word.khong"
+            }
+          ]
+        },
+        {
+          "id": "order-bowl.d02",
+          "kind": "dialogue",
+          "speaker": "owner",
+          "text": "Được. Ngồi đây nhé.",
+          "words": [
+            {
+              "surface": "Được.",
+              "wordId": "word.duoc"
+            },
+            {
+              "surface": "Ngồi",
+              "wordId": "word.ngoi"
+            },
+            {
+              "surface": "đây",
+              "wordId": "word.day"
+            },
+            {
+              "surface": "nhé.",
+              "wordId": "word.nhe"
+            }
+          ]
+        }
+      ],
+      "wordAnchors": [
+        {
+          "wordId": "word.goi",
+          "sentenceId": "order-bowl.n01"
+        },
+        {
+          "wordId": "word.to",
+          "sentenceId": "order-bowl.n01"
+        },
+        {
+          "wordId": "word.cho",
+          "sentenceId": "order-bowl.d01"
+        },
+        {
+          "wordId": "word.toi",
+          "sentenceId": "order-bowl.d01"
+        },
+        {
+          "wordId": "word.rau",
+          "sentenceId": "order-bowl.d01"
+        },
+        {
+          "wordId": "word.thom",
+          "sentenceId": "order-bowl.d01"
+        }
+      ],
+      "phraseAnchors": [
+        {
+          "phraseId": "phrase.goi-mot-to",
+          "sentenceId": "order-bowl.n01",
+          "startWord": 7,
+          "endWord": 9
+        },
+        {
+          "phraseId": "phrase.rau-thom",
+          "sentenceId": "order-bowl.d01",
+          "startWord": 6,
+          "endWord": 7
+        }
+      ],
+      "grammarAnchors": [
+        {
+          "grammarId": "grammar.cho-toi",
+          "sentenceId": "order-bowl.d01"
+        }
+      ],
+      "activities": [
+        {
+          "id": "order-bowl.act.read",
+          "type": "read_listen"
+        },
+        {
+          "id": "order-bowl.act.dictation",
+          "type": "dictation"
+        }
+      ]
+    },
+    {
+      "id": "first-sip",
+      "order": 4,
+      "title": {
+        "vi": "Ngụm đầu",
+        "en": "First sip"
+      },
+      "illustrationAssetId": "image.first-sip",
+      "audioAssetId": "audio.scene.first-sip",
+      "sentences": [
+        {
+          "id": "first-sip.n01",
+          "kind": "narration",
+          "text": "Tô phở đặt xuống. Bạn húp một ngụm nước dùng.",
+          "audioAssetId": "audio.first-sip.n01",
+          "words": [
+            {
+              "surface": "Tô",
+              "wordId": "word.to"
+            },
+            {
+              "surface": "phở",
+              "wordId": "word.pho"
+            },
+            {
+              "surface": "đặt",
+              "wordId": "word.dat"
+            },
+            {
+              "surface": "xuống.",
+              "wordId": "word.xuong"
+            },
+            {
+              "surface": "Bạn",
+              "wordId": "word.ban"
+            },
+            {
+              "surface": "húp",
+              "wordId": "word.hup"
+            },
+            {
+              "surface": "một",
+              "wordId": "word.mot"
+            },
+            {
+              "surface": "ngụm",
+              "wordId": "word.ngum"
+            },
+            {
+              "surface": "nước",
+              "wordId": "word.nuoc"
+            },
+            {
+              "surface": "dùng.",
+              "wordId": "word.dung-broth"
+            }
+          ]
+        },
+        {
+          "id": "first-sip.n02",
+          "kind": "narration",
+          "text": "Nước dùng nóng và đậm. Bạn thấy no và ấm.",
+          "audioAssetId": "audio.first-sip.n02",
+          "words": [
+            {
+              "surface": "Nước",
+              "wordId": "word.nuoc"
+            },
+            {
+              "surface": "dùng",
+              "wordId": "word.dung-broth"
+            },
+            {
+              "surface": "nóng",
+              "wordId": "word.nong"
+            },
+            {
+              "surface": "và",
+              "wordId": "word.va"
+            },
+            {
+              "surface": "đậm.",
+              "wordId": "word.dam"
+            },
+            {
+              "surface": "Bạn",
+              "wordId": "word.ban"
+            },
+            {
+              "surface": "thấy",
+              "wordId": "word.nhin"
+            },
+            {
+              "surface": "no",
+              "wordId": "word.no"
+            },
+            {
+              "surface": "và",
+              "wordId": "word.va"
+            },
+            {
+              "surface": "ấm.",
+              "wordId": "word.am"
+            }
+          ]
+        }
+      ],
+      "wordAnchors": [
+        {
+          "wordId": "word.nuoc",
+          "sentenceId": "first-sip.n01"
+        },
+        {
+          "wordId": "word.dung-broth",
+          "sentenceId": "first-sip.n01"
+        },
+        {
+          "wordId": "word.nong",
+          "sentenceId": "first-sip.n02"
+        },
+        {
+          "wordId": "word.dam",
+          "sentenceId": "first-sip.n02"
+        }
+      ],
+      "phraseAnchors": [
+        {
+          "phraseId": "phrase.nuoc-dung",
+          "sentenceId": "first-sip.n01",
+          "startWord": 8,
+          "endWord": 9
+        },
+        {
+          "phraseId": "phrase.nuoc-dung",
+          "sentenceId": "first-sip.n02",
+          "startWord": 0,
+          "endWord": 1
+        }
+      ],
+      "grammarAnchors": [],
+      "activities": [
+        {
+          "id": "first-sip.act.read",
+          "type": "read_listen"
+        },
+        {
+          "id": "first-sip.act.listen",
+          "type": "listening",
+          "wordIds": [
+            "word.nong",
+            "word.dam"
+          ],
+          "phraseIds": [
+            "phrase.nuoc-dung"
+          ]
+        }
+      ]
+    }
+  ]
+}

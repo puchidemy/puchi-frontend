@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://puchi.io.vn/schemas/story-kit/v1/assets-manifest.json",
+  "title": "Story Package Assets Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "assets"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["assetId", "kind"],
+        "properties": {
+          "assetId": { "type": "string", "minLength": 1 },
+          "kind": {
+            "type": "string",
+            "enum": ["image", "audio", "other"]
+          },
+          "path": { "type": "string" },
+          "mimeType": { "type": "string" },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "durationMs": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "1.1.0",
+  "storyId": "VN-HN-001",
+  "locale": "vi",
+  "status": "draft",
+  "title": {
+    "vi": "Sáng Hà Nội — tô phở đầu ngày",
+    "en": "Hanoi Morning — First Bowl of Phở"
+  },
+  "citySlug": "ha-noi",
+  "level": "B1"
+}

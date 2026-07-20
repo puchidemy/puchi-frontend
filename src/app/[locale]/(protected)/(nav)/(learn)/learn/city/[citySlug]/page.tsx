@@ -8,8 +8,10 @@ import { toast } from "sonner";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { CityHub } from "@/components/learn/city/CityHub";
+import { GuestSoftGateDialog } from "@/components/settings/GuestSoftGateDialog";
 import { useRouter } from "@/i18n/routing";
 import { isKnownCitySlug } from "@/lib/journey-cities";
+import { guestRequiresLoginForCity } from "@/lib/learn-soft-gate";
 import {
   ensureGuestSession,
   getCity,
@@ -31,6 +33,9 @@ export default function CityPage() {
   const [error, setError] = useState("");
   const redirectedRef = useRef(false);
 
+  const guestBlocked =
+    !authLoading && !user && guestRequiresLoginForCity(citySlug);
+
   const loadCity = useCallback(async () => {
     if (authLoading) return;
     if (!isKnownCitySlug(citySlug)) {
@@ -39,6 +44,11 @@ export default function CityPage() {
         toast.message(t("City.unknown"));
         router.replace("/learn");
       }
+      return;
+    }
+    if (!user && guestRequiresLoginForCity(citySlug)) {
+      setLoading(false);
+      setData(null);
       return;
     }
     setLoading(true);
@@ -64,6 +74,14 @@ export default function CityPage() {
     return (
       <div className="flex h-full min-h-0 w-full items-center justify-center">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (guestBlocked) {
+    return (
+      <div className="flex h-full min-h-0 w-full items-center justify-center p-8">
+        <GuestSoftGateDialog open />
       </div>
     );
   }

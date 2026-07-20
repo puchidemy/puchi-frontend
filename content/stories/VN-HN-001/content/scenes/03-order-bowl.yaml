@@ -1,0 +1,70 @@
+id: order-bowl
+order: 3
+title:
+  vi: Gọi tô phở
+  en: Ordering phở
+illustrationAssetId: image.order-bowl
+audioAssetId: audio.scene.order-bowl
+narration:
+  - id: order-bowl.n01
+    text: Đến lượt bạn. Chủ quán chờ bạn gọi một tô.
+    audioAssetId: audio.order-bowl.n01
+    words:
+      - { surface: "Đến", wordId: "word.den" }
+      - { surface: "lượt", wordId: "word.luot" }
+      - { surface: "bạn.", wordId: "word.ban" }
+      - { surface: "Chủ", wordId: "word.chu" }
+      - { surface: "quán", wordId: "word.quan" }
+      - { surface: "chờ", wordId: "word.cho-wait" }
+      - { surface: "bạn", wordId: "word.ban" }
+      - { surface: "gọi", wordId: "word.goi" }
+      - { surface: "một", wordId: "word.mot" }
+      - { surface: "tô.", wordId: "word.to" }
+dialogue:
+  - id: order-bowl.d01
+    speaker: learner
+    text: Cho tôi một tô tái, thêm rau thơm được không?
+    audioAssetId: audio.order-bowl.d01
+    words:
+      - { surface: "Cho", wordId: "word.cho" }
+      - { surface: "tôi", wordId: "word.toi" }
+      - { surface: "một", wordId: "word.mot" }
+      - { surface: "tô", wordId: "word.to" }
+      - { surface: "tái,", wordId: "word.tai" }
+      - { surface: "thêm", wordId: "word.them" }
+      - { surface: "rau", wordId: "word.rau" }
+      - { surface: "thơm", wordId: "word.thom" }
+      - { surface: "được", wordId: "word.duoc" }
+      - { surface: "không?", wordId: "word.khong" }
+  - id: order-bowl.d02
+    speaker: owner
+    text: Được. Ngồi đây nhé.
+    words:
+      - { surface: "Được.", wordId: "word.duoc" }
+      - { surface: "Ngồi", wordId: "word.ngoi" }
+      - { surface: "đây", wordId: "word.day" }
+      - { surface: "nhé.", wordId: "word.nhe" }
+wordAnchors:
+  - { wordId: word.goi, sentenceId: order-bowl.n01 }
+  - { wordId: word.to, sentenceId: order-bowl.n01 }
+  - { wordId: word.cho, sentenceId: order-bowl.d01 }
+  - { wordId: word.toi, sentenceId: order-bowl.d01 }
+  - { wordId: word.rau, sentenceId: order-bowl.d01 }
+  - { wordId: word.thom, sentenceId: order-bowl.d01 }
+phraseAnchors:
+  - phraseId: phrase.goi-mot-to
+    sentenceId: order-bowl.n01
+    startWord: 7
+    endWord: 9
+  - phraseId: phrase.rau-thom
+    sentenceId: order-bowl.d01
+    startWord: 6
+    endWord: 7
+grammarAnchors:
+  - { grammarId: grammar.cho-toi, sentenceId: order-bowl.d01 }
+activities:
+  - id: order-bowl.act.read
+    type: read_listen
+  - id: order-bowl.act.dictation
+    type: dictation
+    sentenceId: order-bowl.d01

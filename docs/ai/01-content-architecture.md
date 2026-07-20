@@ -18,46 +18,23 @@ Journey Map
 → Scene
 → Activity
 
-## Story Blueprint
-Metadata:
-- id
-- title
-- city
-- level
-- tags
-- duration
-- cover
-- objectives
+## Story Kit v1 (canonical)
 
-Structure:
-1. Cover
-2. Introduction
-3. 6–10 Scenes
-4. Summary
-5. Review
-6. Reward
+Authoring / validation / publish unit: **Story Package**.  
+See [`docs/story-kit/v1/`](../story-kit/v1/README.md).
 
-Each Scene contains:
-- Illustration
-- Narration
-- Optional dialogue (<=20%)
-- Audio
-- Vocabulary anchors
-- Activities
+- Package folder = source of truth
+- Learn runtime may consume a **compiled** read model
+- Stable `wordId` / `phraseId` / `grammarId` (not token index)
+- Phrase spans (`startWord`/`endWord`) are version-local anchors
+- Learn stores progress by content ID only — no meaning/example copies
 
-Activity catalog:
-- Story (Read & Listen)
-- Listening
-- Vocabulary
-- Unscramble
-- Dictation
-- Speaking
-- Grammar in Context
-- Review (SRS)
+## Story Blueprint (summary)
 
-Quality checklist:
-- Interesting before educational
-- Natural Vietnamese
-- Repeated vocabulary naturally
-- Real culture
-- No textbook conversations
+Structure: Cover → Introduction → **6–10 Scenes** → Summary → Review → Reward
+
+Each Scene: illustration, narration, optional dialogue (≤20%), audio, word/phrase/grammar anchors, activities.
+
+Activity catalog: Read & Listen, Listening, Vocabulary, Unscramble, Dictation, Speaking (record/replay), Grammar in Context, Review (SRS).
+
+Quality: interesting before educational · natural Vietnamese · culture-first · no textbook conversations.

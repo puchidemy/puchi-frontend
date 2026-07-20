@@ -1,0 +1,58 @@
+id: first-sip
+order: 4
+title:
+  vi: Ngụm đầu
+  en: First sip
+illustrationAssetId: image.first-sip
+audioAssetId: audio.scene.first-sip
+narration:
+  - id: first-sip.n01
+    text: Tô phở đặt xuống. Bạn húp một ngụm nước dùng.
+    audioAssetId: audio.first-sip.n01
+    words:
+      - { surface: "Tô", wordId: "word.to" }
+      - { surface: "phở", wordId: "word.pho" }
+      - { surface: "đặt", wordId: "word.dat" }
+      - { surface: "xuống.", wordId: "word.xuong" }
+      - { surface: "Bạn", wordId: "word.ban" }
+      - { surface: "húp", wordId: "word.hup" }
+      - { surface: "một", wordId: "word.mot" }
+      - { surface: "ngụm", wordId: "word.ngum" }
+      - { surface: "nước", wordId: "word.nuoc" }
+      - { surface: "dùng.", wordId: "word.dung-broth" }
+  - id: first-sip.n02
+    text: Nước dùng nóng và đậm. Bạn thấy no và ấm.
+    audioAssetId: audio.first-sip.n02
+    words:
+      - { surface: "Nước", wordId: "word.nuoc" }
+      - { surface: "dùng", wordId: "word.dung-broth" }
+      - { surface: "nóng", wordId: "word.nong" }
+      - { surface: "và", wordId: "word.va" }
+      - { surface: "đậm.", wordId: "word.dam" }
+      - { surface: "Bạn", wordId: "word.ban" }
+      - { surface: "thấy", wordId: "word.nhin" }
+      - { surface: "no", wordId: "word.no" }
+      - { surface: "và", wordId: "word.va" }
+      - { surface: "ấm.", wordId: "word.am" }
+wordAnchors:
+  - { wordId: word.nuoc, sentenceId: first-sip.n01 }
+  - { wordId: word.dung-broth, sentenceId: first-sip.n01 }
+  - { wordId: word.nong, sentenceId: first-sip.n02 }
+  - { wordId: word.dam, sentenceId: first-sip.n02 }
+phraseAnchors:
+  - phraseId: phrase.nuoc-dung
+    sentenceId: first-sip.n01
+    startWord: 8
+    endWord: 9
+  - phraseId: phrase.nuoc-dung
+    sentenceId: first-sip.n02
+    startWord: 0
+    endWord: 1
+activities:
+  - id: first-sip.act.read
+    type: read_listen
+  - id: first-sip.act.listen
+    type: listening
+    audioAssetId: audio.first-sip.n02
+    phraseIds: [phrase.nuoc-dung]
+    wordIds: [word.nong, word.dam]
